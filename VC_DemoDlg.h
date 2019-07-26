@@ -50,4 +50,6 @@ public:
 	CListBox m_listWindow;
 	CString m_edit_keyword;
 	afx_msg void OnBnClickedButtonKeypress6();
+	double m_rate;
+	afx_msg void OnEnChangeEdit5();
 };

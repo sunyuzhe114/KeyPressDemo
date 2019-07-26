@@ -45,8 +45,10 @@ DWORD WINAPI    changeUser_Thread(LPVOID pp);
 CVC_DemoDlg::CVC_DemoDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CVC_DemoDlg::IDD, pParent)
 	, m_intMinute(55)
-	, m_edit_keyword(_T(""))
+	, m_edit_keyword(_T("")
+		)
 {
+	m_rate = 2.5;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
@@ -59,6 +61,7 @@ void CVC_DemoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT3, m_editLogInfor);
 	DDX_Control(pDX, IDC_LIST1, m_listWindow);
 	DDX_Text(pDX, IDC_EDIT4, m_edit_keyword);
+	DDX_Text(pDX, IDC_EDIT5, m_rate);
 }
 
 BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
@@ -77,6 +80,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_KEYPRESS4, &CVC_DemoDlg::OnBnClickedButtonKeypress4)
 	ON_EN_CHANGE(IDC_EDIT2, &CVC_DemoDlg::OnEnChangeEdit2)
 	ON_BN_CLICKED(IDC_BUTTON_KEYPRESS6, &CVC_DemoDlg::OnBnClickedButtonKeypress6)
+	ON_EN_CHANGE(IDC_EDIT5, &CVC_DemoDlg::OnEnChangeEdit5)
 END_MESSAGE_MAP()
 
 
@@ -1083,4 +1087,11 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress6()
 
 
 	HANDLE hThread = CreateThread(NULL, 0, LoginUser_Thread, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CVC_DemoDlg::OnEnChangeEdit5()
+{
+	UpdateData();
+	rate = m_rate;
 }

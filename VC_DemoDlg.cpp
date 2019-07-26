@@ -22,8 +22,7 @@ using namespace std;
 
 
 // CVC_DemoDlg 对话框
-
-
+double rate = 2;//* dbZoomScale
 CVC_DemoDlg *pDlg;
 bool bStop = false;
 DWORD m_dTimeBegin = 0;
@@ -302,7 +301,7 @@ DWORD WINAPI    LoginUser_Thread(LPVOID pp)
 	DWORD m_dTimeBeginPress_F10 = 0;
 
 	CString infor;
-	double rate = 2.5;//* dbZoomScale
+	
 	for (int i = 0; i < 1; i++)
 	{
 		RetSw = M_ResetMousePos(msdk_handle);
@@ -403,10 +402,11 @@ DWORD WINAPI    LoginUser_Thread(LPVOID pp)
 	infor += "点击\r\n";
 	pDlg->m_editLogInfor.SetWindowTextA(infor);
 	RetSw = M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
+	RetSw = M_ReleaseAllMouse(msdk_handle);
+	RetSw = M_ReleaseAllKey(msdk_handle);
 	pDlg->OnBnClickedButtonKeypress();
 
-	/*RetSw = M_ReleaseAllMouse(msdk_handle);
-	RetSw = M_ReleaseAllKey(msdk_handle);*/
+
 	return 0;
 }
 DWORD WINAPI    changeUser_Thread(LPVOID pp)
@@ -415,8 +415,10 @@ DWORD WINAPI    changeUser_Thread(LPVOID pp)
 	unsigned int RetSw = 0;
 	DWORD m_dTimeBeginPress_F10 = 0;
 	 
-	CString infor;
-	double rate = 2.5;//* dbZoomScale
+	CString infor; 
+
+
+
 	for (int i = 0; i < 1; i++)
 	{
 		RetSw = M_ResetMousePos(msdk_handle);
@@ -895,7 +897,7 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress()
 {
 
 	m_dTimeBegin = GetTickCount();
-	UpdateData();
+	UpdateData(true);
 	m_timeLimit = m_intMinute;//分钟
 	bStop = false;
 	if (msdk_handle == INVALID_HANDLE_VALUE) {

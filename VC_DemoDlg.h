@@ -47,4 +47,7 @@ public:
 	afx_msg void OnBnClickedButtonKeypress5();
 	afx_msg void OnBnClickedButtonKeypress4();
 	afx_msg void OnEnChangeEdit2();
+	CListBox m_listWindow;
+	CString m_edit_keyword;
+	afx_msg void OnBnClickedButtonKeypress6();
 };

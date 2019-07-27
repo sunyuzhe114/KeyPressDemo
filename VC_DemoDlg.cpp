@@ -827,7 +827,7 @@ bool MatchingMethod()
 	//! [imshow]
 	CString infor;
 	infor.Format("x=%ld,y=%ld,maxVal=%0.2lf", matchLoc.x, matchLoc.y, maxVal);
-	if (matchLoc.y <= 36 && maxVal > 0.5 &&matchLoc.x > 1650 && matchLoc.x < 1920)
+	if (matchLoc.y <= 45 && maxVal > 0.5 &&matchLoc.x > 1650 && matchLoc.x < 1920)
 	{
 		infor += "¼ì²âÕýÈ·";
 		pDlg->m_editLogInfor.SetWindowTextA(infor);

@@ -8,19 +8,19 @@
 // CVC_DemoDlg 对话框
 class CVC_DemoDlg : public CDialogEx
 {
-// 构造
+	// 构造
 public:
 	CVC_DemoDlg(CWnd* pParent = NULL);	// 标准构造函数
 
 // 对话框数据
 	enum { IDD = IDD_VC_DEMO_DIALOG };
 
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 支持
 
 	HANDLE msdk_handle;
 
-// 实现
+	// 实现
 protected:
 	HICON m_hIcon;
 
@@ -52,4 +52,5 @@ public:
 	afx_msg void OnBnClickedButtonKeypress6();
 	double m_rate;
 	afx_msg void OnEnChangeEdit5();
+	CEdit m_editRate;
 };

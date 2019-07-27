@@ -46,7 +46,7 @@ CVC_DemoDlg::CVC_DemoDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CVC_DemoDlg::IDD, pParent)
 	, m_intMinute(55)
 	, m_edit_keyword(_T("")
-		)
+	)
 {
 	m_rate = 2.5;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -62,6 +62,7 @@ void CVC_DemoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST1, m_listWindow);
 	DDX_Text(pDX, IDC_EDIT4, m_edit_keyword);
 	DDX_Text(pDX, IDC_EDIT5, m_rate);
+	DDX_Control(pDX, IDC_EDIT5, m_editRate);
 }
 
 BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
@@ -99,7 +100,7 @@ BOOL CVC_DemoDlg::OnInitDialog()
 	msdk_handle = INVALID_HANDLE_VALUE;	//初始为未打开
 	pDlg = this;
 	// Get desktop dc
-	
+
 
 	HDC desktopDc = CreateDC(_T("display"), NULL, NULL, NULL);
 	// Get native resolution
@@ -109,7 +110,7 @@ BOOL CVC_DemoDlg::OnInitDialog()
 	CString strScale;
 	strScale.Format("分辨比例%0.2lf", dbZoomScale);
 	m_editLog.SetWindowTextA(strScale);
-
+	m_editRate.SetWindowTextA("2.5");
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -305,7 +306,7 @@ DWORD WINAPI    LoginUser_Thread(LPVOID pp)
 	DWORD m_dTimeBeginPress_F10 = 0;
 
 	CString infor;
-	
+
 	for (int i = 0; i < 1; i++)
 	{
 		RetSw = M_ResetMousePos(msdk_handle);
@@ -319,7 +320,7 @@ DWORD WINAPI    LoginUser_Thread(LPVOID pp)
 	RetSw = M_LeftUp(msdk_handle );*/
 
 
-	 
+
 	//按5号键，
 	RetSw = M_KeyPress(msdk_handle, Keyboard_5, 1);
 	RetSw = M_DelayRandom(400, 600);
@@ -418,8 +419,8 @@ DWORD WINAPI    changeUser_Thread(LPVOID pp)
 	HANDLE msdk_handle = (HANDLE)pp;
 	unsigned int RetSw = 0;
 	DWORD m_dTimeBeginPress_F10 = 0;
-	 
-	CString infor; 
+
+	CString infor;
 
 
 
@@ -442,7 +443,7 @@ DWORD WINAPI    changeUser_Thread(LPVOID pp)
 	for (int i = 0; i < 1; i++)
 	{
 		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = M_MoveTo(msdk_handle, (int)((1502) / rate), (int)((461) / rate));
+		RetSw = M_MoveTo(msdk_handle, (int)((1534) / rate), (int)((454) / rate));
 		RetSw = M_DelayRandom(500, 600);
 	}
 	RetSw = M_LeftClick(msdk_handle, 1);
@@ -558,7 +559,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		{
 			bStop = true;
 		}
-		
+
 
 		if (bStop)break;
 
@@ -596,6 +597,13 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		RetSw = M_DelayRandom(400, 600);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_d, 1);
 		RetSw = M_DelayRandom(400, 600);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
+		RetSw = M_DelayRandom(200, 500);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
+		RetSw = M_DelayRandom(200, 500);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
+		RetSw = M_DelayRandom(200, 500);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
 		pDlg->saveScreen();
 		bool bFind = MatchingMethod();
 		if (bFind == TRUE)
@@ -634,6 +642,8 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
 			RetSw = M_DelayRandom(200, 500);
 			RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
+			RetSw = M_DelayRandom(200, 500);
+			RetSw = M_DelayRandom(200, 500);
 			RetSw = M_KeyPress(msdk_handle, Keyboard_F10, 1);
 			RetSw = M_DelayRandom(1100, 2000);
 			RetSw = M_KeyDown(msdk_handle, Keyboard_KongGe);
@@ -706,6 +716,8 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
 			RetSw = M_DelayRandom(200, 500);
 			RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
+			RetSw = M_DelayRandom(200, 500);
+			RetSw = M_DelayRandom(200, 500);
 			RetSw = M_KeyPress(msdk_handle, Keyboard_F10, 1);
 			RetSw = M_DelayRandom(3100, 4500);
 			RetSw = M_KeyDown(msdk_handle, Keyboard_KongGe);
@@ -815,7 +827,7 @@ bool MatchingMethod()
 	//! [imshow]
 	CString infor;
 	infor.Format("x=%ld,y=%ld,maxVal=%0.2lf", matchLoc.x, matchLoc.y, maxVal);
-	if (matchLoc.y <= 124 && maxVal > 0.5&&matchLoc.x > 1500)
+	if (matchLoc.y <= 36 && maxVal > 0.5 &&matchLoc.x > 1650 && matchLoc.x < 1920)
 	{
 		infor += "检测正确";
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
@@ -974,7 +986,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 	{
 
 
-	} 
+	}
 
 }
 
@@ -991,7 +1003,7 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress5()
 	bStop = true;
 	Sleep(3000);
 
-	
+
 	HANDLE hThread = CreateThread(NULL, 0, changeUser_Thread, (LPVOID)msdk_handle, 0, NULL);
 
 }

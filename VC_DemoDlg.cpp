@@ -110,7 +110,7 @@ BOOL CVC_DemoDlg::OnInitDialog()
 	CString strScale;
 	strScale.Format("分辨比例%0.2lf", dbZoomScale);
 	m_editLog.SetWindowTextA(strScale);
-	m_editRate.SetWindowTextA("2.5");
+	m_editRate.SetWindowTextA("2.5"); 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 

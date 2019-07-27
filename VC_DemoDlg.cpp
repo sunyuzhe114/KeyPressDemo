@@ -45,7 +45,7 @@ DWORD WINAPI    changeUser_Thread(LPVOID pp);
 CVC_DemoDlg::CVC_DemoDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CVC_DemoDlg::IDD, pParent)
 	, m_intMinute(55)
-	, m_edit_keyword(_T("")
+	, m_edit_keyword(_T("ÓÂÊ¿")
 	)
 {
 	m_rate = 2.5;

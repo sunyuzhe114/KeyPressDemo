@@ -439,7 +439,7 @@ DWORD WINAPI    changeUser_Thread(LPVOID pp)
 
 	RetSw = M_DelayRandom(800, 1000);
 	RetSw = M_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
-	RetSw = M_DelayRandom(1800, 2000);
+	RetSw = M_DelayRandom(2800, 3000);
 	for (int i = 0; i < 1; i++)
 	{
 		RetSw = M_ResetMousePos(msdk_handle);
@@ -447,7 +447,7 @@ DWORD WINAPI    changeUser_Thread(LPVOID pp)
 		RetSw = M_DelayRandom(500, 600);
 	}
 	RetSw = M_LeftClick(msdk_handle, 1);
-	RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_DelayRandom(1800, 2500);
 	infor += "Keyboard_ESCAPE\r\n";
 	pDlg->m_editLogInfor.SetWindowTextA(infor);
 	RetSw = M_KeyPress(msdk_handle, Keyboard_RightArrow, 1);

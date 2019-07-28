@@ -53,3 +53,4 @@ x64/Release/VC_DemoDlg.obj
 .vs/VC_Demo/v15/.suo
 .vs/VC_Demo/v15/.suo
 x64/Release/VC_Demo.exe
+*.exe

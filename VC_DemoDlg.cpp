@@ -310,7 +310,7 @@ DWORD WINAPI    LoginUser_Thread(LPVOID pp)
 	for (int i = 0; i < 1; i++)
 	{
 		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = M_MoveTo(msdk_handle, 1411 / rate, 250 / rate);
+		RetSw = M_MoveTo(msdk_handle, 1385 / rate, 110 / rate);
 		RetSw = M_DelayRandom(800, 1000);
 	}
 	RetSw = M_DelayRandom(800, 1000);
@@ -427,7 +427,7 @@ DWORD WINAPI    changeUser_Thread(LPVOID pp)
 	for (int i = 0; i < 1; i++)
 	{
 		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = M_MoveTo(msdk_handle, 1411 / rate, 250 / rate);
+		RetSw = M_MoveTo(msdk_handle, 1385 / rate, 110 / rate);;
 		RetSw = M_DelayRandom(800, 1000);
 	}
 	RetSw = M_DelayRandom(800, 1000);

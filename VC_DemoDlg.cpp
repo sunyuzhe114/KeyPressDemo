@@ -421,127 +421,139 @@ DWORD WINAPI    changeUser_Thread(LPVOID pp)
 
 	CString infor;
 
+	do {
 
-
-	for (int i = 0; i < 1; i++)
-	{
-		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = M_MoveTo(msdk_handle, 1385 / rate, 110 / rate);;
-		RetSw = M_DelayRandom(800, 1000);
-	}
-	RetSw = M_DelayRandom(800, 1000);
-	RetSw = M_LeftClick(msdk_handle, 1);
-	/*RetSw = M_LeftDown(msdk_handle );
-	RetSw = M_DelayRandom(800, 1000);
-	RetSw = M_LeftUp(msdk_handle );*/
-
-
-	RetSw = M_DelayRandom(800, 1000);
-	RetSw = M_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
-	RetSw = M_DelayRandom(2800, 3000);
-	for (int i = 0; i < 1; i++)
-	{
-		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = M_MoveTo(msdk_handle, (int)((1517) / rate), (int)((454) / rate));
-		RetSw = M_DelayRandom(500, 600);
-	}
-	RetSw = M_LeftClick(msdk_handle, 1);
-	RetSw = M_DelayRandom(1800, 2500);
-	infor += "Keyboard_ESCAPE\r\n";
-	pDlg->m_editLogInfor.SetWindowTextA(infor);
-	RetSw = M_KeyPress(msdk_handle, Keyboard_RightArrow, 1);
-	RetSw = M_DelayRandom(1100, 2100);
-	RetSw = M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
-	RetSw = M_DelayRandom(400, 600);
-	RetSw = M_DelayRandom(3000, 4000);
-	//按5号键，
-	RetSw = M_KeyPress(msdk_handle, Keyboard_5, 1);
-	RetSw = M_DelayRandom(400, 600);
-	infor += "按5号键\r\n";
-	pDlg->m_editLogInfor.SetWindowTextA(infor);
-	//点击确认
-	for (int i = 0; i < 1; i++)
-	{
-		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = M_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
-		RetSw = M_DelayRandom(500, 600);
-	}
-	RetSw = M_LeftClick(msdk_handle, 1);
-	RetSw = M_DelayRandom(1800, 2000);
-	infor += "按确定\r\n";
-	pDlg->m_editLogInfor.SetWindowTextA(infor);
-	//滚动3次到了 
-	for (int i = 0; i < 3; i++)
-	{
-		RetSw = M_MouseWheel(msdk_handle, 1);
-		RetSw = M_DelayRandom(1000, 1200);
-	}
-
-	infor += "滚轮3次\r\n";
-	pDlg->m_editLogInfor.SetWindowTextA(infor);
-
-	//走到地点
-	for (int i = 0; i < 1; i++)
-	{
-		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = M_MoveTo(msdk_handle, (int)((1518) / rate), (int)((277) / rate));
-		RetSw = M_DelayRandom(500, 600);
-	}
-	RetSw = M_LeftClick(msdk_handle, 1);
-	RetSw = M_DelayRandom(800, 1000);
-	RetSw = M_DelayRandom(800, 1000);
-	RetSw = M_DelayRandom(800, 1000);
-
-	infor += "选定坐标\r\n";
-	pDlg->m_editLogInfor.SetWindowTextA(infor);
-
-	//点击确认
-	for (int i = 0; i < 1; i++)
-	{
-		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = M_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
-		RetSw = M_DelayRandom(500, 600);
-	}
-	RetSw = M_LeftClick(msdk_handle, 1);
-	RetSw = M_DelayRandom(1800, 2000);
-	infor += "按确定\r\n";
-	pDlg->m_editLogInfor.SetWindowTextA(infor);
-
-
-	//走到地点
-	for (int j = 0; j < 2; j++)
-	{
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = M_MoveTo(msdk_handle, (int)((1753) / rate), (int)((503) / rate));
+			RetSw = M_MoveTo(msdk_handle, 1385 / rate, 110 / rate);;
+			RetSw = M_DelayRandom(800, 1000);
+		}
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_LeftClick(msdk_handle, 1);
+		/*RetSw = M_LeftDown(msdk_handle );
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_LeftUp(msdk_handle );*/
+
+		if (bStop)break;
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+		RetSw = M_DelayRandom(2800, 3000);
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			RetSw = M_MoveTo(msdk_handle, (int)((1517) / rate), (int)((454) / rate));
 			RetSw = M_DelayRandom(500, 600);
 		}
-		RetSw = M_RightClick(msdk_handle, 1);
+		RetSw = M_LeftClick(msdk_handle, 1);
+		RetSw = M_DelayRandom(1800, 2500);
+		infor += "Keyboard_ESCAPE\r\n";
+		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		if (bStop)break;
+		RetSw = M_KeyPress(msdk_handle, Keyboard_RightArrow, 1);
+		RetSw = M_DelayRandom(1100, 2100);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
+		RetSw = M_DelayRandom(400, 600);
+		RetSw = M_DelayRandom(3000, 4000);
+		//按5号键，
+		if (bStop)break;
+		RetSw = M_KeyPress(msdk_handle, Keyboard_5, 1);
+		RetSw = M_DelayRandom(400, 600);
+		infor += "按5号键\r\n";
+		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		//点击确认
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			RetSw = M_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+			RetSw = M_DelayRandom(500, 600);
+		}
+		RetSw = M_LeftClick(msdk_handle, 1);
+		RetSw = M_DelayRandom(1800, 2000);
+		infor += "按确定\r\n";
+		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		if (bStop)break;
+		//滚动3次到了 
+		for (int i = 0; i < 3; i++)
+		{
+			RetSw = M_MouseWheel(msdk_handle, 1);
+			RetSw = M_DelayRandom(1000, 1200);
+		}
+		if (bStop)break;
+		infor += "滚轮3次\r\n";
+		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		if (bStop)break;
+		//走到地点
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			RetSw = M_MoveTo(msdk_handle, (int)((1518) / rate), (int)((277) / rate));
+			RetSw = M_DelayRandom(500, 600);
+		}
+		if (bStop)break;
+		RetSw = M_LeftClick(msdk_handle, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		if (bStop)break;
+		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
 
-	}
-	infor += "走到地点\r\n";
-	pDlg->m_editLogInfor.SetWindowTextA(infor);
-	RetSw = M_DelayRandom(800, 1000);
-	RetSw = M_DelayRandom(800, 1000);
-	RetSw = M_DelayRandom(800, 1000);
-	//点击 
-	for (int i = 0; i < 1; i++)
-	{
-		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = M_MoveTo(msdk_handle, (int)((1324) / rate), (int)((441) / rate));
-		RetSw = M_DelayRandom(500, 600);
-	}
-	RetSw = M_LeftDoubleClick(msdk_handle, 1);
-	RetSw = M_DelayRandom(800, 1000);
-	RetSw = M_LeftDoubleClick(msdk_handle, 1);
-	RetSw = M_DelayRandom(800, 1000);
-	infor += "点击\r\n";
-	pDlg->m_editLogInfor.SetWindowTextA(infor);
-	RetSw = M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
-	pDlg->OnBnClickedButtonKeypress();
+		infor += "选定坐标\r\n";
+		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		if (bStop)break;
+		//点击确认
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			RetSw = M_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+			RetSw = M_DelayRandom(500, 600);
+		}
+		RetSw = M_LeftClick(msdk_handle, 1);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1800, 2000);
+		infor += "按确定\r\n";
+		pDlg->m_editLogInfor.SetWindowTextA(infor);
 
+		if (bStop)break;
+		//走到地点
+		for (int j = 0; j < 2; j++)
+		{
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				RetSw = M_MoveTo(msdk_handle, (int)((1753) / rate), (int)((503) / rate));
+				RetSw = M_DelayRandom(500, 600);
+			}
+			RetSw = M_RightClick(msdk_handle, 1);
+			RetSw = M_DelayRandom(800, 1000);
+
+		}
+		if (bStop)break;
+		infor += "走到地点\r\n";
+		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_DelayRandom(800, 1000);
+		if (bStop)break;
+		//点击 
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			RetSw = M_MoveTo(msdk_handle, (int)((1324) / rate), (int)((441) / rate));
+			RetSw = M_DelayRandom(500, 600);
+		}
+		RetSw = M_LeftDoubleClick(msdk_handle, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_LeftDoubleClick(msdk_handle, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		infor += "点击\r\n";
+		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
+		infor += "run begin\r\n";
+		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		pDlg->OnBnClickedButtonKeypress();
+		if (bStop)break;
+	}
+	while (0);
 	/*RetSw = M_ReleaseAllMouse(msdk_handle);
 	RetSw = M_ReleaseAllKey(msdk_handle);*/
 	return 0;

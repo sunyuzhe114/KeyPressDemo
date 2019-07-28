@@ -443,7 +443,7 @@ DWORD WINAPI    changeUser_Thread(LPVOID pp)
 	for (int i = 0; i < 1; i++)
 	{
 		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = M_MoveTo(msdk_handle, (int)((1534) / rate), (int)((454) / rate));
+		RetSw = M_MoveTo(msdk_handle, (int)((1527) / rate), (int)((454) / rate));
 		RetSw = M_DelayRandom(500, 600);
 	}
 	RetSw = M_LeftClick(msdk_handle, 1);

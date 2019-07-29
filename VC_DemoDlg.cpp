@@ -545,6 +545,18 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			RetSw = M_DelayRandom(800, 1000);
 
 		}
+		for (int j = 0; j < 2; j++)
+		{
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				RetSw = M_MoveTo(msdk_handle, (int)((1660) / rate), (int)((503) / rate));
+				RetSw = M_DelayRandom(500, 600);
+			}
+			RetSw = M_RightClick(msdk_handle, 1);
+			RetSw = M_DelayRandom(800, 1000);
+
+		}
 		if (bStop)break;
 		infor += "走到地点\r\n";
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
@@ -572,8 +584,8 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		if (bStop)break;
 	}
 	while (0);
-	/*RetSw = M_ReleaseAllMouse(msdk_handle);
-	RetSw = M_ReleaseAllKey(msdk_handle);*/
+	infor += "exit \r\n";
+	pDlg->m_editLogInfor.SetWindowTextA(infor);
 	return 0;
 }
 
@@ -589,7 +601,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		RetSw = M_MoveTo(msdk_handle, 1385 / rate, 110 / rate);
 		RetSw = M_DelayRandom(800, 1000);
 	}
-	RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_DelayRandom(800, 1000);  
 	RetSw = M_LeftClick(msdk_handle, 1);
 	/*RetSw = M_LeftDown(msdk_handle );
 	RetSw = M_DelayRandom(800, 1000);
@@ -802,6 +814,12 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 	}
 	RetSw = M_KeyPress(msdk_handle, Keyboard_F12, 1);
 	RetSw = M_DelayRandom(600, 1000);
+
+	CString infor = "exit checkThread_Game \r\n";
+	pDlg->m_editLogInfor.SetWindowTextA(infor);
+
+	//这里加入分解动作
+
 	RetSw = M_ReleaseAllKey(msdk_handle);
 	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
 	return 0;
@@ -991,7 +1009,7 @@ void CVC_DemoDlg::OnBnClickedButtonMoveto()
 	unsigned int RetSw;
 	RetSw = M_ResetMousePos(msdk_handle);
 	RetSw = M_DelayRandom(800, 1000);
-	RetSw = M_MoveR(msdk_handle, 100, 100);
+	RetSw = M_MoveR(msdk_handle, 100/rate, 100/rate);
 	RetSw = M_LeftClick(msdk_handle, 1);
 }
 

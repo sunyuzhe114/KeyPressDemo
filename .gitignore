@@ -55,3 +55,6 @@ x64/Release/VC_DemoDlg.obj
 x64/Release/VC_Demo.exe
 *.exe
 x64/Release/VC_Demo.exe
+x64/Release/VC_Demo.exe
+x64/Release/VC_Demo.tlog/unsuccessfulbuild
+x64/Release/VC_Demo.tlog/unsuccessfulbuild

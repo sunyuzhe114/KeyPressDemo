@@ -19,7 +19,7 @@ using namespace std;
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
+#define APP_NAME "notepad++"
 
 // CVC_DemoDlg 对话框
 double rate = 2;//* dbZoomScale
@@ -110,7 +110,16 @@ BOOL CVC_DemoDlg::OnInitDialog()
 	CString strScale;
 	strScale.Format("分辨比例%0.2lf", dbZoomScale);
 	m_editLog.SetWindowTextA(strScale);
-	m_editRate.SetWindowTextA("2.5");
+
+	CString infor;  
+	 
+	::GetPrivateProfileString(APP_NAME, "m_rate","",infor.GetBufferSetLength(256),256, "d://keypressDemo.ini");
+	if (infor != "")
+	{
+		m_editRate.SetWindowTextA(infor);
+		rate = atof(infor);
+		m_rate = rate;
+	}
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -1130,5 +1139,9 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress6()
 void CVC_DemoDlg::OnEnChangeEdit5()
 {
 	UpdateData();
-	rate = m_rate;
+	rate = m_rate;    
+	CString rr;
+	rr.Format("%0.1lf", rate); 
+	CWinApp* pApp = AfxGetApp(); 
+	::WritePrivateProfileString(APP_NAME, "m_rate", rr, "d://keypressDemo.ini");
 }

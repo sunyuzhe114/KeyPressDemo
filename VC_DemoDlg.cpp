@@ -25,6 +25,7 @@ using namespace std;
 double rate = 2;//* dbZoomScale
 CVC_DemoDlg *pDlg;
 bool bStop = false;
+bool bChangeUser = true;
 DWORD m_dTimeBegin = 0;
 DWORD m_timeLimit = 0;
 /// Global Variables
@@ -308,6 +309,7 @@ DWORD WINAPI    checkThread_Game_old(LPVOID pp)
 	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
 	return 0;
 }
+//已经与changeUser_And_Login_Thread合并
 DWORD WINAPI    LoginUser_Thread(LPVOID pp)
 {
 	HANDLE msdk_handle = (HANDLE)pp;
@@ -422,7 +424,7 @@ DWORD WINAPI    LoginUser_Thread(LPVOID pp)
 	} while (0);
 	return 0;
 }
-DWORD WINAPI    changeUser_Thread(LPVOID pp)
+DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 {
 	HANDLE msdk_handle = (HANDLE)pp;
 	unsigned int RetSw = 0;
@@ -459,8 +461,15 @@ DWORD WINAPI    changeUser_Thread(LPVOID pp)
 		infor += "Keyboard_ESCAPE\r\n";
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
 		if (bStop)break;
-		RetSw = M_KeyPress(msdk_handle, Keyboard_RightArrow, 1);
-		RetSw = M_DelayRandom(1100, 2100);
+
+		if (bChangeUser == true)
+		{
+			RetSw = M_KeyPress(msdk_handle, Keyboard_RightArrow, 1);
+			RetSw = M_DelayRandom(1100, 2100);
+
+		}
+		
+		
 		RetSw = M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
 		RetSw = M_DelayRandom(400, 600);
 		RetSw = M_DelayRandom(3000, 4000);
@@ -1032,13 +1041,14 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress5()
 	UpdateData();
 	m_timeLimit = m_intMinute;//分钟
 	bStop = false;
+	bChangeUser = true;
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
 		OnBnClickedButtonOpen();
 	}
 	Sleep(3000);
 
 
-	HANDLE hThread = CreateThread(NULL, 0, changeUser_Thread, (LPVOID)msdk_handle, 0, NULL);
+	HANDLE hThread = CreateThread(NULL, 0, changeUser_And_Login_Thread, (LPVOID)msdk_handle, 0, NULL);
 
 }
 
@@ -1125,6 +1135,7 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress6()
 	UpdateData();
 	m_timeLimit = m_intMinute;//分钟
 	bStop = false;
+	bChangeUser = false;
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
 		OnBnClickedButtonOpen();
 	}
@@ -1132,7 +1143,7 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress6()
 	Sleep(3000);
 
 
-	HANDLE hThread = CreateThread(NULL, 0, LoginUser_Thread, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
+	HANDLE hThread = CreateThread(NULL, 0, changeUser_And_Login_Thread, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
 }
 
 

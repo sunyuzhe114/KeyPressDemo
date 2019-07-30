@@ -887,6 +887,8 @@ bool MatchingMethod()
 	//imshow(image_window, img_display);
 	//imshow(result_window, result);
 	//! [imshow]
+	img.release();
+	templ.release();;
 	CString infor;
 	infor.Format("x=%ld,y=%ld,maxVal=%0.2lf", matchLoc.x, matchLoc.y, maxVal);
 	if (matchLoc.y <= 45 && maxVal > 0.5 &&matchLoc.x > 1650 && matchLoc.x < 1920)
@@ -900,7 +902,7 @@ bool MatchingMethod()
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
 		return FALSE;
 	}
-
+	
 }
 
 void CVC_DemoDlg::saveScreen()

@@ -730,9 +730,29 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		if (GetTickCount() - m_dTimeBeginPress_F10 > 300)
 		{
 			m_dTimeBeginPress_F10 = GetTickCount();
-			RetSw = M_KeyPress(msdk_handle, Keyboard_a, 1);
-
+			RetSw = M_KeyPress(msdk_handle, Keyboard_a, 1); 
 			RetSw = M_DelayRandom(1400, 2600);
+			RetSw = M_KeyPress(msdk_handle, Keyboard_PageDown, 1);
+			RetSw = M_DelayRandom(400, 600);
+			RetSw = M_KeyDown(msdk_handle, Keyboard_KongGe);
+			RetSw = M_DelayRandom(400, 600);
+			RetSw = M_KeyUp(msdk_handle, Keyboard_KongGe);
+			RetSw = M_DelayRandom(400, 600);
+			RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
+			RetSw = M_DelayRandom(200, 500);
+			RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
+			RetSw = M_DelayRandom(200, 500);
+			RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
+			RetSw = M_DelayRandom(200, 500);
+			RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
+			RetSw = M_DelayRandom(200, 500);
+			RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
+			RetSw = M_DelayRandom(200, 500);
+			RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
+			RetSw = M_DelayRandom(200, 500);
+			if (bStop)break;
+			RetSw = M_KeyPress(msdk_handle, Keyboard_F10, 1);
+			RetSw = M_DelayRandom(2400, 2600);
 		}
 		pDlg->saveScreen();
 		bFind = MatchingMethod();

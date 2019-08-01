@@ -938,7 +938,7 @@ void CVC_DemoDlg::OnBnClickedButtonMover()
 }
 
 void CVC_DemoDlg::OnBnClickedButtonMoveto()
-{
+{ 
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
 		AfxMessageBox("还未打开端口，请先打开端口");
 		return;
@@ -952,7 +952,7 @@ void CVC_DemoDlg::OnBnClickedButtonMoveto()
 
 void CVC_DemoDlg::OnBnClickedButtonGetmousepos()
 {
-
+	Global_checkTime = 0;
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
 		AfxMessageBox("还未打开端口，请先打开端口");
 		return;

@@ -50,6 +50,7 @@ CVC_DemoDlg::CVC_DemoDlg(CWnd* pParent /*=NULL*/)
 	, m_intMinute(55)
 	, m_edit_keyword(_T("ÓÂÊ¿")
 	)
+	, m_checkTimes(5)
 {
 	m_rate = 2.5;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -66,6 +67,8 @@ void CVC_DemoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT4, m_edit_keyword);
 	DDX_Text(pDX, IDC_EDIT5, m_rate);
 	DDX_Control(pDX, IDC_EDIT5, m_editRate);
+	DDX_Text(pDX, IDC_EDIT6, m_checkTimes);
+	DDV_MinMaxInt(pDX, m_checkTimes, 0, 8);
 }
 
 BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
@@ -85,6 +88,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT2, &CVC_DemoDlg::OnEnChangeEdit2)
 	ON_BN_CLICKED(IDC_BUTTON_KEYPRESS6, &CVC_DemoDlg::OnBnClickedButtonKeypress6)
 	ON_EN_CHANGE(IDC_EDIT5, &CVC_DemoDlg::OnEnChangeEdit5)
+	ON_EN_CHANGE(IDC_EDIT6, &CVC_DemoDlg::OnEnChangeEdit6)
 END_MESSAGE_MAP()
 
 
@@ -620,7 +624,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		if (GetTickCount() - m_dTimeBeginPress_F10 > 300)
 		{
 			CString infor;
-			infor.Format("m_dTimeBeginPress_F10 continue remains %ld \r\n", Global_checkTime);
+			infor.Format("m_dTimeBeginPress_F10 continue remains %ld \r\n", pDlg->m_checkTimes - Global_checkTime);
 			pDlg->m_editLogInfor.SetWindowTextA(infor);
 			m_dTimeBeginPress_F10 = GetTickCount();
 			RetSw = M_KeyPress(msdk_handle, Keyboard_a, 1);
@@ -736,10 +740,10 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
 
 	RetSw = M_DelayRandom(6000, 10000);
-	if (Global_checkTime < 5 && bFullStop == false)
+	if (Global_checkTime < pDlg->m_checkTimes && bFullStop == false)
 	{
 		CString infor;
-		infor.Format("stop continue remains %ld \r\n", Global_checkTime);
+		infor.Format("stop continue remains %ld \r\n", pDlg->m_checkTimes-Global_checkTime);
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
 		Global_checkTime++;
 		pDlg->OnBnClickedButtonKeypress5();
@@ -747,7 +751,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 	else
 	{
 		CString infor;
-		infor.Format("full stop  time remains %ld \r\n", Global_checkTime);
+		infor.Format("full stop  time remains %ld \r\n", pDlg->m_checkTimes - Global_checkTime);
 
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
 	}
@@ -1107,4 +1111,11 @@ void CVC_DemoDlg::OnEnChangeEdit5()
 	rr.Format("%0.1lf", rate);
 	CWinApp* pApp = AfxGetApp();
 	::WritePrivateProfileString(APP_NAME, "m_rate", rr, "d://keypressDemo.ini");
+}
+
+
+void CVC_DemoDlg::OnEnChangeEdit6()
+{
+	UpdateData();
+
 }

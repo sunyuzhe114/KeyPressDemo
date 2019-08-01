@@ -53,4 +53,6 @@ public:
 	double m_rate;
 	afx_msg void OnEnChangeEdit5();
 	CEdit m_editRate;
+	int m_checkTimes;
+	afx_msg void OnEnChangeEdit6();
 };

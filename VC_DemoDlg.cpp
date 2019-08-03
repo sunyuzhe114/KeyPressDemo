@@ -67,8 +67,7 @@ void CVC_DemoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT4, m_edit_keyword);
 	DDX_Text(pDX, IDC_EDIT5, m_rate);
 	DDX_Control(pDX, IDC_EDIT5, m_editRate);
-	DDX_Text(pDX, IDC_EDIT6, m_checkTimes);
-	DDV_MinMaxInt(pDX, m_checkTimes, 0, 8);
+	DDX_Text(pDX, IDC_EDIT6, m_checkTimes); 
 }
 
 BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
@@ -525,6 +524,8 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_KeyDown(msdk_handle, Keyboard_KongGe);
 		RetSw = M_DelayRandom(400, 600);
+		RetSw = M_KeyUp(msdk_handle, Keyboard_z);
+		RetSw = M_DelayRandom(400, 600);
 		RetSw = M_KeyUp(msdk_handle, Keyboard_KongGe);
 		if (bStop)break;
 
@@ -616,6 +617,9 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		RetSw = M_DelayRandom(400, 600);
 
 		RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
+		RetSw = M_DelayRandom(400, 600);
+		RetSw = M_KeyUp(msdk_handle, Keyboard_v);
+
 		RetSw = M_DelayRandom(400, 600);
 		if (bStop)break;
 

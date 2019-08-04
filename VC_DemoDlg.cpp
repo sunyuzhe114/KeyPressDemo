@@ -652,7 +652,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
 			RetSw = M_DelayRandom(200, 500);
 			if (bStop)break;
-			RetSw = M_KeyPress(msdk_handle, Keyboard_F10, 1);
+			//RetSw = M_KeyPress(msdk_handle, Keyboard_F10, 1);
 			RetSw = M_DelayRandom(2400, 2600);
 		}
 		pDlg->saveScreen();

@@ -20,7 +20,7 @@ using namespace std;
 #define new DEBUG_NEW
 #endif
 #define APP_NAME "notepad++"
-
+int  Game_state = -1;
 // CVC_DemoDlg 对话框
 int Global_checkTime = 0;
 double rate = 2;//* dbZoomScale
@@ -133,6 +133,7 @@ int checkGame_state()
 		{
 			infor += "帐号已经使用完成 0";
 			pDlg->m_editLogInfor.SetWindowTextA(infor);
+			Game_state =100;
 			bResult = 100;//
 		}
 		else
@@ -140,7 +141,7 @@ int checkGame_state()
 			infor += "检测到游戏还可以再玩 1";
 			pDlg->m_editLogInfor.SetWindowTextA(infor);
 			bResult = 200;//检测到游戏还可以再玩
-			 
+			Game_state = 200;
 		//	pDlg->MessageBoxA("检测到游戏还可以再玩,", "error", MB_OK);
 		}
 	}
@@ -149,7 +150,7 @@ int checkGame_state()
 		infor += "未检测到窗口 -1 ";
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
 		//pDlg->MessageBoxA("未检测到窗口,", "error", MB_OK);
-		bResult= -1;
+		bResult= -1;Game_state = -1;
 	}
 	img.release();
 	templ.release(); 
@@ -157,7 +158,7 @@ int checkGame_state()
 }
 /**
  * @function MatchingMethod
- * @brief Trackbar callback
+ * @brief Trackbar callbackGame_state =100;
  */
 bool MatchingMethod()
 {
@@ -745,8 +746,8 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		RetSw = M_KeyPress(msdk_handle, Keyboard_g, 1);
 		RetSw = M_DelayRandom(200, 500);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
-		pDlg->saveScreen();
-		/*int bFind = MatchingMethod();
+		/*pDlg->saveScreen();
+		int bFind = MatchingMethod();
 		if (bFind == 1)
 		{
 			RetSw = M_KeyPress(msdk_handle, Keyboard_PageDown, 1);
@@ -846,9 +847,12 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			RetSw = M_DelayRandom(2400, 2600);
 		}
 		pDlg->saveScreen();
-		int  Game_state = - 1;
-		Game_state = checkGame_state();
 		
+	    checkGame_state();
+	 
+		strInfor.Format("bFind = %d Keyboard_PageDown\r\n", Game_state);
+		pDlg->m_editLogInfor.SetWindowTextA(strInfor);
+
 		if (Game_state == 100|| Game_state == 200)
 		{
 

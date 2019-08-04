@@ -43,8 +43,196 @@ int max_Trackbar = 5;
 //! [declare]
 float dbZoomScale = 1.0;
 /// Function Headers
-void MatchingMethod(int, void*);
+int checkGame_state( );
 DWORD WINAPI    changeUser_Thread(LPVOID pp);
+//0表示已经帐号用光
+//1表示还可以再玩
+//-1表示未检测到
+int checkGame_state()
+{
+	img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
+	templ = cv::imread("d:\\fightagain.png", IMREAD_COLOR);
+	//! [copy_source]
+	/// Source image to display
+	Mat img_display;
+	img.copyTo(img_display);
+	//! [copy_source]
+
+	//! [create_result_matrix]
+	/// Create the result matrix
+	int result_cols = img.cols - templ.cols + 1;
+	int result_rows = img.rows - templ.rows + 1;
+
+	result.create(result_rows, result_cols, CV_32FC1);
+	//! [create_result_matrix]
+
+	//! [match_template]
+	/// Do the Matching and Normalize
+
+	matchTemplate(img, templ, result, match_method);
+
+	//! [match_template]
+
+	//! [normalize]
+	normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat());
+	//! [normalize]
+
+	//! [best_match]
+	/// Localizing the best match with minMaxLoc
+	double minVal; double maxVal; Point minLoc; Point maxLoc;
+	Point matchLoc;
+
+	minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
+	//! [best_match]
+
+	//! [match_loc]
+	/// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
+	if (match_method == TM_SQDIFF || match_method == TM_SQDIFF_NORMED)
+	{
+		matchLoc = minLoc;
+	}
+	else
+	{
+		matchLoc = maxLoc;
+	}
+
+	//! [match_loc]
+
+	//! [imshow]
+	/// Show me what you got
+
+	//rectangle(img_display, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
+	//rectangle(result, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
+
+	//imshow(image_window, img_display);
+	//imshow(result_window, result);
+	//! [imshow]
+	
+	CString infor;
+	infor.Format("x=%ld,y=%ld,maxVal=%0.2lf", matchLoc.x, matchLoc.y, maxVal);
+	//x = 1727, y = 70,can't tell you if game is over or other
+	bool bResult = -1;
+	if (matchLoc.y <= 75 && maxVal > 0.5 &&matchLoc.x > 1720 && matchLoc.x < 1920)
+	{
+		//取色分析
+		Mat NewImg = img(Rect(matchLoc.x, matchLoc.y, 80, 30));
+		Mat means, stddev, covar;
+		cv:Scalar tempVal = cv::mean(NewImg);
+		float matMean = tempVal.val[0];
+		CString strResult;
+		//42 34 56//not change to grey
+		// 43 29 45 //grey
+
+
+
+		strResult.Format("means  : %0.0f %0.0f %0.0f\n", tempVal.val[0], tempVal.val[1], tempVal.val[2]);//RGB三通道，所以均值结果是3行一列
+		 
+		infor += strResult + "\r\n";
+		//imshow("test", NewImg);
+		if (tempVal.val[1] <= 30 && tempVal.val[2] <= 46)
+		{
+			infor += "帐号已经使用完成 0";
+			pDlg->m_editLogInfor.SetWindowTextA(infor);
+			bResult = 0;//
+		}
+		else
+		{
+			infor += "检测到游戏还可以再玩 1";
+			pDlg->m_editLogInfor.SetWindowTextA(infor);
+			bResult = 1;//检测到游戏还可以再玩
+		}
+	}
+	else
+	{
+		infor += "未检测到窗口 -1 ";
+		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		 
+		bResult= -1;
+	}
+	img.release();
+	templ.release(); 
+	return bResult;
+}
+/**
+ * @function MatchingMethod
+ * @brief Trackbar callback
+ */
+bool MatchingMethod()
+{
+	img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
+	templ = cv::imread("d:\\f.bmp", IMREAD_COLOR);
+	//! [copy_source]
+	/// Source image to display
+	Mat img_display;
+	img.copyTo(img_display);
+	//! [copy_source]
+
+	//! [create_result_matrix]
+	/// Create the result matrix
+	int result_cols = img.cols - templ.cols + 1;
+	int result_rows = img.rows - templ.rows + 1;
+
+	result.create(result_rows, result_cols, CV_32FC1);
+	//! [create_result_matrix]
+
+	//! [match_template]
+	/// Do the Matching and Normalize
+
+	matchTemplate(img, templ, result, match_method);
+
+	//! [match_template]
+
+	//! [normalize]
+	normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat());
+	//! [normalize]
+
+	//! [best_match]
+	/// Localizing the best match with minMaxLoc
+	double minVal; double maxVal; Point minLoc; Point maxLoc;
+	Point matchLoc;
+
+	minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
+	//! [best_match]
+
+	//! [match_loc]
+	/// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
+	if (match_method == TM_SQDIFF || match_method == TM_SQDIFF_NORMED)
+	{
+		matchLoc = minLoc;
+	}
+	else
+	{
+		matchLoc = maxLoc;
+	}
+
+	//! [match_loc]
+
+	//! [imshow]
+	/// Show me what you got
+
+	//rectangle(img_display, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
+	//rectangle(result, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
+
+	//imshow(image_window, img_display);
+	//imshow(result_window, result);
+	//! [imshow]
+	img.release();
+	templ.release();;
+	CString infor;
+	infor.Format("x=%ld,y=%ld,maxVal=%0.2lf", matchLoc.x, matchLoc.y, maxVal);
+	if (matchLoc.y <= 45 && maxVal > 0.5 &&matchLoc.x > 1650 && matchLoc.x < 1920)
+	{
+		infor += "检测正确";
+		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		return TRUE;
+	}
+	else
+	{
+		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		return FALSE;
+	}
+
+}
 CVC_DemoDlg::CVC_DemoDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CVC_DemoDlg::IDD, pParent)
 	, m_intMinute(55)
@@ -556,8 +744,8 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		RetSw = M_DelayRandom(200, 500);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
 		pDlg->saveScreen();
-		bool bFind = MatchingMethod();
-		if (bFind == TRUE)
+		int bFind = checkGame_state();
+		if (bFind == 1)
 		{
 			RetSw = M_KeyPress(msdk_handle, Keyboard_PageDown, 1);
 			RetSw = M_DelayRandom(400, 600);
@@ -656,8 +844,9 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			RetSw = M_DelayRandom(2400, 2600);
 		}
 		pDlg->saveScreen();
-		bFind = MatchingMethod();
-		if (bFind == TRUE)
+		bFind = checkGame_state();
+		
+		if (bFind == 1||bFind == 0)
 		{
 
 			RetSw = M_KeyPress(msdk_handle, Keyboard_PageDown, 1);
@@ -702,7 +891,18 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			RetSw = M_DelayRandom(400, 600);
 			RetSw = M_KeyUp(msdk_handle, Keyboard_KongGe);
 			m_dTimeBeginPress_F10 = GetTickCount();
+
+			if (bFind == 0)
+			{
+				bStop = true;
+				if (bStop)break;
+
+			}
+			else
+			{
+
 			continue;
+			}
 		}
 
 
@@ -723,13 +923,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		if (bStop)break;
 
 
-		/*ctrl+a  + delete
-		RetSw = M_DelayRandom(800, 1000);
-		RetSw = M_KeyDown(msdk_handle,Keyboard_LeftControl);
-		RetSw = M_KeyDown(msdk_handle, Keyboard_PageUp);
-		RetSw = M_DelayRandom(500, 800);ts
-		RetSw = M_KeyDown(msdk_handle,Keyboard_Delete);
-		RetSw = M_DelayRandom(80, 200);*/
+	 
 
 		RetSw = M_ReleaseAllKey(msdk_handle);
 	}
@@ -762,86 +956,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 
 	return 0;
 }
-/**
- * @function MatchingMethod
- * @brief Trackbar callback
- */
-bool MatchingMethod()
-{
-	img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
-	templ = cv::imread("d:\\f.bmp", IMREAD_COLOR);
-	//! [copy_source]
-	/// Source image to display
-	Mat img_display;
-	img.copyTo(img_display);
-	//! [copy_source]
 
-	//! [create_result_matrix]
-	/// Create the result matrix
-	int result_cols = img.cols - templ.cols + 1;
-	int result_rows = img.rows - templ.rows + 1;
-
-	result.create(result_rows, result_cols, CV_32FC1);
-	//! [create_result_matrix]
-
-	//! [match_template]
-	/// Do the Matching and Normalize
-
-	matchTemplate(img, templ, result, match_method);
-
-	//! [match_template]
-
-	//! [normalize]
-	normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat());
-	//! [normalize]
-
-	//! [best_match]
-	/// Localizing the best match with minMaxLoc
-	double minVal; double maxVal; Point minLoc; Point maxLoc;
-	Point matchLoc;
-
-	minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
-	//! [best_match]
-
-	//! [match_loc]
-	/// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
-	if (match_method == TM_SQDIFF || match_method == TM_SQDIFF_NORMED)
-	{
-		matchLoc = minLoc;
-	}
-	else
-	{
-		matchLoc = maxLoc;
-	}
-
-	//! [match_loc]
-
-	//! [imshow]
-	/// Show me what you got
-
-	//rectangle(img_display, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
-	//rectangle(result, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
-
-	//imshow(image_window, img_display);
-	//imshow(result_window, result);
-	//! [imshow]
-	img.release();
-	templ.release();;
-	CString infor;
-	infor.Format("x=%ld,y=%ld,maxVal=%0.2lf", matchLoc.x, matchLoc.y, maxVal);
-	if (matchLoc.y <= 45 && maxVal > 0.5 &&matchLoc.x > 1650 && matchLoc.x < 1920)
-	{
-		infor += "检测正确";
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
-		return TRUE;
-	}
-	else
-	{
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
-		return FALSE;
-	}
-
-}
 
 void CVC_DemoDlg::saveScreen()
 {
@@ -986,7 +1101,7 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress3()
 void CVC_DemoDlg::OnBnClickedButtonOpen2()
 {
 	saveScreen();
-	if (MatchingMethod() == TRUE)
+	if (checkGame_state() == 1)
 	{
 
 

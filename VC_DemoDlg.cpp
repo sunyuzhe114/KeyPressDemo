@@ -103,7 +103,7 @@ int checkGame_state()
 
 	//rectangle(img_display, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
 	//rectangle(result, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
-
+	 
 	//imshow(image_window, img_display);
 	//imshow(result_window, result);
 	//! [imshow]
@@ -133,20 +133,22 @@ int checkGame_state()
 		{
 			infor += "帐号已经使用完成 0";
 			pDlg->m_editLogInfor.SetWindowTextA(infor);
-			bResult = 0;//
+			bResult = 100;//
 		}
 		else
 		{
 			infor += "检测到游戏还可以再玩 1";
 			pDlg->m_editLogInfor.SetWindowTextA(infor);
-			bResult = 1;//检测到游戏还可以再玩
+			bResult = 200;//检测到游戏还可以再玩
+			 
+		//	pDlg->MessageBoxA("检测到游戏还可以再玩,", "error", MB_OK);
 		}
 	}
 	else
 	{
 		infor += "未检测到窗口 -1 ";
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
-		 
+		//pDlg->MessageBoxA("未检测到窗口,", "error", MB_OK);
 		bResult= -1;
 	}
 	img.release();
@@ -670,7 +672,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 {
 	HANDLE msdk_handle = (HANDLE)pp;
 	unsigned int RetSw = 0;
-	DWORD m_dTimeBeginPress_F10 = 0;
+	DWORD m_dTimeBeginPress_BIGSKILL = 0;
 
 	for (int i = 0; i < 1; i++)
 	{
@@ -744,7 +746,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		RetSw = M_DelayRandom(200, 500);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
 		pDlg->saveScreen();
-		int bFind = checkGame_state();
+		/*int bFind = MatchingMethod();
 		if (bFind == 1)
 		{
 			RetSw = M_KeyPress(msdk_handle, Keyboard_PageDown, 1);
@@ -789,7 +791,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			RetSw = M_DelayRandom(400, 600);
 			RetSw = M_KeyUp(msdk_handle, Keyboard_KongGe);
 			continue;
-		}
+		} */
 		if (bStop)break;
 		RetSw = M_KeyDown(msdk_handle, Keyboard_KongGe);
 		RetSw = M_DelayRandom(400, 600);
@@ -813,12 +815,12 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 
 		//如果长时间无法通关，要放一次大招
 
-		if (GetTickCount() - m_dTimeBeginPress_F10 > 300)
+		if (GetTickCount() - m_dTimeBeginPress_BIGSKILL > 120000)
 		{
 			CString infor;
-			infor.Format("m_dTimeBeginPress_F10 continue remains %ld \r\n", pDlg->m_checkTimes - Global_checkTime);
+			infor.Format("m_dTimeBeginPress_BIGSKILL continue remains %ld \r\n", pDlg->m_checkTimes - Global_checkTime);
 			pDlg->m_editLogInfor.SetWindowTextA(infor);
-			m_dTimeBeginPress_F10 = GetTickCount();
+			m_dTimeBeginPress_BIGSKILL = GetTickCount();
 			RetSw = M_KeyPress(msdk_handle, Keyboard_a, 1);
 			RetSw = M_DelayRandom(1400, 2600);/*
 			RetSw = M_KeyPress(msdk_handle, Keyboard_PageDown, 1);
@@ -844,11 +846,18 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			RetSw = M_DelayRandom(2400, 2600);
 		}
 		pDlg->saveScreen();
-		bFind = checkGame_state();
+		int  Game_state = - 1;
+		Game_state = checkGame_state();
 		
-		if (bFind == 1||bFind == 0)
+		if (Game_state == 100|| Game_state == 200)
 		{
 
+			
+			CString strInfor;
+			strInfor.Format("bFind = %d Keyboard_PageDown\r\n", Game_state);
+			pDlg->m_editLogInfor.SetWindowTextA(strInfor);
+
+			
 			RetSw = M_KeyPress(msdk_handle, Keyboard_PageDown, 1);
 			RetSw = M_DelayRandom(400, 600);
 			RetSw = M_KeyDown(msdk_handle, Keyboard_KongGe);
@@ -889,10 +898,9 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			RetSw = M_DelayRandom(3100, 4500);
 			RetSw = M_KeyDown(msdk_handle, Keyboard_KongGe);
 			RetSw = M_DelayRandom(400, 600);
-			RetSw = M_KeyUp(msdk_handle, Keyboard_KongGe);
-			m_dTimeBeginPress_F10 = GetTickCount();
+			RetSw = M_KeyUp(msdk_handle, Keyboard_KongGe); 
 
-			if (bFind == 0)
+			if (Game_state == 100)
 			{
 				bStop = true;
 				if (bStop)break;
@@ -1058,15 +1066,17 @@ void CVC_DemoDlg::OnBnClickedButtonMover()
 
 void CVC_DemoDlg::OnBnClickedButtonMoveto()
 { 
-	if (msdk_handle == INVALID_HANDLE_VALUE) {
-		AfxMessageBox("还未打开端口，请先打开端口");
-		return;
-	}
-	unsigned int RetSw;
-	RetSw = M_ResetMousePos(msdk_handle);
-	RetSw = M_DelayRandom(800, 1000);
-	RetSw = M_MoveR(msdk_handle, 100 / rate, 100 / rate);
-	RetSw = M_LeftClick(msdk_handle, 1);
+	//if (msdk_handle == INVALID_HANDLE_VALUE) {
+	//	AfxMessageBox("还未打开端口，请先打开端口");
+	//	return;
+	//}
+	//unsigned int RetSw;
+	//RetSw = M_ResetMousePos(msdk_handle);
+	//RetSw = M_DelayRandom(800, 1000);
+	//RetSw = M_MoveR(msdk_handle, 100 / rate, 100 / rate);
+	//RetSw = M_LeftClick(msdk_handle, 1);
+	m_checkTimes = 0;
+	UpdateData(false);
 }
 
 void CVC_DemoDlg::OnBnClickedButtonGetmousepos()

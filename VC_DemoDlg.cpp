@@ -949,7 +949,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 	RetSw = M_ReleaseAllKey(msdk_handle);
 	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
 
-	RetSw = M_DelayRandom(6000, 10000);
+	RetSw = M_DelayRandom(10000, 15000);
 	if (Global_checkTime < pDlg->m_checkTimes && bFullStop == false)
 	{
 		CString infor;

@@ -984,7 +984,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
 		Global_checkTime++;
 		//这里加入分解动作，按I键 ，开分解
-		RetSw = M_KeyPress(msdk_handle, Keyboard_i, 1);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_DanYinHao, 1);
 		RetSw = M_DelayRandom(2200, 3000);
 		//分解装备
 		for (int i = 0; i < 1; i++)
@@ -993,7 +993,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			RetSw = M_DelayRandom(500, 600);
 			RetSw = M_MoveTo(msdk_handle, (int)((1566) / rate), (int)((336) / rate));
 			RetSw = M_DelayRandom(500, 600);
-		} 
+		}
 		RetSw = M_LeftClick(msdk_handle, 1);
 		RetSw = M_DelayRandom(800, 1000);
 
@@ -1007,13 +1007,14 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		}
 		RetSw = M_LeftClick(msdk_handle, 1);
 		RetSw = M_DelayRandom(800, 1000);
-
+		RetSw = M_DelayRandom(800, 1000);
 		//确认分析装备
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
 			RetSw = M_DelayRandom(500, 600);
-			RetSw = M_MoveTo(msdk_handle, (int)((1605) / rate), (int)((405) / rate));
+			//RetSw = M_MoveTo(msdk_handle, (int)((1605) / rate), (int)((405) / rate));
+			RetSw = M_MoveTo(msdk_handle, (int)((1317) / rate), (int)((336) / rate));
 			RetSw = M_DelayRandom(500, 600);
 		}
 		RetSw = M_LeftClick(msdk_handle, 1);
@@ -1177,6 +1178,10 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress3()
 
 void CVC_DemoDlg::OnBnClickedButtonOpen2()
 {
+	if (msdk_handle == INVALID_HANDLE_VALUE) {
+		OnBnClickedButtonOpen();
+	}
+
 	saveScreen();
 	if (checkGame_state() == 1)
 	{
@@ -1223,9 +1228,22 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 	for (int i = 0; i < 1; i++)
 	{
 		RetSw = M_ResetMousePos(msdk_handle);
+		RetSw = M_DelayRandom(500, 600); 
+		RetSw = M_MoveTo(msdk_handle, (int)((1285+ 1338)/2 / rate), (int)((330) / rate));
 		RetSw = M_DelayRandom(500, 600);
-		//RetSw = M_MoveTo(msdk_handle, (int)((1605) / rate), (int)((405) / rate));
-		RetSw = M_MoveTo(msdk_handle, (int)((1317) / rate), (int)((336) / rate));
+		RetSw = M_DelayRandom(500, 600);
+	}
+	RetSw = M_LeftClick(msdk_handle, 1);
+	RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_DelayRandom(6200, 9000);
+
+	//确认分析装备
+	for (int i = 0; i < 1; i++)
+	{
+		RetSw = M_ResetMousePos(msdk_handle);
+		RetSw = M_DelayRandom(500, 600);
+		RetSw = M_MoveTo(msdk_handle, (int)((1300) / rate), (int)((343) / rate));
+		RetSw = M_DelayRandom(500, 600);
 		RetSw = M_DelayRandom(500, 600);
 	}
 	RetSw = M_LeftClick(msdk_handle, 1);

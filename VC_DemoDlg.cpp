@@ -23,7 +23,7 @@ using namespace std;
 int  Game_state = -1;
 // CVC_DemoDlg 对话框
 int Global_checkTime = 0;
-double rate = 2;//* dbZoomScale
+double rate = 2.5;//* dbZoomScale
 CVC_DemoDlg *pDlg;
 bool bStop = false;
 bool bFullStop = false;
@@ -748,10 +748,18 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		RetSw = M_KeyPress(msdk_handle, Keyboard_g, 1);
 		RetSw = M_DelayRandom(200, 500);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
-		/*pDlg->saveScreen();
-		int bFind = MatchingMethod();
-		if (bFind == 1)
-		{
+		pDlg->saveScreen();
+		checkGame_state();
+		strInfor.Format("bFind = %d Keyboard_PageDown\r\n", Game_state);
+		pDlg->m_editLogInfor.SetWindowTextA(strInfor);
+
+		if (Game_state == 100 || Game_state == 200)
+		{ 
+			CString strInfor;
+			strInfor.Format("bFind = %d Keyboard_PageDown\r\n", Game_state);
+			pDlg->m_editLogInfor.SetWindowTextA(strInfor);
+
+
 			RetSw = M_KeyPress(msdk_handle, Keyboard_PageDown, 1);
 			RetSw = M_DelayRandom(400, 600);
 			RetSw = M_KeyDown(msdk_handle, Keyboard_KongGe);
@@ -789,12 +797,24 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			RetSw = M_DelayRandom(200, 500);
 			RetSw = M_DelayRandom(200, 500);
 			RetSw = M_KeyPress(msdk_handle, Keyboard_F10, 1);
-			RetSw = M_DelayRandom(1100, 2000);
+			RetSw = M_DelayRandom(3100, 4500);
 			RetSw = M_KeyDown(msdk_handle, Keyboard_KongGe);
 			RetSw = M_DelayRandom(400, 600);
 			RetSw = M_KeyUp(msdk_handle, Keyboard_KongGe);
-			continue;
-		} */
+
+			if (Game_state == 100)
+			{
+				bStop = true;
+				if (bStop)break;
+
+			}
+			else
+			{
+
+				continue;
+			}
+		}
+
 		if (bStop)break;
 		RetSw = M_KeyDown(msdk_handle, Keyboard_KongGe);
 		RetSw = M_DelayRandom(400, 600);
@@ -814,6 +834,12 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		RetSw = M_KeyUp(msdk_handle, Keyboard_v);
 
 		RetSw = M_DelayRandom(400, 600);
+
+		RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
+		RetSw = M_DelayRandom(200, 500);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_s, 1);
+		RetSw = M_DelayRandom(200, 500);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
 		if (bStop)break;
 
 		//如果长时间无法通关，要放一次大招
@@ -848,10 +874,9 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			//RetSw = M_KeyPress(msdk_handle, Keyboard_F10, 1);
 			RetSw = M_DelayRandom(2400, 2600);
 		}
+
 		pDlg->saveScreen();
-		
-	    checkGame_state();
-	 
+	    checkGame_state(); 
 		strInfor.Format("bFind = %d Keyboard_PageDown\r\n", Game_state);
 		pDlg->m_editLogInfor.SetWindowTextA(strInfor);
 
@@ -946,7 +971,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 
 	pDlg->m_editLogInfor.SetWindowTextA("exit checkThread_Game \r\n");
 
-	//这里加入分解动作
+	 
 
 	RetSw = M_ReleaseAllKey(msdk_handle);
 	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
@@ -958,6 +983,46 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		infor.Format("stop continue remains %ld \r\n", pDlg->m_checkTimes-Global_checkTime);
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
 		Global_checkTime++;
+		//这里加入分解动作，按I键 ，开分解
+		RetSw = M_KeyPress(msdk_handle, Keyboard_i, 1);
+		RetSw = M_DelayRandom(2200, 3000);
+		//分解装备
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			RetSw = M_DelayRandom(500, 600);
+			RetSw = M_MoveTo(msdk_handle, (int)((1566) / rate), (int)((336) / rate));
+			RetSw = M_DelayRandom(500, 600);
+		} 
+		RetSw = M_LeftClick(msdk_handle, 1);
+		RetSw = M_DelayRandom(800, 1000);
+
+		//全部分解装备
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			RetSw = M_DelayRandom(500, 600);
+			RetSw = M_MoveTo(msdk_handle, (int)((1371) / rate), (int)((347) / rate));
+			RetSw = M_DelayRandom(500, 600);
+		}
+		RetSw = M_LeftClick(msdk_handle, 1);
+		RetSw = M_DelayRandom(800, 1000);
+
+		//确认分析装备
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			RetSw = M_DelayRandom(500, 600);
+			RetSw = M_MoveTo(msdk_handle, (int)((1605) / rate), (int)((405) / rate));
+			RetSw = M_DelayRandom(500, 600);
+		}
+		RetSw = M_LeftClick(msdk_handle, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_DelayRandom(6200, 9000);
+
+		RetSw = M_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+		RetSw = M_DelayRandom(2200, 3000);
+
 		pDlg->OnBnClickedButtonKeypress5();
 	}
 	else
@@ -1118,6 +1183,57 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 
 
 	}
+
+	int RetSw =  M_DelayRandom(2800, 3000);
+
+	for (int i = 0; i < 1; i++)
+	{
+		RetSw = M_ResetMousePos(msdk_handle);
+		RetSw = M_MoveTo(msdk_handle, 1385 / rate, 110 / rate);
+		RetSw = M_DelayRandom(800, 1000);
+	}
+	RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_LeftClick(msdk_handle, 1);
+	//这里加入分解动作，按I键 ，开分解
+	RetSw = M_KeyPress(msdk_handle, Keyboard_DanYinHao, 1);
+	RetSw = M_DelayRandom(2200, 3000);
+	//分解装备
+	for (int i = 0; i < 1; i++)
+	{
+		RetSw = M_ResetMousePos(msdk_handle);
+		RetSw = M_DelayRandom(500, 600);
+		RetSw = M_MoveTo(msdk_handle, (int)((1566) / rate), (int)((336) / rate));
+		RetSw = M_DelayRandom(500, 600);
+	}
+	RetSw = M_LeftClick(msdk_handle, 1);
+	RetSw = M_DelayRandom(800, 1000);
+
+	//全部分解装备
+	for (int i = 0; i < 1; i++)
+	{
+		RetSw = M_ResetMousePos(msdk_handle);
+		RetSw = M_DelayRandom(500, 600);
+		RetSw = M_MoveTo(msdk_handle, (int)((1371) / rate), (int)((347) / rate));
+		RetSw = M_DelayRandom(500, 600);
+	}
+	RetSw = M_LeftClick(msdk_handle, 1);
+	RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_DelayRandom(800, 1000);
+	//确认分析装备
+	for (int i = 0; i < 1; i++)
+	{
+		RetSw = M_ResetMousePos(msdk_handle);
+		RetSw = M_DelayRandom(500, 600);
+		//RetSw = M_MoveTo(msdk_handle, (int)((1605) / rate), (int)((405) / rate));
+		RetSw = M_MoveTo(msdk_handle, (int)((1317) / rate), (int)((336) / rate));
+		RetSw = M_DelayRandom(500, 600);
+	}
+	RetSw = M_LeftClick(msdk_handle, 1);
+	RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_DelayRandom(6200, 9000);
+
+	RetSw = M_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+	RetSw = M_DelayRandom(2200, 3000);
 
 }
 

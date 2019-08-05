@@ -238,7 +238,7 @@ bool MatchingMethod()
 }
 CVC_DemoDlg::CVC_DemoDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CVC_DemoDlg::IDD, pParent)
-	, m_intMinute(55)
+	, m_intMinute(90)
 	, m_edit_keyword(_T("勇士")
 	)
 	, m_checkTimes(5)
@@ -280,6 +280,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT5, &CVC_DemoDlg::OnEnChangeEdit5)
 	ON_EN_CHANGE(IDC_EDIT6, &CVC_DemoDlg::OnEnChangeEdit6)
 	ON_BN_CLICKED(IDC_BUTTON_MOVER2, &CVC_DemoDlg::OnBnClickedButtonMover2)
+	ON_EN_CHANGE(IDC_EDIT1, &CVC_DemoDlg::OnEnChangeEdit1)
 END_MESSAGE_MAP()
 
 
@@ -1255,4 +1256,15 @@ void CVC_DemoDlg::OnBnClickedButtonMover2()
 {
 	m_checkTimes = 9;
 	UpdateData(false);
+}
+
+
+void CVC_DemoDlg::OnEnChangeEdit1()
+{
+	// TODO:  如果该控件是 RICHEDIT 控件，它将不
+	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
+	// 函数并调用 CRichEditCtrl().SetEventMask()，
+	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
+
+	// TODO:  在此添加控件通知处理程序代码
 }

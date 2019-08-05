@@ -279,6 +279,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_KEYPRESS6, &CVC_DemoDlg::OnBnClickedButtonKeypress6)
 	ON_EN_CHANGE(IDC_EDIT5, &CVC_DemoDlg::OnEnChangeEdit5)
 	ON_EN_CHANGE(IDC_EDIT6, &CVC_DemoDlg::OnEnChangeEdit6)
+	ON_BN_CLICKED(IDC_BUTTON_MOVER2, &CVC_DemoDlg::OnBnClickedButtonMover2)
 END_MESSAGE_MAP()
 
 
@@ -1060,12 +1061,8 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress()
 
 void CVC_DemoDlg::OnBnClickedButtonMover()
 {
-	if (msdk_handle == INVALID_HANDLE_VALUE) {
-		AfxMessageBox("还未打开端口，请先打开端口");
-		return;
-	}
-	unsigned int RetSw;
-	RetSw = M_MoveR(msdk_handle, -100, 100);
+	m_checkTimes = 5;
+	UpdateData(false);
 }
 
 void CVC_DemoDlg::OnBnClickedButtonMoveto()
@@ -1220,7 +1217,7 @@ void CVC_DemoDlg::OnEnChangeEdit2()
 
 void CVC_DemoDlg::OnBnClickedButtonKeypress6()
 {
-	m_dTimeBegin = GetTickCount();
+	m_dTimeBegin = GetTickCount(); 
 	UpdateData();
 	m_timeLimit = m_intMinute;//分钟
 	bStop = false;
@@ -1251,4 +1248,11 @@ void CVC_DemoDlg::OnEnChangeEdit6()
 {
 	UpdateData();
 
+}
+
+
+void CVC_DemoDlg::OnBnClickedButtonMover2()
+{
+	m_checkTimes = 9;
+	UpdateData(false);
 }

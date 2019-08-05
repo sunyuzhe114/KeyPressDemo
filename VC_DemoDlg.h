@@ -55,4 +55,5 @@ public:
 	CEdit m_editRate;
 	int m_checkTimes;
 	afx_msg void OnEnChangeEdit6();
+	afx_msg void OnBnClickedButtonMover2();
 };

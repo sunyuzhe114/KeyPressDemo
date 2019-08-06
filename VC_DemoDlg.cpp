@@ -854,11 +854,11 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		RetSw = M_KeyPress(msdk_handle, Keyboard_d, 1);
 		RetSw = M_DelayRandom(400, 600);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
-		RetSw = M_DelayRandom(200, 500);
+		RetSw = M_DelayRandom(400, 600);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
-		RetSw = M_DelayRandom(200, 500);
+		RetSw = M_DelayRandom(400, 600);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_g, 1);
-		RetSw = M_DelayRandom(200, 500);
+		RetSw = M_DelayRandom(400, 600);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
 		pDlg->saveScreen();
 		checkGame_state();
@@ -948,9 +948,9 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		RetSw = M_DelayRandom(400, 600);
 
 		RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
-		RetSw = M_DelayRandom(200, 500);
+		RetSw = M_DelayRandom(400, 600);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_s, 1);
-		RetSw = M_DelayRandom(200, 500);
+		RetSw = M_DelayRandom(400, 600);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
 		if (bStop)break;
 
@@ -1029,11 +1029,11 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
 			RetSw = M_DelayRandom(200, 500);
 			RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
-			RetSw = M_DelayRandom(200, 500);
+			RetSw = M_DelayRandom(400, 600);
 			RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
 			RetSw = M_DelayRandom(200, 500);
 			RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
-			RetSw = M_DelayRandom(200, 500);
+			RetSw = M_DelayRandom(400, 600);
 			RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
 			RetSw = M_DelayRandom(200, 500);
 			RetSw = M_DelayRandom(200, 500);
@@ -1064,7 +1064,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		RetSw = M_DelayRandom(400, 600);
 		if (bStop)break;
 
-		RetSw = M_DelayRandom(200, 500);
+		RetSw = M_DelayRandom(400, 600);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_f, 1);
 		RetSw = M_DelayRandom(600, 1000);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_t, 1);

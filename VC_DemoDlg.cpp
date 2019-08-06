@@ -45,6 +45,118 @@ float dbZoomScale = 1.0;
 /// Function Headers
 int checkGame_state( );
 DWORD WINAPI    changeUser_Thread(LPVOID pp);
+CPoint findSureButton_state()
+{
+	CPoint pt(0,0);
+	img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
+	templ = cv::imread("d:\\confirm.png", IMREAD_COLOR);
+	//! [copy_source]
+	/// Source image to display
+	Mat img_display;
+	img.copyTo(img_display);
+	//! [copy_source]
+
+	//! [create_result_matrix]
+	/// Create the result matrix
+	int result_cols = img.cols - templ.cols + 1;
+	int result_rows = img.rows - templ.rows + 1;
+
+	result.create(result_rows, result_cols, CV_32FC1);
+	//! [create_result_matrix]
+
+	//! [match_template]
+	/// Do the Matching and Normalize
+
+	matchTemplate(img, templ, result, match_method);
+
+	//! [match_template]
+
+	//! [normalize]
+	normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat());
+	//! [normalize]
+
+	//! [best_match]
+	/// Localizing the best match with minMaxLoc
+	double minVal; double maxVal; Point minLoc; Point maxLoc;
+	Point matchLoc;
+
+	minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
+	//! [best_match]
+
+	//! [match_loc]
+	/// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
+	if (match_method == TM_SQDIFF || match_method == TM_SQDIFF_NORMED)
+	{
+		matchLoc = minLoc;
+	}
+	else
+	{
+		matchLoc = maxLoc;
+	}
+
+	//! [match_loc]
+
+	//! [imshow]
+	/// Show me what you got
+
+	//rectangle(img_display, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
+	//rectangle(result, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
+
+	//imshow(image_window, img_display);
+	//imshow(result_window, result);
+	//! [imshow]
+
+	CString infor;
+	infor.Format("x=%ld,y=%ld,maxVal=%0.2lf", matchLoc.x, matchLoc.y, maxVal);
+	//x = 1727, y = 70,can't tell you if game is over or other
+	bool bResult = -1;
+	if (matchLoc.y >= 275&& matchLoc.y <=430 && maxVal > 0.5 &&matchLoc.x > 1255 && matchLoc.x < 1615)
+	{
+		//取色分析
+		Mat NewImg = img(Rect(matchLoc.x, matchLoc.y, 80, 30));
+		Mat means, stddev, covar;
+	cv:Scalar tempVal = cv::mean(NewImg);
+		float matMean = tempVal.val[0];
+		CString strResult;
+		//42 34 56//not change to grey
+		// 43 29 45 //grey
+
+
+
+		strResult.Format("means  : %0.0f %0.0f %0.0f\n", tempVal.val[0], tempVal.val[1], tempVal.val[2]);//RGB三通道，所以均值结果是3行一列
+
+		infor += strResult + "\r\n";
+		//imshow("test", NewImg);
+		if (tempVal.val[1] <= 30 && tempVal.val[2] <= 46)
+		{
+			infor += "  0";
+			pDlg->m_editLogInfor.SetWindowTextA(infor);
+			Game_state = 100;
+			bResult = 100;//
+		}
+		else
+		{
+			infor += "  1";
+			pDlg->m_editLogInfor.SetWindowTextA(infor);
+			bResult = 200;//检测到游戏还可以再玩
+			Game_state = 200;
+			//	pDlg->MessageBoxA("检测到游戏还可以再玩,", "error", MB_OK);
+		}
+		pt.x = matchLoc.x;
+		pt.y = matchLoc.y;
+		return pt;
+	}
+	else
+	{
+		infor += "未检测到窗口 -1 ";
+		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		//pDlg->MessageBoxA("未检测到窗口,", "error", MB_OK);
+		bResult = -1;Game_state = -1;
+	}
+	img.release();
+	templ.release();
+	return bResult;
+}
 //0表示已经帐号用光
 //1表示还可以再玩
 //-1表示未检测到
@@ -984,6 +1096,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
 		Global_checkTime++;
 		//这里加入分解动作，按I键 ，开分解
+		//这里加入分解动作，按I键 ，开分解
 		RetSw = M_KeyPress(msdk_handle, Keyboard_DanYinHao, 1);
 		RetSw = M_DelayRandom(2200, 3000);
 		//分解装备
@@ -1008,17 +1121,24 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		RetSw = M_LeftClick(msdk_handle, 1);
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
+		pDlg->saveScreen();
+		CPoint pt = findSureButton_state();
+		pt.x += 10;
+		pt.y += 10;
 		//确认分析装备
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
 			RetSw = M_DelayRandom(500, 600);
-			//RetSw = M_MoveTo(msdk_handle, (int)((1605) / rate), (int)((405) / rate));
-			RetSw = M_MoveTo(msdk_handle, (int)((1317) / rate), (int)((336) / rate));
+			RetSw = M_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+			RetSw = M_DelayRandom(500, 600);
 			RetSw = M_DelayRandom(500, 600);
 		}
 		RetSw = M_LeftClick(msdk_handle, 1);
 		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_DelayRandom(6200, 9000);
+
+
 		RetSw = M_DelayRandom(6200, 9000);
 
 		RetSw = M_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
@@ -1182,14 +1302,14 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 		OnBnClickedButtonOpen();
 	}
 
-	saveScreen();
-	if (checkGame_state() == 1)
-	{
+	//saveScreen();
+	//if (checkGame_state() == 1)
+	//{
 
 
-	}
+	//}
 
-	int RetSw =  M_DelayRandom(2800, 3000);
+	 int RetSw =  M_DelayRandom(2800, 3000);
 
 	for (int i = 0; i < 1; i++)
 	{
@@ -1224,12 +1344,16 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 	RetSw = M_LeftClick(msdk_handle, 1);
 	RetSw = M_DelayRandom(800, 1000);
 	RetSw = M_DelayRandom(800, 1000);
+	saveScreen();
+	CPoint pt= findSureButton_state();
+	pt.x += 10;
+	pt.y += 10;
 	//确认分析装备
 	for (int i = 0; i < 1; i++)
 	{
 		RetSw = M_ResetMousePos(msdk_handle);
 		RetSw = M_DelayRandom(500, 600); 
-		RetSw = M_MoveTo(msdk_handle, (int)((1285+ 1338)/2 / rate), (int)((330) / rate));
+		RetSw = M_MoveTo(msdk_handle, (int)( pt.x / rate), (int)( pt.y  / rate));
 		RetSw = M_DelayRandom(500, 600);
 		RetSw = M_DelayRandom(500, 600);
 	}
@@ -1237,17 +1361,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 	RetSw = M_DelayRandom(800, 1000);
 	RetSw = M_DelayRandom(6200, 9000);
 
-	//确认分析装备
-	for (int i = 0; i < 1; i++)
-	{
-		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = M_DelayRandom(500, 600);
-		RetSw = M_MoveTo(msdk_handle, (int)((1300) / rate), (int)((343) / rate));
-		RetSw = M_DelayRandom(500, 600);
-		RetSw = M_DelayRandom(500, 600);
-	}
-	RetSw = M_LeftClick(msdk_handle, 1);
-	RetSw = M_DelayRandom(800, 1000);
+ 
 	RetSw = M_DelayRandom(6200, 9000);
 
 	RetSw = M_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);

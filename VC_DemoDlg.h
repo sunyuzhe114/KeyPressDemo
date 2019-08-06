@@ -57,4 +57,7 @@ public:
 	afx_msg void OnEnChangeEdit6();
 	afx_msg void OnBnClickedButtonMover2();
 	afx_msg void OnEnChangeEdit1();
+	afx_msg void OnBnClickedButtonKeypress7();
+	void setShowWindowSize(int posX, int posY, int width, int height);
+	afx_msg void OnLbnSelchangeList1();
 };

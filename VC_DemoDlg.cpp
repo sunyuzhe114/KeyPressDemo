@@ -393,6 +393,8 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT6, &CVC_DemoDlg::OnEnChangeEdit6)
 	ON_BN_CLICKED(IDC_BUTTON_MOVER2, &CVC_DemoDlg::OnBnClickedButtonMover2)
 	ON_EN_CHANGE(IDC_EDIT1, &CVC_DemoDlg::OnEnChangeEdit1)
+	ON_BN_CLICKED(IDC_BUTTON_KEYPRESS7, &CVC_DemoDlg::OnBnClickedButtonKeypress7)
+	ON_LBN_SELCHANGE(IDC_LIST1, &CVC_DemoDlg::OnLbnSelchangeList1)
 END_MESSAGE_MAP()
 
 
@@ -1426,10 +1428,12 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress4()
 				::GetWindowRect(pMainWnd->m_hWnd, &rect);
 				CString strWindow;
 				//strWindow.Format("%lx,%s",pMainWnd->m_hWnd,strClassName); 
-				strWindow.Format(_T("%lx,(%ld,%ld,%ld,%ld)"), pMainWnd->m_hWnd, rect.left, rect.top, rect.Width(), rect.Height());
-				m_listWindow.AddString(strWindow);
-				m_listWindow.SetCurSel(0);
-
+				if (rect.Width() > 500 && rect.Height() > 500)
+				{
+					strWindow.Format(_T("%lx,(%ld,%ld,%ld,%ld)"), pMainWnd->m_hWnd, rect.left, rect.top, rect.Width(), rect.Height());
+					m_listWindow.AddString(strWindow);
+					m_listWindow.SetCurSel(0);
+				}
 
 				//HWND h=::GetWindow(pMainWnd->m_hWnd,GW_CHILD);
 				//while(h)//分析ie窗口内部结构
@@ -1509,10 +1513,100 @@ void CVC_DemoDlg::OnBnClickedButtonMover2()
 
 void CVC_DemoDlg::OnEnChangeEdit1()
 {
-	// TODO:  如果该控件是 RICHEDIT 控件，它将不
-	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
-	// 函数并调用 CRichEditCtrl().SetEventMask()，
-	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
+	setShowWindowSize(GetSystemMetrics(SM_CXSCREEN) - 800, 0, 800, 600);
+}
 
-	// TODO:  在此添加控件通知处理程序代码
+void CVC_DemoDlg::setShowWindowSize(int posX, int posY, int width, int height)
+{
+	CWnd* pMainWnd = AfxGetMainWnd()->GetWindow(GW_HWNDFIRST);
+
+
+	DWORD timebegin = GetTickCount();
+	bool bFindWindows = false;
+	while (pMainWnd)//先列举所有的窗口
+	{
+		CString strClassName;
+		CString text;
+		CString strCurrentWindow;
+		GetClassName(pMainWnd->m_hWnd, strClassName.GetBufferSetLength(100), 100);
+		::GetWindowText(pMainWnd->m_hWnd, text.GetBufferSetLength(256), 256);
+		strCurrentWindow = text;
+
+		text.MakeLower();
+		CString strInforText = text;
+
+
+		if (::IsWindowVisible(pMainWnd->m_hWnd) || true)
+		{
+
+
+
+			//	if((strClassName=="#32770"&&(text.Find("错误")!=-1||text.Find("microsoft visual c++")!=-1||text.Find("microsoft internet")!=-1||text.Find("安全警报")!=-1||text.Find("安全信息")!=-1||text.Find("windows internet explorer")!=-1||text.Find("连接到")!=-1) 
+			//		||(strClassName=="Internet Explorer_TridentDlgFrame")))//||text.Find("object Error")!=-1
+			if (strClassName.Find(m_edit_keyword) != -1 || text.Find(m_edit_keyword) != -1)
+
+			{//如果是ie窗口则继续进行分析。
+
+				CString strSelectedWindow, strWindow;
+				if (m_listWindow.GetCurSel() != -1)
+					m_listWindow.GetText(m_listWindow.GetCurSel(), strSelectedWindow);
+				strWindow.Format(_T("%lx"), pMainWnd->m_hWnd);
+
+				if (strSelectedWindow.Find(strWindow) != -1)
+				{
+
+					HWND h = ::GetWindow(pMainWnd->m_hWnd, GW_CHILD);
+					while (h)//分析ie窗口内部结构
+					{//广告窗口以及大部分恶意网站的弹出窗口都有一个共同特点
+						//只有文本显示区，没有工具栏
+						//若一个窗口为ie窗口则看其是否有工具栏，及可知它是否为广告窗口
+
+						GetClassName(h, strClassName.GetBufferSetLength(100), 100);
+						::GetWindowText(h, text.GetBufferSetLength(256), 256);
+						//TRACE("%s %s\r\n",strClassName,text);
+
+
+						h = ::GetWindow(h, GW_HWNDNEXT);
+
+					}
+
+					//	 ::PostMessage(pMainWnd->m_hWnd,WM_KEYDOWN,VK_RIGHT, 0x014d0001);
+					//	 ::PostMessage(pMainWnd->m_hWnd,WM_KEYUP,VK_RIGHT,0xc14d0001);//MAKEKEYLPARAM(0x4d, 1)
+				   //	::keybd_event(
+
+				   /*	INPUT   keyInput[2];
+					   memset(&keyInput,   0,   sizeof(INPUT)*2);
+
+					   keyInput[0].type   =   INPUT_KEYBOARD;
+					   keyInput[0].ki.wVk   =   VK_RIGHT;
+					   keyInput[0].ki.dwFlags   =   WM_KEYDOWN;
+
+					   keyInput[1].type   =   INPUT_KEYBOARD;
+					   keyInput[1].ki.wVk   =   VK_RIGHT;
+					   keyInput[1].ki.dwFlags   =   WM_KEYUP;
+
+					   SendInput(2,   &keyInput[0],   sizeof(INPUT)); */
+					   //::MoveWindow(pMainWnd->m_hWnd,0,0,512,384,true);
+					::ShowWindow(pMainWnd->m_hWnd, SW_NORMAL);
+					::MoveWindow((HWND)(pMainWnd->m_hWnd), posX, posY, width, height, true);
+					//::SetWindowPos((HWND)(pMainWnd->m_hWnd), HWND_TOP, 0, 0, 400, 300, SWP_SHOWWINDOW);
+				}
+
+			}
+
+		}
+		if (::IsWindow(pMainWnd->m_hWnd))
+			pMainWnd = pMainWnd->GetWindow(GW_HWNDNEXT);
+	}
+
+}
+void CVC_DemoDlg::OnBnClickedButtonKeypress7()
+{
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CVC_DemoDlg::OnLbnSelchangeList1()
+{
+	// TODO: 在此添加控件通知处理程序代码
 }

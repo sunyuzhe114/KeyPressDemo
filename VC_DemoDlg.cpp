@@ -859,9 +859,13 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		RetSw = M_DelayRandom(400, 600);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
 		RetSw = M_DelayRandom(400, 600);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_f, 1);
+		RetSw = M_DelayRandom(400, 600);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_g, 1);
 		RetSw = M_DelayRandom(400, 600);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
+		RetSw = M_DelayRandom(400, 600);
+		RetSw = M_KeyUp(msdk_handle, Keyboard_KongGe);
 		pDlg->saveScreen();
 		checkGame_state();
 		strInfor.Format("bFind = %d Keyboard_PageDown\r\n", Game_state);
@@ -954,6 +958,8 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		RetSw = M_KeyPress(msdk_handle, Keyboard_s, 1);
 		RetSw = M_DelayRandom(400, 600);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
+		RetSw = M_DelayRandom(400, 600);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_f, 1);
 		if (bStop)break;
 
 		//如果长时间无法通关，要放一次大招

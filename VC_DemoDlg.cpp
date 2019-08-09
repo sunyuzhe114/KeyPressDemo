@@ -1622,11 +1622,13 @@ void CVC_DemoDlg::OnLbnSelchangeList1()
 void CVC_DemoDlg::OnBnClickedButtonGetmousepos2()
 {
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
-		AfxMessageBox("还未打开端口，请先打开端口");
-		return;
+		OnBnClickedButtonOpen();
 	}
 	unsigned int RetSw;
 	RetSw = M_ResetMousePos(msdk_handle);
 	RetSw = M_DelayRandom(800, 1000);
-	RetSw = M_MoveR(msdk_handle, 100 , 100  ); 
+	RetSw = M_MoveTo(msdk_handle, 100, 100);
+	RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_LeftClick(msdk_handle, 2);
+	RetSw = M_DelayRandom(800, 1000);
 }

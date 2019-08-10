@@ -395,6 +395,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT1, &CVC_DemoDlg::OnEnChangeEdit1)
 	ON_BN_CLICKED(IDC_BUTTON_KEYPRESS7, &CVC_DemoDlg::OnBnClickedButtonKeypress7)
 	ON_LBN_SELCHANGE(IDC_LIST1, &CVC_DemoDlg::OnLbnSelchangeList1)
+	ON_BN_CLICKED(IDC_BUTTON_GETMOUSEPOS2, &CVC_DemoDlg::OnBnClickedButtonGetmousepos2)
 END_MESSAGE_MAP()
 
 
@@ -1631,4 +1632,19 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress7()
 void CVC_DemoDlg::OnLbnSelchangeList1()
 {
 	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CVC_DemoDlg::OnBnClickedButtonGetmousepos2()
+{
+	if (msdk_handle == INVALID_HANDLE_VALUE) {
+		OnBnClickedButtonOpen();
+	}
+	unsigned int RetSw;
+	RetSw = M_ResetMousePos(msdk_handle);
+	RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_MoveTo(msdk_handle, 100, 100);
+	RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_LeftClick(msdk_handle, 2);
+	RetSw = M_DelayRandom(800, 1000);
 }

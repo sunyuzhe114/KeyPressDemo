@@ -61,4 +61,5 @@ public:
 	void setShowWindowSize(int posX, int posY, int width, int height);
 	afx_msg void OnLbnSelchangeList1();
 	afx_msg void OnBnClickedButtonGetmousepos2();
+	afx_msg void OnBnClickedButtonKeypress8();
 };

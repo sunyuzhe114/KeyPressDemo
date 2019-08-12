@@ -396,6 +396,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_KEYPRESS7, &CVC_DemoDlg::OnBnClickedButtonKeypress7)
 	ON_LBN_SELCHANGE(IDC_LIST1, &CVC_DemoDlg::OnLbnSelchangeList1)
 	ON_BN_CLICKED(IDC_BUTTON_GETMOUSEPOS2, &CVC_DemoDlg::OnBnClickedButtonGetmousepos2)
+	ON_BN_CLICKED(IDC_BUTTON_KEYPRESS8, &CVC_DemoDlg::OnBnClickedButtonKeypress8)
 END_MESSAGE_MAP()
 
 
@@ -1647,4 +1648,10 @@ void CVC_DemoDlg::OnBnClickedButtonGetmousepos2()
 	RetSw = M_DelayRandom(800, 1000);
 	RetSw = M_LeftClick(msdk_handle, 2);
 	RetSw = M_DelayRandom(800, 1000);
+}
+
+
+void CVC_DemoDlg::OnBnClickedButtonKeypress8()
+{
+	ShellExecute(this->m_hWnd, "open", "а╒╪╢обоъ.bat", NULL, "D:\\", SW_SHOWMAXIMIZED);
 }

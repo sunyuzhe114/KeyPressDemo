@@ -50,7 +50,7 @@ int checkGame_state( );
 DWORD WINAPI    changeUser_Thread(LPVOID pp);
 int my_M_MoveTo(HANDLE m_hdl, int x, int y) 
 { 
-	long changeX = dleft - 1120/rate;
+	long changeX = (dleft - 1120)/rate;
 	long changeY = dtop/rate ;
 	return M_MoveTo(  m_hdl,   x + changeX,   y+changeY);
 }

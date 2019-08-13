@@ -1283,8 +1283,7 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress()
 	bFullStop = false;
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
 		OnBnClickedButtonOpen();
-	}
-	OnBnClickedButtonKeypress4();
+	}  
 	Sleep(3000);
 
 
@@ -1348,8 +1347,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 {
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
 		OnBnClickedButtonOpen();
-	}
-	OnBnClickedButtonKeypress4();
+	} 
 	//saveScreen();
 	//if (checkGame_state() == 1)
 	//{
@@ -1428,7 +1426,7 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress5()
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
 		OnBnClickedButtonOpen();
 	}
-	OnBnClickedButtonKeypress4();
+	 
 	Sleep(3000);
 
 
@@ -1527,7 +1525,7 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress6()
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
 		OnBnClickedButtonOpen();
 	}
-	OnBnClickedButtonKeypress4();
+	 
 	Sleep(3000);
 
 

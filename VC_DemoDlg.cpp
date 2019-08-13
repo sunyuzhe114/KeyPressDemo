@@ -53,6 +53,7 @@ int my_M_MoveTo(HANDLE m_hdl, int x, int y)
 	long changeX = dleft - 1120/rate;
 	long changeY = dtop/rate ;
 	return M_MoveTo(  m_hdl,   x + changeX,   y+changeY);
+	//return M_MoveTo(m_hdl, x  , y );
 }
 CPoint findSureButton_state()
 {
@@ -119,12 +120,16 @@ CPoint findSureButton_state()
 	infor.Format("x=%ld,y=%ld,maxVal=%0.2lf", matchLoc.x, matchLoc.y, maxVal);
 	//x = 1727, y = 70,can't tell you if game is over or other
 	bool bResult = -1;
-	if (matchLoc.y >= 275&& matchLoc.y <=430 && maxVal > 0.5 &&matchLoc.x > 1255 && matchLoc.x < 1615)
+
+	long changeX = dleft - 1120;
+	long changeY = dtop - 0;
+	 
+	if ((matchLoc.x - changeX) > 1255 && (matchLoc.x - changeX) < 1615 && (matchLoc.y - changeY) >= 275 && (matchLoc.y - changeY) <=430 && maxVal > 0.5 )
 	{
 		//取色分析
 		Mat NewImg = img(Rect(matchLoc.x, matchLoc.y, 80, 30));
 		Mat means, stddev, covar;
-	cv:Scalar tempVal = cv::mean(NewImg);
+		cv:Scalar tempVal = cv::mean(NewImg);
 		float matMean = tempVal.val[0];
 		CString strResult;
 		//42 34 56//not change to grey
@@ -233,7 +238,10 @@ int checkGame_state()
 	infor.Format("x=%ld,y=%ld,maxVal=%0.2lf", matchLoc.x, matchLoc.y, maxVal);
 	//x = 1727, y = 70,can't tell you if game is over or other
 	bool bResult = -1;
-	if (matchLoc.y <= 75 && maxVal > 0.5 &&matchLoc.x > 1720 && matchLoc.x < 1920)
+	long changeX = dleft - 1120  ;
+	long changeY = dtop-0  ; 
+
+	if ((matchLoc.x- changeX) > 1720 && (matchLoc.x-changeX) < 1920 && (matchLoc.y- changeY) >= 0 && (matchLoc.y - changeY) <= 75 && maxVal > 0.5 )
 	{
 		//取色分析
 		Mat NewImg = img(Rect(matchLoc.x, matchLoc.y, 80, 30));
@@ -344,7 +352,11 @@ bool MatchingMethod()
 	templ.release();;
 	CString infor;
 	infor.Format("x=%ld,y=%ld,maxVal=%0.2lf", matchLoc.x, matchLoc.y, maxVal);
-	if (matchLoc.y <= 45 && maxVal > 0.5 &&matchLoc.x > 1650 && matchLoc.x < 1920)
+	long changeX = dleft - 1120;
+	long changeY = dtop - 0;
+
+	if ((matchLoc.x - changeX) > 1650 && (matchLoc.x - changeX) < 1920 && (matchLoc.y - changeY) >= 0 && (matchLoc.y - changeY) <= 45 && maxVal > 0.5)
+	//if (matchLoc.y <= 45 && maxVal > 0.5 &&matchLoc.x > 1650 && matchLoc.x < 1920)
 	{
 		infor += "检测正确";
 		pDlg->m_editLogInfor.SetWindowTextA(infor);

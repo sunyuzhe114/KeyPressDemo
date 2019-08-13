@@ -1562,7 +1562,7 @@ void CVC_DemoDlg::OnBnClickedButtonMover2()
 
 void CVC_DemoDlg::OnEnChangeEdit1()
 {
-	setShowWindowSize(GetSystemMetrics(SM_CXSCREEN) - 800, 0, 800, 600);
+	
 }
 
 void CVC_DemoDlg::setShowWindowSize(int posX, int posY, int width, int height)
@@ -1651,7 +1651,7 @@ void CVC_DemoDlg::setShowWindowSize(int posX, int posY, int width, int height)
 }
 void CVC_DemoDlg::OnBnClickedButtonKeypress7()
 {
-	// TODO: 在此添加控件通知处理程序代码
+	setShowWindowSize(GetSystemMetrics(SM_CXSCREEN) - 800, 0, 800, 600);
 }
 
 

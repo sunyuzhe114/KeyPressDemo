@@ -723,7 +723,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		for (int i = 0; i < 3; i++)
 		{
 			RetSw = M_MouseWheel(msdk_handle, 1);
-			RetSw = M_DelayRandom(1000, 1200);
+			RetSw = M_DelayRandom(2000, 2200);
 		}
 		if (bStop)break;
 		infor += "¹öÂÖ3´Î\r\n";

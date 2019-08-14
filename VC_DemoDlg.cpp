@@ -379,7 +379,7 @@ bool MatchingMethod()
 }
 CVC_DemoDlg::CVC_DemoDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CVC_DemoDlg::IDD, pParent)
-	, m_intMinute(90)
+	, m_intMinute(120)
 	, m_edit_keyword(_T("ÓÂÊ¿")
 	)
 	, m_checkTimes(5)

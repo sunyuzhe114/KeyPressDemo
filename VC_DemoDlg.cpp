@@ -48,6 +48,11 @@ float dbZoomScale = 1.0;
 /// Function Headers
 int checkGame_state( );
 DWORD WINAPI    changeUser_Thread(LPVOID pp);
+
+void addLog(CString infor)
+{
+	pDlg->m_editLogInfor.SetWindowTextA(infor);
+}
 int my_M_MoveTo(HANDLE m_hdl, int x, int y) 
 { 
 	long changeX = (dleft - 1120)/rate;
@@ -117,15 +122,17 @@ CPoint findSureButton_state()
 	//! [imshow]
 
 	CString infor;
-	infor.Format("x=%ld,y=%ld,maxVal=%0.2lf", matchLoc.x, matchLoc.y, maxVal);
+	
 	//x = 1727, y = 70,can't tell you if game is over or other
 	bool bResult = -1;
 
 	long changeX = dleft - 1120;
 	long changeY = dtop - 0;
-	 
+	 infor.Format("x=%ld,y=%ld,maxVal=%0.2lf,changeX=%ld,changeY=%ld", matchLoc.x, matchLoc.y, maxVal, changeX, changeY);
+	 addLog("find sure button" + infor);
 	if ((matchLoc.x - changeX) > 1255 && (matchLoc.x - changeX) < 1615 && (matchLoc.y - changeY) >= 275 && (matchLoc.y - changeY) <=430 && maxVal > 0.5 )
-	{
+	{ 
+		
 		//取色分析
 		Mat NewImg = img(Rect(matchLoc.x, matchLoc.y, 80, 30));
 		Mat means, stddev, covar;
@@ -234,15 +241,16 @@ int checkGame_state()
 	//imshow(result_window, result);
 	//! [imshow]
 	
-	CString infor;
-	infor.Format("x=%ld,y=%ld,maxVal=%0.2lf", matchLoc.x, matchLoc.y, maxVal);
+	CString infor; 
 	//x = 1727, y = 70,can't tell you if game is over or other
 	bool bResult = -1;
 	long changeX = dleft - 1120  ;
 	long changeY = dtop-0  ; 
-
+	infor.Format("x=%ld,y=%ld,maxVal=%0.2lf,changeX=%ld,changeY=%ld", matchLoc.x, matchLoc.y, maxVal, changeX, changeY);
+	addLog("checkGame_state  " + infor);
 	if ((matchLoc.x- changeX) > 1720 && (matchLoc.x-changeX) < 1920 && (matchLoc.y- changeY) >= 0 && (matchLoc.y - changeY) <= 75 && maxVal > 0.5 )
 	{
+	//here may have error
 		//取色分析
 		Mat NewImg = img(Rect(matchLoc.x, matchLoc.y, 80, 30));
 		Mat means, stddev, covar;
@@ -350,11 +358,11 @@ bool MatchingMethod()
 	//! [imshow]
 	img.release();
 	templ.release();;
-	CString infor;
-	infor.Format("x=%ld,y=%ld,maxVal=%0.2lf", matchLoc.x, matchLoc.y, maxVal);
+	CString infor; 
 	long changeX = dleft - 1120;
 	long changeY = dtop - 0;
-
+	infor.Format("x=%ld,y=%ld,maxVal=%0.2lf,changeX=%ld,changeY=%ld", matchLoc.x, matchLoc.y, maxVal, changeX, changeY);
+	addLog("MatchingMethod  " + infor);
 	if ((matchLoc.x - changeX) > 1650 && (matchLoc.x - changeX) < 1920 && (matchLoc.y - changeY) >= 0 && (matchLoc.y - changeY) <= 45 && maxVal > 0.5)
 	//if (matchLoc.y <= 45 && maxVal > 0.5 &&matchLoc.x > 1650 && matchLoc.x < 1920)
 	{

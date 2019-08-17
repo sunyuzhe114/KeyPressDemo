@@ -66,4 +66,5 @@ public:
 	afx_msg void OnEnChangeEdit7();
 	int m_screenWidth;
 	afx_msg void OnBnClickedButtonOpen3();
+	afx_msg void OnLbnSelchangeList2();
 };

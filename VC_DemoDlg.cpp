@@ -48,22 +48,131 @@ float dbZoomScale = 1.0;
 /// Function Headers
 int checkGame_state( );
 DWORD WINAPI    changeUser_Thread(LPVOID pp);
-
+void addLog(CString infor);
 void addLog(CString infor)
 {
-	pDlg->m_listLog.AddString(infor);
+	CTime time=CTime::GetCurrentTime();
+	CString date = time.Format("%H:%M:%S");
+	CString strshow = date + "   " + infor;
+	pDlg->m_listLog.InsertString(0,strshow);
 	if (pDlg->m_listLog.GetCount() > 1000)
 	{
 		pDlg->m_listLog.ResetContent();
 	}
-	pDlg->m_editLogInfor.SetWindowTextA(infor);
+	pDlg->m_editLogInfor.SetWindowTextA(strshow);
 }
 int my_M_MoveTo(HANDLE m_hdl, int x, int y) 
 { 
-	long changeX = (dleft - 1120)/rate;
-	long changeY = dtop/rate ;
+	int SCREEN_CX = pDlg->m_screenWidth;//#1920  
+	long changeX = (dleft - (SCREEN_CX - 800))/rate;
+	long changeY = dtop / rate;
+
+
+	
+	//long changeX = (dleft - 1120)/rate;
+	//long changeY = dtop/rate ;
+	CString infor;
+	infor.Format("move mouse to %ld,%ld", x + changeX, y + changeY);
+	addLog(infor);
 	return M_MoveTo(  m_hdl,   x + changeX,   y+changeY);
 	//return M_MoveTo(m_hdl, x  , y );
+}
+CPoint findImage(string strPath_findImage)
+{
+	pDlg->saveScreen(); 
+	CPoint pt(0, 0);
+	img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
+	templ = cv::imread(strPath_findImage, IMREAD_COLOR);
+	//! [copy_source]
+	/// Source image to display
+	Mat img_display;
+	img.copyTo(img_display);
+	//! [copy_source]
+
+	//! [create_result_matrix]
+	/// Create the result matrix
+	int result_cols = img.cols - templ.cols + 1;
+	int result_rows = img.rows - templ.rows + 1;
+
+	result.create(result_rows, result_cols, CV_32FC1);
+	//! [create_result_matrix]
+
+	//! [match_template]
+	/// Do the Matching and Normalize
+
+	matchTemplate(img, templ, result, match_method);
+
+	//! [match_template]
+
+	//! [normalize]
+	normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat());
+	//! [normalize]
+
+	//! [best_match]
+	/// Localizing the best match with minMaxLoc
+	double minVal; double maxVal; Point minLoc; Point maxLoc;
+	Point matchLoc;
+
+	minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
+	//! [best_match]
+
+	//! [match_loc]
+	/// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
+	if (match_method == TM_SQDIFF || match_method == TM_SQDIFF_NORMED)
+	{
+		matchLoc = minLoc;
+	}
+	else
+	{
+		matchLoc = maxLoc;
+	}
+
+	//! [match_loc]
+
+	//! [imshow]
+	/// Show me what you got
+
+	//rectangle(img_display, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
+	//rectangle(result, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
+
+	//imshow(image_window, img_display);
+	//imshow(result_window, result);
+	//! [imshow]
+
+	CString infor;
+
+	//x = 1727, y = 70,can't tell you if game is over or other
+	bool bResult = -1;
+	int SCREEN_CX = pDlg->m_screenWidth;//#1920
+
+	//x = 1727, y = 70,can't tell you if game is over or other
+
+	long changeX = dleft - (SCREEN_CX - 800);
+	long changeY = dtop - 0;
+	/* long changeX = dleft - 1120;
+	long changeY = dtop - 0; */
+	infor.Format("x=%ld,y=%ld,maxVal=%0.2lf,changeX=%ld,changeY=%ld", matchLoc.x, matchLoc.y, maxVal, changeX, changeY);
+	addLog("find sure button" + infor);
+	//if ((matchLoc.x - changeX) > 1255 && (matchLoc.x - changeX) < 1615 && (matchLoc.y - changeY) >= 275 && (matchLoc.y - changeY) <=430 && maxVal > 0.5 )
+	if ((matchLoc.x - changeX) > (SCREEN_CX - 695) && (matchLoc.x - changeX) < (SCREEN_CX - 305) && (matchLoc.y - changeY) >= 275 && (matchLoc.y - changeY) <= 430 && maxVal > 0.5)
+	{
+
+		pt.x = matchLoc.x;
+		pt.y = matchLoc.y;
+		return pt;
+	}
+	else
+	{
+		infor += "未检测到按钮 ";
+		addLog(infor);
+		bResult = -1;Game_state = -1;
+		pt.x = 0;
+		pt.y = 0;
+		return pt;
+	}
+	img.release();
+	templ.release();
+	return pt;
 }
 CPoint findSureButton_state()
 {
@@ -130,58 +239,36 @@ CPoint findSureButton_state()
 	
 	//x = 1727, y = 70,can't tell you if game is over or other
 	bool bResult = -1;
-
-	long changeX = dleft - 1120;
+	int SCREEN_CX = pDlg->m_screenWidth;//#1920
+	 
+	//x = 1727, y = 70,can't tell you if game is over or other
+ 
+	long changeX = dleft - (SCREEN_CX - 800);
 	long changeY = dtop - 0;
+	/* long changeX = dleft - 1120;
+	long changeY = dtop - 0; */
 	 infor.Format("x=%ld,y=%ld,maxVal=%0.2lf,changeX=%ld,changeY=%ld", matchLoc.x, matchLoc.y, maxVal, changeX, changeY);
 	 addLog("find sure button" + infor);
-	if ((matchLoc.x - changeX) > 1255 && (matchLoc.x - changeX) < 1615 && (matchLoc.y - changeY) >= 275 && (matchLoc.y - changeY) <=430 && maxVal > 0.5 )
+	//if ((matchLoc.x - changeX) > 1255 && (matchLoc.x - changeX) < 1615 && (matchLoc.y - changeY) >= 275 && (matchLoc.y - changeY) <=430 && maxVal > 0.5 )
+	 if ((matchLoc.x - changeX) > (SCREEN_CX - 695) && (matchLoc.x - changeX) < (SCREEN_CX-305) && (matchLoc.y - changeY) >= 275 && (matchLoc.y - changeY) <= 430 && maxVal > 0.5)
 	{ 
-		
-		//取色分析
-		Mat NewImg = img(Rect(matchLoc.x, matchLoc.y, 80, 30));
-		Mat means, stddev, covar;
-		cv:Scalar tempVal = cv::mean(NewImg);
-		float matMean = tempVal.val[0];
-		CString strResult;
-		//42 34 56//not change to grey
-		// 43 29 45 //grey
-
-
-
-		strResult.Format("means  : %0.0f %0.0f %0.0f\n", tempVal.val[0], tempVal.val[1], tempVal.val[2]);//RGB三通道，所以均值结果是3行一列
-
-		infor += strResult + "\r\n";
-		//imshow("test", NewImg);
-		if (tempVal.val[1] <= 30 && tempVal.val[2] <= 46)
-		{
-			infor += "  0";
-			pDlg->m_editLogInfor.SetWindowTextA(infor);
-			Game_state = 100;
-			bResult = 100;//
-		}
-		else
-		{
-			infor += "  1";
-			pDlg->m_editLogInfor.SetWindowTextA(infor);
-			bResult = 200;//检测到游戏还可以再玩
-			Game_state = 200;
-			//	pDlg->MessageBoxA("检测到游戏还可以再玩,", "error", MB_OK);
-		}
+		 
 		pt.x = matchLoc.x;
 		pt.y = matchLoc.y;
 		return pt;
 	}
 	else
 	{
-		infor += "未检测到窗口 -1 ";
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
-		//pDlg->MessageBoxA("未检测到窗口,", "error", MB_OK);
+		infor += "未检测到按钮 ";
+		addLog(infor);
 		bResult = -1;Game_state = -1;
+		pt.x = 0;
+		pt.y = 0;
+		return pt;
 	}
 	img.release();
 	templ.release();
-	return bResult;
+	return pt;
 }
 //0表示已经帐号用光
 //1表示还可以再玩
@@ -276,8 +363,7 @@ int checkGame_state()
 			 
 			addLog(infor);
 			Game_state =100;
-			bResult = 100;//
-			addLog("checkGame_state  " + infor);
+			bResult = 100;// 
 		}
 		else
 		{
@@ -290,7 +376,7 @@ int checkGame_state()
 	}
 	else
 	{
-		infor  = "未检测到窗口 -1 ";
+		infor  += "未检测到窗口 -1 ";
 		addLog(infor);
 		//pDlg->MessageBoxA("未检测到窗口,", "error", MB_OK);
 		bResult= -1;Game_state = -1;
@@ -437,6 +523,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_KEYPRESS8, &CVC_DemoDlg::OnBnClickedButtonKeypress8)
 	ON_EN_CHANGE(IDC_EDIT7, &CVC_DemoDlg::OnEnChangeEdit7)
 	ON_BN_CLICKED(IDC_BUTTON_OPEN3, &CVC_DemoDlg::OnBnClickedButtonOpen3)
+	ON_LBN_SELCHANGE(IDC_LIST2, &CVC_DemoDlg::OnLbnSelchangeList2)
 END_MESSAGE_MAP()
 
 
@@ -1171,6 +1258,8 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		Global_checkTime++;
 		//这里加入分解动作，按I键 ，开分解
 		//这里加入分解动作，按I键 ，开分解
+		RetSw = M_DelayRandom(800, 1000);
+		//这里加入分解动作，按I键 ，开分解
 		RetSw = M_KeyPress(msdk_handle, Keyboard_DanYinHao, 1);
 		RetSw = M_DelayRandom(2200, 3000);
 		//分解装备
@@ -1197,24 +1286,38 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		RetSw = M_DelayRandom(800, 1000);
 		pDlg->saveScreen();
 		CPoint pt = findSureButton_state();
-		pt.x += 15;
-		pt.y += 15;
-		//确认分析装备
-		for (int i = 0; i < 1; i++)
+		 
+		infor.Format("查找确定按钮%d,%d", pt.x, pt.y);
+		addLog(infor);
+		if (pt.x == -1)
 		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = M_DelayRandom(500, 600);
-			RetSw = my_M_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
-			RetSw = M_DelayRandom(500, 600);
-			RetSw = M_DelayRandom(500, 600);
+			addLog("查找确定按钮fail");
 		}
-		RetSw = M_LeftClick(msdk_handle, 1);
-		RetSw = M_DelayRandom(800, 1000);
-		RetSw = M_DelayRandom(6200, 9000);
+		else
+		{
+			pt.x += 15;
+			pt.y += 15;
+			//确认分析装备
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				RetSw = M_DelayRandom(500, 600);
+				//这里使用的是绝对坐标
+				RetSw = M_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+				RetSw = M_DelayRandom(500, 600);
+				RetSw = M_DelayRandom(500, 600);
+			}
+			RetSw = M_LeftClick(msdk_handle, 1);
+
+			infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
+			addLog(infor);
+
+			RetSw = M_DelayRandom(800, 1000);
+			RetSw = M_DelayRandom(6200, 9000);
 
 
-		RetSw = M_DelayRandom(6200, 9000);
-
+			RetSw = M_DelayRandom(6200, 9000);
+		}
 		RetSw = M_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
 		RetSw = M_DelayRandom(2200, 3000);
 
@@ -1357,8 +1460,9 @@ void CVC_DemoDlg::OnBnClickedButtonGetmousepos()
 		return;
 	}
 	else {
-		strtemp.Format("x=%d, y=%d", x_pos, y_pos);
-		AfxMessageBox(strtemp);
+
+		m_listLog.ResetContent();
+		m_editLogInfor.SetWindowTextA("reset");
 	}
 }
 
@@ -1391,6 +1495,9 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 	}
 	RetSw = M_DelayRandom(800, 1000);
 	RetSw = M_LeftClick(msdk_handle, 1);
+	
+	
+	RetSw = M_DelayRandom(800, 1000);
 	//这里加入分解动作，按I键 ，开分解
 	RetSw = M_KeyPress(msdk_handle, Keyboard_DanYinHao, 1);
 	RetSw = M_DelayRandom(2200, 3000);
@@ -1418,24 +1525,39 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 	RetSw = M_DelayRandom(800, 1000);
 	saveScreen();
 	CPoint pt= findSureButton_state();
-	pt.x += 10;
-	pt.y += 10;
-	//确认分析装备
-	for (int i = 0; i < 1; i++)
+	
+	CString infor;
+	infor.Format("查找确定按钮%d,%d",pt.x,pt.y);
+	addLog(infor);
+	if (pt.x == -1)
 	{
-		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = M_DelayRandom(500, 600); 
-		RetSw = my_M_MoveTo(msdk_handle, (int)( pt.x / rate), (int)( pt.y  / rate));
-		RetSw = M_DelayRandom(500, 600);
-		RetSw = M_DelayRandom(500, 600);
+		addLog("查找确定按钮fail");
 	}
-	RetSw = M_LeftClick(msdk_handle, 1);
-	RetSw = M_DelayRandom(800, 1000);
-	RetSw = M_DelayRandom(6200, 9000);
+	else
+	{
+		pt.x += 15;
+		pt.y += 15;
+		//确认分析装备
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			RetSw = M_DelayRandom(500, 600);
+			//这里使用的是绝对坐标
+			RetSw = M_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+			RetSw = M_DelayRandom(500, 600);
+			RetSw = M_DelayRandom(500, 600);
+		}
+		RetSw = M_LeftClick(msdk_handle, 1);
+		
+		infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
+		addLog(infor);
+		
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_DelayRandom(6200, 9000);
 
- 
-	RetSw = M_DelayRandom(6200, 9000);
 
+		RetSw = M_DelayRandom(6200, 9000);
+	}
 	RetSw = M_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
 	RetSw = M_DelayRandom(2200, 3000);
 
@@ -1723,7 +1845,14 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 {
 	pDlg->saveScreen();
 	checkGame_state();
-	CString strInfor;
-	strInfor.Format("bFind = %d Keyboard_PageDown\r\n", Game_state);
-	pDlg->m_editLogInfor.SetWindowTextA(strInfor);
+ 
+}
+
+
+void CVC_DemoDlg::OnLbnSelchangeList2()
+{
+	CString infor;
+	m_listLog.GetText(m_listLog.GetCurSel(), infor);
+	m_editLogInfor.SetWindowTextA(infor);
+	
 }

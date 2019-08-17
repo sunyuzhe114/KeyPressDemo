@@ -62,4 +62,7 @@ public:
 	afx_msg void OnLbnSelchangeList1();
 	afx_msg void OnBnClickedButtonGetmousepos2();
 	afx_msg void OnBnClickedButtonKeypress8();
+	CListBox m_listLog;
+	afx_msg void OnEnChangeEdit7();
+	int m_screenWidth;
 };

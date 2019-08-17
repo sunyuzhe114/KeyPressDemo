@@ -51,6 +51,11 @@ DWORD WINAPI    changeUser_Thread(LPVOID pp);
 
 void addLog(CString infor)
 {
+	pDlg->m_listLog.AddString(infor);
+	if (pDlg->m_listLog.GetCount() > 1000)
+	{
+		pDlg->m_listLog.ResetContent();
+	}
 	pDlg->m_editLogInfor.SetWindowTextA(infor);
 }
 int my_M_MoveTo(HANDLE m_hdl, int x, int y) 
@@ -240,15 +245,15 @@ int checkGame_state()
 	//imshow(image_window, img_display);
 	//imshow(result_window, result);
 	//! [imshow]
-	
+	int SCREEN_CX = pDlg->m_screenWidth;//#1920
 	CString infor; 
 	//x = 1727, y = 70,can't tell you if game is over or other
 	bool bResult = -1;
-	long changeX = dleft - 1120  ;
+	long changeX = dleft - (SCREEN_CX -800);
 	long changeY = dtop-0  ; 
 	infor.Format("x=%ld,y=%ld,maxVal=%0.2lf,changeX=%ld,changeY=%ld", matchLoc.x, matchLoc.y, maxVal, changeX, changeY);
-	addLog("checkGame_state  " + infor);
-	if ((matchLoc.x- changeX) > 1720 && (matchLoc.x-changeX) < 1920 && (matchLoc.y- changeY) >= 0 && (matchLoc.y - changeY) <= 75 && maxVal > 0.5 )
+	
+	if ((matchLoc.x- changeX) > (SCREEN_CX-200) && (matchLoc.x-changeX) < SCREEN_CX && (matchLoc.y- changeY) >= 0 && (matchLoc.y - changeY) <= 75 && maxVal > 0.5 )
 	{
 	//here may have error
 		//取色分析
@@ -263,20 +268,21 @@ int checkGame_state()
 
 
 		strResult.Format("means  : %0.0f %0.0f %0.0f\n", tempVal.val[0], tempVal.val[1], tempVal.val[2]);//RGB三通道，所以均值结果是3行一列
-		 
-		infor += strResult + "\r\n";
+		  
 		//imshow("test", NewImg);
 		if (tempVal.val[1] <= 30 && tempVal.val[2] <= 46)
 		{
-			infor += "帐号已经使用完成 0";
-			pDlg->m_editLogInfor.SetWindowTextA(infor);
+			infor  = "帐号已经使用完成 0";
+			 
+			addLog(infor);
 			Game_state =100;
 			bResult = 100;//
+			addLog("checkGame_state  " + infor);
 		}
 		else
 		{
-			infor += "检测到游戏还可以再玩 1";
-			pDlg->m_editLogInfor.SetWindowTextA(infor);
+			infor = "检测到游戏还可以再玩 1";
+			addLog(infor);
 			bResult = 200;//检测到游戏还可以再玩
 			Game_state = 200;
 		//	pDlg->MessageBoxA("检测到游戏还可以再玩,", "error", MB_OK);
@@ -284,8 +290,8 @@ int checkGame_state()
 	}
 	else
 	{
-		infor += "未检测到窗口 -1 ";
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		infor  = "未检测到窗口 -1 ";
+		addLog(infor);
 		//pDlg->MessageBoxA("未检测到窗口,", "error", MB_OK);
 		bResult= -1;Game_state = -1;
 	}
@@ -383,6 +389,7 @@ CVC_DemoDlg::CVC_DemoDlg(CWnd* pParent /*=NULL*/)
 	, m_edit_keyword(_T("勇士")
 	)
 	, m_checkTimes(5)
+	, m_screenWidth(0)
 {
 	m_rate = 2.5;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -399,7 +406,9 @@ void CVC_DemoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT4, m_edit_keyword);
 	DDX_Text(pDX, IDC_EDIT5, m_rate);
 	DDX_Control(pDX, IDC_EDIT5, m_editRate);
-	DDX_Text(pDX, IDC_EDIT6, m_checkTimes); 
+	DDX_Text(pDX, IDC_EDIT6, m_checkTimes);
+	DDX_Control(pDX, IDC_LIST2, m_listLog);
+	DDX_Text(pDX, IDC_EDIT7, m_screenWidth);
 }
 
 BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
@@ -426,6 +435,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_LBN_SELCHANGE(IDC_LIST1, &CVC_DemoDlg::OnLbnSelchangeList1)
 	ON_BN_CLICKED(IDC_BUTTON_GETMOUSEPOS2, &CVC_DemoDlg::OnBnClickedButtonGetmousepos2)
 	ON_BN_CLICKED(IDC_BUTTON_KEYPRESS8, &CVC_DemoDlg::OnBnClickedButtonKeypress8)
+	ON_EN_CHANGE(IDC_EDIT7, &CVC_DemoDlg::OnEnChangeEdit7)
 END_MESSAGE_MAP()
 
 
@@ -463,6 +473,13 @@ BOOL CVC_DemoDlg::OnInitDialog()
 		m_editRate.SetWindowTextA(infor);
 		rate = atof(infor);
 		m_rate = rate;
+	}
+	::GetPrivateProfileString(APP_NAME, "m_screenWidth", "", infor.GetBufferSetLength(256), 256, "d://keypressDemo.ini");
+	if (infor != "")
+	{
+		SetDlgItemText(IDC_EDIT7,infor);
+		m_screenWidth = atol(infor);
+		 
 	}
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -1356,6 +1373,14 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
 		OnBnClickedButtonOpen();
 	} 
+
+	pDlg->saveScreen();
+	checkGame_state();
+	CString strInfor;
+	strInfor.Format("bFind = %d Keyboard_PageDown\r\n", Game_state);
+	pDlg->m_editLogInfor.SetWindowTextA(strInfor);
+
+
 	//saveScreen();
 	//if (checkGame_state() == 1)
 	//{
@@ -1363,63 +1388,66 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 
 	//}
 
-	 int RetSw =  M_DelayRandom(2800, 3000);
+	// int RetSw =  M_DelayRandom(2800, 3000);
 
-	for (int i = 0; i < 1; i++)
-	{
-		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = my_M_MoveTo(msdk_handle, 1385 / rate, 110 / rate);
-		RetSw = M_DelayRandom(800, 1000);
-	}
-	RetSw = M_DelayRandom(800, 1000);
-	RetSw = M_LeftClick(msdk_handle, 1);
-	//这里加入分解动作，按I键 ，开分解
-	RetSw = M_KeyPress(msdk_handle, Keyboard_DanYinHao, 1);
-	RetSw = M_DelayRandom(2200, 3000);
-	//分解装备
-	for (int i = 0; i < 1; i++)
-	{
-		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = M_DelayRandom(500, 600);
-		RetSw = my_M_MoveTo(msdk_handle, (int)((1566) / rate), (int)((336) / rate));
-		RetSw = M_DelayRandom(500, 600);
-	}
-	RetSw = M_LeftClick(msdk_handle, 1);
-	RetSw = M_DelayRandom(800, 1000);
+	//for (int i = 0; i < 1; i++)
+	//{
+	//	RetSw = M_ResetMousePos(msdk_handle);
+	//	RetSw = my_M_MoveTo(msdk_handle, 1385 / rate, 110 / rate);
+	//	RetSw = M_DelayRandom(800, 1000);
+	//}
+	//RetSw = M_DelayRandom(800, 1000);
+	//RetSw = M_LeftClick(msdk_handle, 1);
+	////这里加入分解动作，按I键 ，开分解
+	//RetSw = M_KeyPress(msdk_handle, Keyboard_DanYinHao, 1);
+	//RetSw = M_DelayRandom(2200, 3000);
+	////分解装备
+	//for (int i = 0; i < 1; i++)
+	//{
+	//	RetSw = M_ResetMousePos(msdk_handle);
+	//	RetSw = M_DelayRandom(500, 600);
+	//	RetSw = my_M_MoveTo(msdk_handle, (int)((1566) / rate), (int)((336) / rate));
+	//	RetSw = M_DelayRandom(500, 600);
+	//}
+	//RetSw = M_LeftClick(msdk_handle, 1);
+	//RetSw = M_DelayRandom(800, 1000);
 
-	//全部分解装备
-	for (int i = 0; i < 1; i++)
-	{
-		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = M_DelayRandom(500, 600);
-		RetSw = my_M_MoveTo(msdk_handle, (int)((1371) / rate), (int)((347) / rate));
-		RetSw = M_DelayRandom(500, 600);
-	}
-	RetSw = M_LeftClick(msdk_handle, 1);
-	RetSw = M_DelayRandom(800, 1000);
-	RetSw = M_DelayRandom(800, 1000);
-	saveScreen();
-	CPoint pt= findSureButton_state();
-	pt.x += 10;
-	pt.y += 10;
-	//确认分析装备
-	for (int i = 0; i < 1; i++)
-	{
-		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = M_DelayRandom(500, 600); 
-		RetSw = my_M_MoveTo(msdk_handle, (int)( pt.x / rate), (int)( pt.y  / rate));
-		RetSw = M_DelayRandom(500, 600);
-		RetSw = M_DelayRandom(500, 600);
-	}
-	RetSw = M_LeftClick(msdk_handle, 1);
-	RetSw = M_DelayRandom(800, 1000);
-	RetSw = M_DelayRandom(6200, 9000);
+	////全部分解装备
+	//for (int i = 0; i < 1; i++)
+	//{
+	//	RetSw = M_ResetMousePos(msdk_handle);
+	//	RetSw = M_DelayRandom(500, 600);
+	//	RetSw = my_M_MoveTo(msdk_handle, (int)((1371) / rate), (int)((347) / rate));
+	//	RetSw = M_DelayRandom(500, 600);
+	//}
+	//RetSw = M_LeftClick(msdk_handle, 1);
+	//RetSw = M_DelayRandom(800, 1000);
+	//RetSw = M_DelayRandom(800, 1000);
+	//saveScreen();
+	//CPoint pt= findSureButton_state();
+	//pt.x += 10;
+	//pt.y += 10;
+	////确认分析装备
+	//for (int i = 0; i < 1; i++)
+	//{
+	//	RetSw = M_ResetMousePos(msdk_handle);
+	//	RetSw = M_DelayRandom(500, 600); 
+	//	RetSw = my_M_MoveTo(msdk_handle, (int)( pt.x / rate), (int)( pt.y  / rate));
+	//	RetSw = M_DelayRandom(500, 600);
+	//	RetSw = M_DelayRandom(500, 600);
+	//}
+	//RetSw = M_LeftClick(msdk_handle, 1);
+	//RetSw = M_DelayRandom(800, 1000);
+	//RetSw = M_DelayRandom(6200, 9000);
 
- 
-	RetSw = M_DelayRandom(6200, 9000);
+ //
+	//RetSw = M_DelayRandom(6200, 9000);
 
-	RetSw = M_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
-	RetSw = M_DelayRandom(2200, 3000);
+	//RetSw = M_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+	//RetSw = M_DelayRandom(2200, 3000);
+
+	//
+
 
 }
 
@@ -1685,4 +1713,14 @@ void CVC_DemoDlg::OnBnClickedButtonGetmousepos2()
 void CVC_DemoDlg::OnBnClickedButtonKeypress8()
 {
 	ShellExecute(this->m_hWnd, "open", "立即下线.bat", NULL, "D:\\", SW_SHOWMAXIMIZED);
+}
+
+
+void CVC_DemoDlg::OnEnChangeEdit7()
+{
+	UpdateData(); 
+	CString rr;
+	rr.Format("%d", m_screenWidth);
+	CWinApp* pApp = AfxGetApp();
+	::WritePrivateProfileString(APP_NAME, "m_screenWidth", rr, "d://keypressDemo.ini");
 }

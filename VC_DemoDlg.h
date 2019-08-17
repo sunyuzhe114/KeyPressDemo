@@ -65,4 +65,5 @@ public:
 	CListBox m_listLog;
 	afx_msg void OnEnChangeEdit7();
 	int m_screenWidth;
+	afx_msg void OnBnClickedButtonOpen3();
 };

@@ -436,6 +436,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_GETMOUSEPOS2, &CVC_DemoDlg::OnBnClickedButtonGetmousepos2)
 	ON_BN_CLICKED(IDC_BUTTON_KEYPRESS8, &CVC_DemoDlg::OnBnClickedButtonKeypress8)
 	ON_EN_CHANGE(IDC_EDIT7, &CVC_DemoDlg::OnEnChangeEdit7)
+	ON_BN_CLICKED(IDC_BUTTON_OPEN3, &CVC_DemoDlg::OnBnClickedButtonOpen3)
 END_MESSAGE_MAP()
 
 
@@ -481,6 +482,7 @@ BOOL CVC_DemoDlg::OnInitDialog()
 		m_screenWidth = atol(infor);
 		 
 	}
+	OnBnClickedButtonKeypress4();
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -1374,79 +1376,70 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 		OnBnClickedButtonOpen();
 	} 
 
-	pDlg->saveScreen();
-	checkGame_state();
-	CString strInfor;
-	strInfor.Format("bFind = %d Keyboard_PageDown\r\n", Game_state);
-	pDlg->m_editLogInfor.SetWindowTextA(strInfor);
+	
 
 
-	//saveScreen();
-	//if (checkGame_state() == 1)
-	//{
+	saveScreen();
+	 
+	 int RetSw =  M_DelayRandom(2800, 3000);
 
+	for (int i = 0; i < 1; i++)
+	{
+		RetSw = M_ResetMousePos(msdk_handle);
+		RetSw = my_M_MoveTo(msdk_handle, 1385 / rate, 110 / rate);
+		RetSw = M_DelayRandom(800, 1000);
+	}
+	RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_LeftClick(msdk_handle, 1);
+	//这里加入分解动作，按I键 ，开分解
+	RetSw = M_KeyPress(msdk_handle, Keyboard_DanYinHao, 1);
+	RetSw = M_DelayRandom(2200, 3000);
+	//分解装备
+	for (int i = 0; i < 1; i++)
+	{
+		RetSw = M_ResetMousePos(msdk_handle);
+		RetSw = M_DelayRandom(500, 600);
+		RetSw = my_M_MoveTo(msdk_handle, (int)((1566) / rate), (int)((336) / rate));
+		RetSw = M_DelayRandom(500, 600);
+	}
+	RetSw = M_LeftClick(msdk_handle, 1);
+	RetSw = M_DelayRandom(800, 1000);
 
-	//}
+	//全部分解装备
+	for (int i = 0; i < 1; i++)
+	{
+		RetSw = M_ResetMousePos(msdk_handle);
+		RetSw = M_DelayRandom(500, 600);
+		RetSw = my_M_MoveTo(msdk_handle, (int)((1371) / rate), (int)((347) / rate));
+		RetSw = M_DelayRandom(500, 600);
+	}
+	RetSw = M_LeftClick(msdk_handle, 1);
+	RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_DelayRandom(800, 1000);
+	saveScreen();
+	CPoint pt= findSureButton_state();
+	pt.x += 10;
+	pt.y += 10;
+	//确认分析装备
+	for (int i = 0; i < 1; i++)
+	{
+		RetSw = M_ResetMousePos(msdk_handle);
+		RetSw = M_DelayRandom(500, 600); 
+		RetSw = my_M_MoveTo(msdk_handle, (int)( pt.x / rate), (int)( pt.y  / rate));
+		RetSw = M_DelayRandom(500, 600);
+		RetSw = M_DelayRandom(500, 600);
+	}
+	RetSw = M_LeftClick(msdk_handle, 1);
+	RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_DelayRandom(6200, 9000);
 
-	// int RetSw =  M_DelayRandom(2800, 3000);
+ 
+	RetSw = M_DelayRandom(6200, 9000);
 
-	//for (int i = 0; i < 1; i++)
-	//{
-	//	RetSw = M_ResetMousePos(msdk_handle);
-	//	RetSw = my_M_MoveTo(msdk_handle, 1385 / rate, 110 / rate);
-	//	RetSw = M_DelayRandom(800, 1000);
-	//}
-	//RetSw = M_DelayRandom(800, 1000);
-	//RetSw = M_LeftClick(msdk_handle, 1);
-	////这里加入分解动作，按I键 ，开分解
-	//RetSw = M_KeyPress(msdk_handle, Keyboard_DanYinHao, 1);
-	//RetSw = M_DelayRandom(2200, 3000);
-	////分解装备
-	//for (int i = 0; i < 1; i++)
-	//{
-	//	RetSw = M_ResetMousePos(msdk_handle);
-	//	RetSw = M_DelayRandom(500, 600);
-	//	RetSw = my_M_MoveTo(msdk_handle, (int)((1566) / rate), (int)((336) / rate));
-	//	RetSw = M_DelayRandom(500, 600);
-	//}
-	//RetSw = M_LeftClick(msdk_handle, 1);
-	//RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+	RetSw = M_DelayRandom(2200, 3000);
 
-	////全部分解装备
-	//for (int i = 0; i < 1; i++)
-	//{
-	//	RetSw = M_ResetMousePos(msdk_handle);
-	//	RetSw = M_DelayRandom(500, 600);
-	//	RetSw = my_M_MoveTo(msdk_handle, (int)((1371) / rate), (int)((347) / rate));
-	//	RetSw = M_DelayRandom(500, 600);
-	//}
-	//RetSw = M_LeftClick(msdk_handle, 1);
-	//RetSw = M_DelayRandom(800, 1000);
-	//RetSw = M_DelayRandom(800, 1000);
-	//saveScreen();
-	//CPoint pt= findSureButton_state();
-	//pt.x += 10;
-	//pt.y += 10;
-	////确认分析装备
-	//for (int i = 0; i < 1; i++)
-	//{
-	//	RetSw = M_ResetMousePos(msdk_handle);
-	//	RetSw = M_DelayRandom(500, 600); 
-	//	RetSw = my_M_MoveTo(msdk_handle, (int)( pt.x / rate), (int)( pt.y  / rate));
-	//	RetSw = M_DelayRandom(500, 600);
-	//	RetSw = M_DelayRandom(500, 600);
-	//}
-	//RetSw = M_LeftClick(msdk_handle, 1);
-	//RetSw = M_DelayRandom(800, 1000);
-	//RetSw = M_DelayRandom(6200, 9000);
-
- //
-	//RetSw = M_DelayRandom(6200, 9000);
-
-	//RetSw = M_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
-	//RetSw = M_DelayRandom(2200, 3000);
-
-	//
+	
 
 
 }
@@ -1723,4 +1716,14 @@ void CVC_DemoDlg::OnEnChangeEdit7()
 	rr.Format("%d", m_screenWidth);
 	CWinApp* pApp = AfxGetApp();
 	::WritePrivateProfileString(APP_NAME, "m_screenWidth", rr, "d://keypressDemo.ini");
+}
+
+
+void CVC_DemoDlg::OnBnClickedButtonOpen3()
+{
+	pDlg->saveScreen();
+	checkGame_state();
+	CString strInfor;
+	strInfor.Format("bFind = %d Keyboard_PageDown\r\n", Game_state);
+	pDlg->m_editLogInfor.SetWindowTextA(strInfor);
 }

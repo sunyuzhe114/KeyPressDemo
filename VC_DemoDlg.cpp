@@ -831,7 +831,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		//滚动3次到了 
 		for (int i = 0; i < 3; i++)
 		{
-			RetSw = M_MouseWheel(msdk_handle, 1);
+			RetSw = M_MouseWheel(msdk_handle, -1);
 			RetSw = M_DelayRandom(2000, 2200);
 		}
 		if (bStop)break;
@@ -1870,5 +1870,17 @@ void CVC_DemoDlg::OnLbnSelchangeList2()
 
 void CVC_DemoDlg::OnBnClickedCheck1()
 {
-	// TODO: 在此添加控件通知处理程序代码
+	CString strInfor;
+	UpdateData();
+	if (bHuangLong)
+	{
+		strInfor.Format("change to huanglong %d", bHuangLong);
+		addLog(strInfor);
+	}
+	else
+	{
+		strInfor.Format("change to qinglong  %d", bHuangLong);
+		addLog(strInfor);
+	}
+
 }

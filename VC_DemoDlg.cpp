@@ -794,28 +794,28 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			RetSw = M_DelayRandom(500, 600);
 		}
 		RetSw = M_LeftClick(msdk_handle, 1);
-		RetSw = M_DelayRandom(1800, 2500);
-		infor += "Keyboard_ESCAPE\r\n";
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		RetSw = M_DelayRandom(3800, 4500);
+		addLog("点击选定角色");
 		if (bStop)break;
 
 		if (bChangeUser == true)
 		{
+			addLog("按下右键");
 			RetSw = M_KeyPress(msdk_handle, Keyboard_RightArrow, 1);
-			RetSw = M_DelayRandom(1100, 2100);
+			RetSw = M_DelayRandom(2100, 2300);
 
 		}
 
 
 		RetSw = M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
-		RetSw = M_DelayRandom(400, 600);
+		RetSw = M_DelayRandom(1400, 1600);
 		RetSw = M_DelayRandom(3000, 4000);
 		//按5号键，
 		if (bStop)break;
 		RetSw = M_KeyPress(msdk_handle, Keyboard_5, 1);
 		RetSw = M_DelayRandom(400, 600);
-		infor += "按5号键\r\n";
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		 
+		addLog("按5号键");
 		//点击确认
 		for (int i = 0; i < 1; i++)
 		{
@@ -825,8 +825,8 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		}
 		RetSw = M_LeftClick(msdk_handle, 1);
 		RetSw = M_DelayRandom(1800, 2000);
-		infor += "按确定\r\n";
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		 
+		addLog("按确定");
 		if (bStop)break;
 		//滚动3次到了 
 		for (int i = 0; i < 3; i++)
@@ -835,8 +835,8 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			RetSw = M_DelayRandom(2000, 2200);
 		}
 		if (bStop)break;
-		infor += "滚轮3次\r\n";
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		 
+		addLog("滚轮3次");
 		if (bStop)break;
 		//走到地点
 		for (int i = 0; i < 1; i++)
@@ -852,8 +852,8 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
-		infor += "选定坐标\r\n";
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		 
+		addLog("选定坐标");
 		if (bStop)break;
 		//点击确认
 		for (int i = 0; i < 1; i++)
@@ -865,8 +865,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		RetSw = M_LeftClick(msdk_handle, 1);
 		if (bStop)break;
 		RetSw = M_DelayRandom(1800, 2000);
-		infor += "按确定\r\n";
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		addLog("点击屏幕人物开始移动"); 
 
 		if (bStop)break;
 		//走到地点
@@ -894,9 +893,8 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			RetSw = M_DelayRandom(800, 1000);
 
 		}
-		if (bStop)break;
-		infor += "走到地点\r\n";
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		if (bStop)break; 
+		addLog("走到地点"); 
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
@@ -908,10 +906,12 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			if (pDlg->bHuangLong == true)
 			{
 				RetSw = my_M_MoveTo(msdk_handle, (int)((1710) / rate), (int)((405) / rate));
+				addLog("移动到青龙");
 			}
 			else
 			{
 				RetSw = my_M_MoveTo(msdk_handle, (int)((1324) / rate), (int)((441) / rate));
+				addLog("移动到黄龙");
 			}
 			RetSw = M_DelayRandom(500, 600);
 		}
@@ -919,11 +919,13 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_LeftDoubleClick(msdk_handle, 1);
 		RetSw = M_DelayRandom(800, 1000);
-		infor += "点击\r\n";
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_DelayRandom(800, 1000);
+
 		RetSw = M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
-		infor += "run begin\r\n";
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		addLog("按下空格准备游戏");
+
 		pDlg->OnBnClickedButtonKeypress();
 		if (bStop)break;
 	} while (0);

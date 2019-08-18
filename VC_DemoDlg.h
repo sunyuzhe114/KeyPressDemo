@@ -67,4 +67,6 @@ public:
 	int m_screenWidth;
 	afx_msg void OnBnClickedButtonOpen3();
 	afx_msg void OnLbnSelchangeList2();
+	afx_msg void OnBnClickedCheck1();
+	BOOL bHuangLong;
 };

@@ -476,6 +476,7 @@ CVC_DemoDlg::CVC_DemoDlg(CWnd* pParent /*=NULL*/)
 	)
 	, m_checkTimes(5)
 	, m_screenWidth(0)
+	, bHuangLong(FALSE)
 {
 	m_rate = 2.5;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -495,6 +496,7 @@ void CVC_DemoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT6, m_checkTimes);
 	DDX_Control(pDX, IDC_LIST2, m_listLog);
 	DDX_Text(pDX, IDC_EDIT7, m_screenWidth);
+	DDX_Check(pDX, IDC_CHECK1, bHuangLong);
 }
 
 BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
@@ -524,6 +526,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT7, &CVC_DemoDlg::OnEnChangeEdit7)
 	ON_BN_CLICKED(IDC_BUTTON_OPEN3, &CVC_DemoDlg::OnBnClickedButtonOpen3)
 	ON_LBN_SELCHANGE(IDC_LIST2, &CVC_DemoDlg::OnLbnSelchangeList2)
+	ON_BN_CLICKED(IDC_CHECK1, &CVC_DemoDlg::OnBnClickedCheck1)
 END_MESSAGE_MAP()
 
 
@@ -902,7 +905,14 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = my_M_MoveTo(msdk_handle, (int)((1324) / rate), (int)((441) / rate));
+			if (pDlg->bHuangLong == true)
+			{
+				RetSw = my_M_MoveTo(msdk_handle, (int)((1710) / rate), (int)((405) / rate));
+			}
+			else
+			{
+				RetSw = my_M_MoveTo(msdk_handle, (int)((1324) / rate), (int)((441) / rate));
+			}
 			RetSw = M_DelayRandom(500, 600);
 		}
 		RetSw = M_LeftDoubleClick(msdk_handle, 1);
@@ -1855,4 +1865,10 @@ void CVC_DemoDlg::OnLbnSelchangeList2()
 	m_listLog.GetText(m_listLog.GetCurSel(), infor);
 	m_editLogInfor.SetWindowTextA(infor);
 	
+}
+
+
+void CVC_DemoDlg::OnBnClickedCheck1()
+{
+	// TODO: 在此添加控件通知处理程序代码
 }

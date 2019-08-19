@@ -475,7 +475,7 @@ CVC_DemoDlg::CVC_DemoDlg(CWnd* pParent /*=NULL*/)
 	, m_edit_keyword(_T("勇士")
 	)
 	, m_checkTimes(5)
-	, m_screenWidth(0)
+	, m_screenWidth(1920)
 	, bHuangLong(FALSE)
 {
 	m_rate = 2.5;
@@ -572,6 +572,17 @@ BOOL CVC_DemoDlg::OnInitDialog()
 		m_screenWidth = atol(infor);
 		 
 	}
+	::GetPrivateProfileString(APP_NAME, "bHuangLong", "", infor.GetBufferSetLength(256), 256, "d://keypressDemo.ini");
+	if (infor != "")
+	{
+		//SetDlgItemText(IDC_EDIT7, infor);
+		bHuangLong = atol(infor);
+		if(bHuangLong==1)
+		((CButton*)(GetDlgItem(IDC_CHECK1)))->SetCheck(1);
+
+	}
+	 
+	::SetWindowPos((HWND)(this->m_hWnd), HWND_TOP, 0, 0, 800, 600, SWP_SHOWWINDOW| SWP_NOSIZE);
 	OnBnClickedButtonKeypress4();
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -1874,10 +1885,14 @@ void CVC_DemoDlg::OnBnClickedCheck1()
 {
 	CString strInfor;
 	UpdateData();
+	CString rr;
+	rr.Format("%d", bHuangLong);
+	::WritePrivateProfileString(APP_NAME, "bHuangLong", rr, "d://keypressDemo.ini");
 	if (bHuangLong)
 	{
 		strInfor.Format("change to huanglong %d", bHuangLong);
 		addLog(strInfor);
+		
 	}
 	else
 	{

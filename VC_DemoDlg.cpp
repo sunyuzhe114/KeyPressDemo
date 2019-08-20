@@ -811,7 +811,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 
 		if (bChangeUser == true)
 		{
-			addLog("按下右键");
+			addLog("按下方向右键");
 			RetSw = M_KeyPress(msdk_handle, Keyboard_RightArrow, 1);
 			RetSw = M_DelayRandom(2100, 2300);
 
@@ -820,7 +820,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 
 		RetSw = M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
 		RetSw = M_DelayRandom(1400, 1600);
-		RetSw = M_DelayRandom(3000, 4000);
+		RetSw = M_DelayRandom(6000, 7000);
 		//按5号键，
 		if (bStop)break;
 		RetSw = M_KeyPress(msdk_handle, Keyboard_5, 1);

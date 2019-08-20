@@ -1712,7 +1712,7 @@ void CVC_DemoDlg::OnEnChangeEdit5()
 	UpdateData();
 	rate = m_rate;
 	CString rr;
-	rr.Format("%0.1lf", rate);
+	rr.Format("%0.2lf", rate);
 	CWinApp* pApp = AfxGetApp();
 	::WritePrivateProfileString(APP_NAME, "m_rate", rr, "d://keypressDemo.ini");
 }

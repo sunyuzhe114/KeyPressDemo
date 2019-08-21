@@ -528,6 +528,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_LBN_SELCHANGE(IDC_LIST2, &CVC_DemoDlg::OnLbnSelchangeList2)
 	ON_BN_CLICKED(IDC_CHECK1, &CVC_DemoDlg::OnBnClickedCheck1)
 	ON_WM_TIMER()
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 
@@ -1907,16 +1908,55 @@ void CVC_DemoDlg::OnBnClickedCheck1()
 
 void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 {
-	addLog("定时check");
+	 
 	CTime time = CTime::GetCurrentTime();
-	if (time.GetHour() == 10 && time.GetMinute() < 5)
+	if (time.GetHour() == 6 && time.GetMinute() < 5)
 	{
+		 
+		CWnd* pMainWnd = AfxGetMainWnd()->GetActiveWindow();
+		//	CWnd* pMainWnd = AfxGetMainWnd();
 
-		addLog("早起动");
+	 
+		 
+			CString strClassName;
+			CString text;
+			CString strCurrentWindow;
+			GetClassName(pMainWnd->m_hWnd, strClassName.GetBufferSetLength(100), 100);
+		  ::GetWindowText(pMainWnd->m_hWnd, text.GetBufferSetLength(256), 256);
+
+
+		addLog("早起动"+ text);
 		KillTimer(0);
 		//OnBnClickedButtonKeypress6();
 		
 	}
+	else
+	{
+		CWnd* pMainWnd = AfxGetMainWnd()->GetForegroundWindow();
+		 
+		CString strClassName;
+		CString text;
+		CString strCurrentWindow;
+		GetClassName(pMainWnd->m_hWnd, strClassName.GetBufferSetLength(100), 100);
+		::GetWindowText(pMainWnd->m_hWnd, text.GetBufferSetLength(256), 256);
+		if (text.Find(m_edit_keyword) != -1)
+		{
+			addLog("check " + text);
+		}
+		else
+		{
+			addLog("lost focus " + text);
+		}
 
+		
+	}
 	CDialogEx::OnTimer(nIDEvent);
+}
+
+
+void CVC_DemoDlg::OnClose()
+{
+	KillTimer(0);
+
+	CDialogEx::OnClose();
 }

@@ -527,6 +527,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_OPEN3, &CVC_DemoDlg::OnBnClickedButtonOpen3)
 	ON_LBN_SELCHANGE(IDC_LIST2, &CVC_DemoDlg::OnLbnSelchangeList2)
 	ON_BN_CLICKED(IDC_CHECK1, &CVC_DemoDlg::OnBnClickedCheck1)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -581,7 +582,7 @@ BOOL CVC_DemoDlg::OnInitDialog()
 		((CButton*)(GetDlgItem(IDC_CHECK1)))->SetCheck(1);
 
 	}
-	 
+	SetTimer(0, 60000, NULL);
 	::SetWindowPos((HWND)(this->m_hWnd), HWND_TOP, 0, 0, 800, 600, SWP_SHOWWINDOW| SWP_NOSIZE);
 	OnBnClickedButtonKeypress4();
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
@@ -1868,7 +1869,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 {
 	pDlg->saveScreen();
 	checkGame_state();
- 
+	
 }
 
 
@@ -1883,6 +1884,7 @@ void CVC_DemoDlg::OnLbnSelchangeList2()
 
 void CVC_DemoDlg::OnBnClickedCheck1()
 {
+
 	CString strInfor;
 	UpdateData();
 	CString rr;
@@ -1900,4 +1902,21 @@ void CVC_DemoDlg::OnBnClickedCheck1()
 		addLog(strInfor);
 	}
 
+}
+
+
+void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	addLog("定时check");
+	CTime time = CTime::GetCurrentTime();
+	if (time.GetHour() == 10 && time.GetMinute() < 5)
+	{
+
+		addLog("早起动");
+		KillTimer(0);
+		//OnBnClickedButtonKeypress6();
+		
+	}
+
+	CDialogEx::OnTimer(nIDEvent);
 }

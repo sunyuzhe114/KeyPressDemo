@@ -69,4 +69,5 @@ public:
 	afx_msg void OnLbnSelchangeList2();
 	afx_msg void OnBnClickedCheck1();
 	BOOL bHuangLong;
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };

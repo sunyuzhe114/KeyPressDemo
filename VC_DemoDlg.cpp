@@ -1945,6 +1945,10 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 		}
 		else
 		{
+			if (text.Find("ÃÔÄã°æ") != -1)
+			{
+				::PostMessage(pMainWnd->m_hWnd, WM_CLOSE, NULL, NULL);
+			}
 			addLog("lost focus " + text);
 		}
 

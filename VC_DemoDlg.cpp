@@ -583,7 +583,7 @@ BOOL CVC_DemoDlg::OnInitDialog()
 		((CButton*)(GetDlgItem(IDC_CHECK1)))->SetCheck(1);
 
 	}
-	SetTimer(0, 60000, NULL);
+	SetTimer(0, 6000000, NULL);
 	::SetWindowPos((HWND)(this->m_hWnd), HWND_TOP, 0, 0, 800, 600, SWP_SHOWWINDOW| SWP_NOSIZE);
 	OnBnClickedButtonKeypress4();
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE

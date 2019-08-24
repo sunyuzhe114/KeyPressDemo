@@ -583,7 +583,7 @@ BOOL CVC_DemoDlg::OnInitDialog()
 		((CButton*)(GetDlgItem(IDC_CHECK1)))->SetCheck(1);
 
 	}
-	SetTimer(0, 6000000, NULL);
+	SetTimer(0, 100000, NULL);
 	::SetWindowPos((HWND)(this->m_hWnd), HWND_TOP, 0, 0, 800, 600, SWP_SHOWWINDOW| SWP_NOSIZE);
 	OnBnClickedButtonKeypress4();
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
@@ -1542,7 +1542,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 	{
 		RetSw = M_ResetMousePos(msdk_handle);
 		RetSw = M_DelayRandom(500, 600);
-		RetSw = my_M_MoveTo(msdk_handle, (int)((1371) / rate), (int)((347) / rate));
+		RetSw = my_M_MoveTo(msdk_handle, (int)((1371) / rate), (int)((351) / rate));
 		RetSw = M_DelayRandom(500, 600);
 	}
 	RetSw = M_LeftClick(msdk_handle, 1);
@@ -1913,26 +1913,26 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 	if (time.GetHour() == 6 && time.GetMinute() < 5)
 	{
 		 
-		CWnd* pMainWnd = AfxGetMainWnd()->GetActiveWindow();
-		//	CWnd* pMainWnd = AfxGetMainWnd();
+		//CWnd* pMainWnd = AfxGetMainWnd()->GetActiveWindow();
+		////	CWnd* pMainWnd = AfxGetMainWnd();
 
-	 
-		 
-			CString strClassName;
-			CString text;
-			CString strCurrentWindow;
-			GetClassName(pMainWnd->m_hWnd, strClassName.GetBufferSetLength(100), 100);
-		  ::GetWindowText(pMainWnd->m_hWnd, text.GetBufferSetLength(256), 256);
+	 //
+		// 
+		//	CString strClassName;
+		//	CString text;
+		//	CString strCurrentWindow;
+		//	GetClassName(pMainWnd->m_hWnd, strClassName.GetBufferSetLength(100), 100);
+		//  ::GetWindowText(pMainWnd->m_hWnd, text.GetBufferSetLength(256), 256);
 
 
-		addLog("早起动"+ text);
+		addLog("早起动");
 		KillTimer(0);
-		//OnBnClickedButtonKeypress6();
+		OnBnClickedButtonKeypress6();
 		
 	}
 	else
 	{
-		CWnd* pMainWnd = AfxGetMainWnd()->GetForegroundWindow();
+	/*	CWnd* pMainWnd = AfxGetMainWnd()->GetForegroundWindow();
 		 
 		CString strClassName;
 		CString text;
@@ -1950,7 +1950,7 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 				::PostMessage(pMainWnd->m_hWnd, WM_CLOSE, NULL, NULL);
 			}
 			addLog("lost focus " + text);
-		}
+		}*/
 
 		
 	}

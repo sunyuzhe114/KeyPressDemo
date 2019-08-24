@@ -31,6 +31,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	static void runinThread();
+	void begin_check_game();
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedButtonOpen();
 	afx_msg void OnBnClickedButtonClose();
@@ -50,6 +51,7 @@ public:
 	CListBox m_listWindow;
 	CString m_edit_keyword;
 	afx_msg void OnBnClickedButtonKeypress6();
+	void playerlogin();
 	double m_rate;
 	afx_msg void OnEnChangeEdit5();
 	CEdit m_editRate;

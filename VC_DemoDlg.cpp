@@ -30,6 +30,7 @@ bool bFullStop = false;
 bool bChangeUser = true;
 DWORD m_dTimeBegin = 0;
 DWORD m_timeLimit = 0;
+const UINT TIMER_LENGTH = 600000;
 LONG dleft = 1120;
 LONG dtop = 0;
 /// Global Variables
@@ -583,7 +584,7 @@ BOOL CVC_DemoDlg::OnInitDialog()
 		((CButton*)(GetDlgItem(IDC_CHECK1)))->SetCheck(1);
 
 	}
-	SetTimer(0, 100000, NULL);
+	SetTimer(0, TIMER_LENGTH, NULL);
 	::SetWindowPos((HWND)(this->m_hWnd), HWND_TOP, 0, 0, 800, 600, SWP_SHOWWINDOW| SWP_NOSIZE);
 	OnBnClickedButtonKeypress4();
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
@@ -769,7 +770,7 @@ DWORD WINAPI    LoginUser_Thread(LPVOID pp)
 		infor += "点击\r\n";
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
-		pDlg->OnBnClickedButtonKeypress();
+		pDlg->begin_check_game();
 
 	} while (0);
 	return 0;
@@ -934,12 +935,12 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		RetSw = M_DelayRandom(800, 1000);
 		
 		RetSw = M_DelayRandom(800, 1000);
-		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_DelayRandom(2200, 4200);
 
 		RetSw = M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
 		addLog("按下空格准备游戏");
 
-		pDlg->OnBnClickedButtonKeypress();
+		pDlg->begin_check_game();
 		if (bStop)break;
 	} while (0);
 	infor += "exit \r\n";
@@ -1428,10 +1429,10 @@ void CVC_DemoDlg::saveScreen()
 
 
 }
-void CVC_DemoDlg::OnBnClickedButtonKeypress()
-{
 
-	m_dTimeBegin = GetTickCount();
+void CVC_DemoDlg::begin_check_game()
+{
+m_dTimeBegin = GetTickCount();
 	UpdateData(true);
 	m_timeLimit = m_intMinute;//分钟
 	bStop = false;
@@ -1445,6 +1446,12 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress()
 	HANDLE hThread = CreateThread(NULL, 0, checkThread_Game, (LPVOID)msdk_handle, 0, NULL);
 
 	GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(false);
+}
+void CVC_DemoDlg::OnBnClickedButtonKeypress()
+{
+	OnBnClickedButtonKeypress4();
+	begin_check_game();
+	
 
 }
 
@@ -1485,7 +1492,7 @@ void CVC_DemoDlg::OnBnClickedButtonGetmousepos()
 		return;
 	}
 	else {
-
+		SetTimer(0, TIMER_LENGTH, NULL);
 		m_listLog.ResetContent();
 		m_editLogInfor.SetWindowTextA("reset");
 	}
@@ -1690,8 +1697,7 @@ void CVC_DemoDlg::OnEnChangeEdit2()
 	// TODO:  在此添加控件通知处理程序代码
 }
 
-
-void CVC_DemoDlg::OnBnClickedButtonKeypress6()
+void CVC_DemoDlg::playerlogin()
 {
 	m_dTimeBegin = GetTickCount(); 
 	UpdateData();
@@ -1706,7 +1712,13 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress6()
 
 
 	HANDLE hThread = CreateThread(NULL, 0, changeUser_And_Login_Thread, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
+
 }
+void CVC_DemoDlg::OnBnClickedButtonKeypress6()
+{
+	OnBnClickedButtonKeypress4();
+	playerlogin();
+	}
 
 
 void CVC_DemoDlg::OnEnChangeEdit5()
@@ -1910,24 +1922,33 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	 
 	CTime time = CTime::GetCurrentTime();
-	if (time.GetHour() == 6 && time.GetMinute() < 5)
+	if (time.GetHour() == 7 && time.GetMinute() <60)
 	{
 		 
-		//CWnd* pMainWnd = AfxGetMainWnd()->GetActiveWindow();
-		////	CWnd* pMainWnd = AfxGetMainWnd();
+		CWnd* pMainWnd = AfxGetMainWnd()->GetForegroundWindow();
 
-	 //
-		// 
-		//	CString strClassName;
-		//	CString text;
-		//	CString strCurrentWindow;
-		//	GetClassName(pMainWnd->m_hWnd, strClassName.GetBufferSetLength(100), 100);
-		//  ::GetWindowText(pMainWnd->m_hWnd, text.GetBufferSetLength(256), 256);
+		CString strClassName;
+		CString text;
+		CString strCurrentWindow;
+		GetClassName(pMainWnd->m_hWnd, strClassName.GetBufferSetLength(100), 100);
+		::GetWindowText(pMainWnd->m_hWnd, text.GetBufferSetLength(256), 256);
+		if (text.Find(m_edit_keyword) != -1)
+		{
+			addLog("早起动");
+			KillTimer(0);
+			playerlogin();
+		}
+		else
+		{
+			if (text.Find("迷你版") != -1)
+			{
+				::PostMessage(pMainWnd->m_hWnd, WM_CLOSE, NULL, NULL);
+			}
+			addLog("lost focus " + text);
+		}
 
 
-		addLog("早起动");
-		KillTimer(0);
-		OnBnClickedButtonKeypress6();
+		
 		
 	}
 	else

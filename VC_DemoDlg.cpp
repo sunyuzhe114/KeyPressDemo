@@ -1922,7 +1922,7 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	 
 	CTime time = CTime::GetCurrentTime();
-	if (time.GetHour() == 7 && time.GetMinute() <60)
+	if (time.GetHour() ==6 && time.GetMinute() <60)
 	{
 		 
 		CWnd* pMainWnd = AfxGetMainWnd()->GetForegroundWindow();

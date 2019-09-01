@@ -78,7 +78,8 @@ int my_M_MoveTo(HANDLE m_hdl, int x, int y)
 	return M_MoveTo(  m_hdl,   x + changeX,   y+changeY);
 	//return M_MoveTo(m_hdl, x  , y );
 }
-CPoint findImage(string strPath_findImage)
+//找指定图位置，letf,top,right,buttom在指定范围
+CPoint findImage(string strPath_findImage,int left,int top,int right,int bottom)
 {
 	pDlg->saveScreen(); 
 	CPoint pt(0, 0);
@@ -153,7 +154,7 @@ CPoint findImage(string strPath_findImage)
 	/* long changeX = dleft - 1120;
 	long changeY = dtop - 0; */
 	infor.Format("x=%ld,y=%ld,maxVal=%0.2lf,changeX=%ld,changeY=%ld", matchLoc.x, matchLoc.y, maxVal, changeX, changeY);
-	addLog("find sure button" + infor);
+	addLog("find image" + infor);
 	//if ((matchLoc.x - changeX) > 1255 && (matchLoc.x - changeX) < 1615 && (matchLoc.y - changeY) >= 275 && (matchLoc.y - changeY) <=430 && maxVal > 0.5 )
 	if ((matchLoc.x - changeX) > (SCREEN_CX - 695) && (matchLoc.x - changeX) < (SCREEN_CX - 305) && (matchLoc.y - changeY) >= 275 && (matchLoc.y - changeY) <= 430 && maxVal > 0.5)
 	{
@@ -1884,8 +1885,8 @@ void CVC_DemoDlg::OnEnChangeEdit7()
 
 void CVC_DemoDlg::OnBnClickedButtonOpen3()
 {
-	pDlg->saveScreen();
-	checkGame_state();
+	OnBnClickedButtonKeypress4();
+	CPoint cp = findImage("d://mainmenu.bmp", 1499, 442, 1571,476);
 	
 }
 
@@ -1926,7 +1927,7 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	 
 	CTime time = CTime::GetCurrentTime();
-	if (time.GetHour() ==6 && time.GetMinute() <60)
+	if (time.GetHour() ==6 && time.GetMinute() <10)
 	{
 		 
 		CWnd* pMainWnd = AfxGetMainWnd()->GetForegroundWindow();

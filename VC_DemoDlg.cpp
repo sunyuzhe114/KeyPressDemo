@@ -360,10 +360,21 @@ int checkGame_state()
 		  
 		//imshow("test", NewImg);
 		if (tempVal.val[1] <= 30 && tempVal.val[2] <= 46)
-		{
-			infor  = "帐号已经使用完成 0";
+		{ 
+			CString str;
+			CTime t = CTime::GetCurrentTime();
+			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
 			 
-			addLog(infor);
+			str.Format("%s==>%s\r\n", tt,"帐号已经使用完成 0");
+			CStdioFile file;
+			if (file.Open(_T("d:\\log.txt"), CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate, NULL))
+			{
+				file.SeekToEnd();
+				file.WriteString(str);
+				file.Close();
+			}
+			
+			addLog("帐号已经使用完成 0");
 			Game_state =100;
 			bResult = 100;// 
 		}
@@ -1887,9 +1898,21 @@ void CVC_DemoDlg::OnEnChangeEdit7()
 
 void CVC_DemoDlg::OnBnClickedButtonOpen3()
 {
-	OnBnClickedButtonKeypress4();
-	CPoint cp = findImage("d://mainmenu.bmp", 1499, 442, 1571,476);
-	
+//	OnBnClickedButtonKeypress4();
+	//CPoint cp = findImage("d://mainmenu.bmp", 1499, 442, 1571,476);
+	CString str;
+	CTime t = CTime::GetCurrentTime();
+	CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+
+	str.Format("%s==>%s\n", tt, "帐号已经使用完成 0");
+	addLog(str);
+	CStdioFile file;
+	if (file.Open(_T("d:\\log.txt"), CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate, NULL))
+	{
+		file.SeekToEnd();
+		file.WriteString(str);
+		file.Close();
+	}
 }
 
 

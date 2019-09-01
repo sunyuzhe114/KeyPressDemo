@@ -867,8 +867,10 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
+		addLog("向左移动一步");
 		RetSw = M_KeyPress(msdk_handle, Keyboard_Douhao, 1);
 		RetSw = M_DelayRandom(800, 1000);
+		addLog("向右移动二步");
 		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);

@@ -867,6 +867,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		 
 		addLog("滚轮3次");
 		if (bStop)break;
+		RetSw = M_DelayRandom(800, 1000);
 		//走到地点
 		for (int i = 0; i < 1; i++)
 		{
@@ -877,6 +878,59 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		if (bStop)break;
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_LeftClick(msdk_handle, 1);
+
+
+
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_DelayRandom(800, 1000);
+		
+		addLog("选定坐标");
+		if (bStop)break;
+		//点击确认
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			RetSw = my_M_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+			RetSw = M_DelayRandom(500, 600);
+		}
+		RetSw = M_LeftClick(msdk_handle, 1);
+
+		addLog("点击确认");
+		if (bStop)break;
+		RetSw = M_DelayRandom(1800, 2000);
+		addLog("点击屏幕人物开始移动"); 
+
+		if (bStop)break;
+		//走到地点
+		for (int j = 0; j < 2; j++)
+		{
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				RetSw = my_M_MoveTo(msdk_handle, (int)((1753) / rate), (int)((503) / rate));
+				RetSw = M_DelayRandom(500, 600);
+			}
+			RetSw = M_RightClick(msdk_handle, 1);
+			RetSw = M_DelayRandom(800, 1000);
+
+		}
+		addLog("右击走到地点");
+		for (int j = 0; j < 2; j++)
+		{
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				RetSw = my_M_MoveTo(msdk_handle, (int)((1660) / rate), (int)((503) / rate));
+				RetSw = M_DelayRandom(500, 600);
+			}
+			RetSw = M_RightClick(msdk_handle, 1);
+			RetSw = M_DelayRandom(800, 1000);
+
+		}
+		if (bStop)break; 
+		addLog("右击走到地点"); 
+
+		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
@@ -884,7 +938,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
-		addLog("向左移动一步");
+		addLog("键盘向左移动一步");
 		RetSw = M_KeyPress(msdk_handle, Keyboard_Douhao, 1);
 		RetSw = M_DelayRandom(800, 1000);
 		addLog("向左移动一步");
@@ -913,51 +967,8 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
-		addLog("选定坐标");
-		if (bStop)break;
-		//点击确认
-		for (int i = 0; i < 1; i++)
-		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = my_M_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
-			RetSw = M_DelayRandom(500, 600);
-		}
-		RetSw = M_LeftClick(msdk_handle, 1);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1800, 2000);
-		addLog("点击屏幕人物开始移动"); 
 
-		if (bStop)break;
-		//走到地点
-		for (int j = 0; j < 2; j++)
-		{
-			for (int i = 0; i < 1; i++)
-			{
-				RetSw = M_ResetMousePos(msdk_handle);
-				RetSw = my_M_MoveTo(msdk_handle, (int)((1753) / rate), (int)((503) / rate));
-				RetSw = M_DelayRandom(500, 600);
-			}
-			RetSw = M_RightClick(msdk_handle, 1);
-			RetSw = M_DelayRandom(800, 1000);
 
-		}
-		for (int j = 0; j < 2; j++)
-		{
-			for (int i = 0; i < 1; i++)
-			{
-				RetSw = M_ResetMousePos(msdk_handle);
-				RetSw = my_M_MoveTo(msdk_handle, (int)((1660) / rate), (int)((503) / rate));
-				RetSw = M_DelayRandom(500, 600);
-			}
-			RetSw = M_RightClick(msdk_handle, 1);
-			RetSw = M_DelayRandom(800, 1000);
-
-		}
-		if (bStop)break; 
-		addLog("走到地点"); 
-		RetSw = M_DelayRandom(800, 1000);
-		RetSw = M_DelayRandom(800, 1000);
-		RetSw = M_DelayRandom(800, 1000);
 		if (bStop)break;
 		//点击 
 		for (int i = 0; i < 1; i++)

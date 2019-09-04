@@ -1113,6 +1113,20 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
 			RetSw = M_DelayRandom(200, 500);
 			RetSw = M_DelayRandom(200, 500);
+			//这里可以点击一下再按F10
+
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				RetSw = my_M_MoveTo(msdk_handle, 1385 / rate, 110 / rate);
+				RetSw = M_DelayRandom(800, 1000);
+			}
+			RetSw = M_DelayRandom(800, 1000);
+			RetSw = M_LeftClick(msdk_handle, 1);
+
+
+			RetSw = M_DelayRandom(200, 500);
+			RetSw = M_DelayRandom(200, 500);
 			RetSw = M_KeyPress(msdk_handle, Keyboard_F10, 1);
 			RetSw = M_DelayRandom(3100, 4500);
 			RetSw = M_KeyDown(msdk_handle, Keyboard_KongGe);

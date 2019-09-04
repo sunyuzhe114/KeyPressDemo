@@ -672,14 +672,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen()
 
 void CVC_DemoDlg::OnBnClickedButtonClose()
 {
-	if (msdk_handle != INVALID_HANDLE_VALUE) {
-		M_Close(msdk_handle);
-		msdk_handle = INVALID_HANDLE_VALUE;
-		GetDlgItem(IDC_BUTTON_OPEN)->EnableWindow(true);
-	}
-	else {
-		AfxMessageBox("还未打开端口，请先打开端口");
-	}
+	ShellExecute(this->m_hWnd, "open", "https://github.com/sunyuzhe114/KeyPressDemo/blob/master/x64/Release/VC_Demo.exe", NULL, NULL, SW_SHOWMAXIMIZED);
 }
 
 //已经与changeUser_And_Login_Thread合并
@@ -891,7 +884,29 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		addLog("向左移动一步");
 		RetSw = M_KeyPress(msdk_handle, Keyboard_Douhao, 1);
 		RetSw = M_DelayRandom(800, 1000);
+		addLog("向左移动一步");
+		RetSw = M_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		addLog("向左移动一步");
+		RetSw = M_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+		RetSw = M_DelayRandom(800, 1000);
 		addLog("向右移动二步");
+		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_JuHao, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_JuHao, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);

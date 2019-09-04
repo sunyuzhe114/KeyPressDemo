@@ -843,7 +843,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		if (bStop)break;
 		RetSw = M_KeyPress(msdk_handle, Keyboard_5, 1);
 		RetSw = M_DelayRandom(400, 600);
-		 
+		RetSw = M_DelayRandom(400, 600);
 		addLog("按5号键");
 		//点击确认
 		for (int i = 0; i < 1; i++)
@@ -861,7 +861,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		for (int i = 0; i < 3; i++)
 		{
 			RetSw = M_MouseWheel(msdk_handle, -1);
-			RetSw = M_DelayRandom(2000, 2200);
+			RetSw = M_DelayRandom(2200, 2500);
 		}
 		if (bStop)break;
 		 

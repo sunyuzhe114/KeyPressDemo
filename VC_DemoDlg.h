@@ -73,4 +73,5 @@ public:
 	BOOL bHuangLong;
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnClose();
+	CListBox m_list_time_log;
 };

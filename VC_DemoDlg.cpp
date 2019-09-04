@@ -50,6 +50,7 @@ float dbZoomScale = 1.0;
 int checkGame_state( );
 DWORD WINAPI    changeUser_Thread(LPVOID pp);
 void addLog(CString infor);
+void addLog_important(CString infor);
 void addLog(CString infor)
 {
 	CTime time=CTime::GetCurrentTime();
@@ -61,6 +62,14 @@ void addLog(CString infor)
 		pDlg->m_listLog.ResetContent();
 	}
 	pDlg->m_editLogInfor.SetWindowTextA(strshow);
+}
+void addLog_important(CString infor)
+{
+	CTime time = CTime::GetCurrentTime();
+	CString date = time.Format("%H:%M:%S");
+	CString strshow = date + "   " + infor;
+	pDlg->m_list_time_log.InsertString(0, strshow);
+	 
 }
 int my_M_MoveTo(HANDLE m_hdl, int x, int y) 
 { 
@@ -366,14 +375,14 @@ int checkGame_state()
 			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
 			 
 			str.Format("%s==>%s\r\n", tt,"帐号已经使用完成 0");
-			CStdioFile file;
+			/*CStdioFile file;
 			if (file.Open(_T("d:\\log.txt"), CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate, NULL))
 			{
 				file.SeekToEnd();
 				file.WriteString(str);
 				file.Close();
-			}
-			
+			}*/
+			addLog_important(str);
 			addLog("帐号已经使用完成 0");
 			Game_state =100;
 			bResult = 100;// 
@@ -510,6 +519,7 @@ void CVC_DemoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST2, m_listLog);
 	DDX_Text(pDX, IDC_EDIT7, m_screenWidth);
 	DDX_Check(pDX, IDC_CHECK1, bHuangLong);
+	DDX_Control(pDX, IDC_LIST3, m_list_time_log);
 }
 
 BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
@@ -1475,7 +1485,7 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress()
 
 void CVC_DemoDlg::OnBnClickedButtonMover()
 {
-	m_checkTimes = 5;
+	m_checkTimes =6;
 	UpdateData(false);
 }
 

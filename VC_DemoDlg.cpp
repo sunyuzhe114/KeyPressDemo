@@ -875,7 +875,10 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			RetSw = M_DelayRandom(500, 600);
 		}
 		if (bStop)break;
+		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_LeftClick(msdk_handle, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
 		if (bStop)break;
 		RetSw = M_DelayRandom(800, 1000);

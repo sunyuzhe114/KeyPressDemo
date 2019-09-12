@@ -88,7 +88,8 @@ int my_M_MoveTo(HANDLE m_hdl, int x, int y)
 	return M_MoveTo(  m_hdl,   x + changeX,   y+changeY);
 	//return M_MoveTo(m_hdl, x  , y );
 }
-//找指定图位置，letf,top,right,buttom在指定范围
+
+//找指定图位置，letf,top,right,buttom在指定范围 = > 发现在在游戏中 0 (1463, 54)
 CPoint findImage(string strPath_findImage,int left,int top,int right,int bottom)
 {
 	CPoint pt(0, 0);
@@ -168,8 +169,8 @@ CPoint findImage(string strPath_findImage,int left,int top,int right,int bottom)
 		templ.release();
 		/* long changeX = dleft - 1120;
 		long changeY = dtop - 0; */
-		infor.Format("x=%ld,y=%ld,maxVal=%0.2lf,changeX=%ld,changeY=%ld", matchLoc.x, matchLoc.y, maxVal, changeX, changeY);
-		addLog("find image" + infor);
+		infor.Format("X=%ld,Y=%ld,x=%ld,y=%ld,maxVal=%0.2lf,", changeX, changeY,matchLoc.x, matchLoc.y, maxVal  );
+		addLog("game " + infor);
 		//if ((matchLoc.x - changeX) > 1255 && (matchLoc.x - changeX) < 1615 && (matchLoc.y - changeY) >= 275 && (matchLoc.y - changeY) <=430 && maxVal > 0.5 )
 		if (changeX > left && changeX <right && changeY >= top && changeY <= bottom && maxVal > 0.5)
 		{
@@ -2050,7 +2051,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 	//checkGame_state();
 //	OnBnClickedButtonKeypress4();
 	pDlg->saveScreen();
-	CPoint cp = findImage("d://ingame.png", 340, 3, 460,114);
+	CPoint cp = findImage("d://ingame.png", 340, 3, 460,60);
 	if (cp.x != 0 && cp.y != 0)
 	{
 

@@ -1429,7 +1429,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 	RetSw = M_DelayRandom(10000, 15000);
 	if (Game_state == 300)
 	{
-		pDlg->OnBnClickedButtonKeypress5();
+		pDlg->OnBnClickedButtonKeypress6();
 	}
 	else if (Global_checkTime < pDlg->m_checkTimes && bFullStop == false&& Game_state <= 200)
 	{

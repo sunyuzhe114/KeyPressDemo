@@ -20,7 +20,7 @@ using namespace std;
 #define new DEBUG_NEW
 #endif
 #define APP_NAME "notepad++"
-int  Game_state = -1;
+int  Game_state = -1;//Game_state = 100;用户已经用完，200，还可以再玩
 // CVC_DemoDlg 对话框
 int Global_checkTime = 0;
 double rate = 2.5;//* dbZoomScale
@@ -92,7 +92,7 @@ CPoint findImage(string strPath_findImage,int left,int top,int right,int bottom)
 {
 	CPoint pt(0, 0);
 	try {
-		pDlg->saveScreen();
+		//pDlg->saveScreen();
 		
 		img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
 		templ = cv::imread(strPath_findImage, IMREAD_COLOR);
@@ -159,15 +159,17 @@ CPoint findImage(string strPath_findImage,int left,int top,int right,int bottom)
 		int SCREEN_CX = pDlg->m_screenWidth;//#1920
 
 		//x = 1727, y = 70,can't tell you if game is over or other
-
-		long changeX = dleft - (SCREEN_CX - 800);
-		long changeY = dtop - 0;
+		//matchloc.x ,matchloc.y是相对于系统坐标
+		//changeX,changeY 相对游戏框坐标
+		long changeX = matchLoc.x -dleft;
+		long changeY = matchLoc.y - dtop;
+;
 		/* long changeX = dleft - 1120;
 		long changeY = dtop - 0; */
 		infor.Format("x=%ld,y=%ld,maxVal=%0.2lf,changeX=%ld,changeY=%ld", matchLoc.x, matchLoc.y, maxVal, changeX, changeY);
 		addLog("find image" + infor);
 		//if ((matchLoc.x - changeX) > 1255 && (matchLoc.x - changeX) < 1615 && (matchLoc.y - changeY) >= 275 && (matchLoc.y - changeY) <=430 && maxVal > 0.5 )
-		if ((matchLoc.x - changeX) > (SCREEN_CX - 695) && (matchLoc.x - changeX) < (SCREEN_CX - 305) && (matchLoc.y - changeY) >= 275 && (matchLoc.y - changeY) <= 430 && maxVal > 0.5)
+		if (changeX > left && changeX <right && changeY >= top && changeY <= bottom && maxVal > 0.5)
 		{
 
 			pt.x = matchLoc.x;
@@ -1362,6 +1364,27 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			continue;
 			}
 		}
+		CPoint cp = findImage("d://ingame.png", 340, 3, 460, 114);
+		if (cp.x != 0 && cp.y != 0)
+		{
+
+			CString str;
+			CTime t = CTime::GetCurrentTime();
+			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+
+			str.Format("%s==>%s (%ld,%ld)\n", tt, "发现在在游戏中 0", cp.x, cp.y);
+			addLog(str);
+		}
+		else
+		{
+
+			CString str;
+			CTime t = CTime::GetCurrentTime();
+			CString tt = t.Format("%Y-%m-%d_%H-%M-%S"); 
+			str.Format("%s==>%s (%ld,%ld)\n", tt, "未在游戏中 0", cp.x, cp.y);
+			addLog(str);
+			Game_state = 300;
+		}
 
 
 		RetSw = M_DelayRandom(700, 800);
@@ -1396,7 +1419,11 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
 
 	RetSw = M_DelayRandom(10000, 15000);
-	if (Global_checkTime < pDlg->m_checkTimes && bFullStop == false)
+	if (Game_state == 300)
+	{
+		pDlg->OnBnClickedButtonKeypress5();
+	}
+	else if (Global_checkTime < pDlg->m_checkTimes && bFullStop == false&& Game_state <= 200)
 	{
 		CString infor;
 		infor.Format("stop continue remains %ld \r\n", pDlg->m_checkTimes-Global_checkTime);
@@ -2000,25 +2027,41 @@ void CVC_DemoDlg::OnEnChangeEdit7()
 
 void CVC_DemoDlg::OnBnClickedButtonOpen3()
 {
-	img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
-	try {
+	//img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
+	//try {
 
-		Mat NewImg = img(Rect(40, -5, 80, 30));
-	}
-	catch (Exception &e)
+	//	Mat NewImg = img(Rect(40, -5, 80, 30));
+	//}
+	//catch (Exception &e)
+	//{
+	//	addLog("catch error");
+	//}
+	//
+	//checkGame_state();
+//	OnBnClickedButtonKeypress4();
+	pDlg->saveScreen();
+	CPoint cp = findImage("d://ingame.png", 340, 3, 460,114);
+	if (cp.x != 0 && cp.y != 0)
 	{
-		addLog("catch error");
+
+	CString str;
+	CTime t = CTime::GetCurrentTime();
+	CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+
+	str.Format("%s==>%s (%ld,%ld)\n", tt, "发现在在游戏中 0",cp.x,cp.y);
+	addLog(str);
+	}
+	else 
+	{
+
+		CString str;
+		CTime t = CTime::GetCurrentTime();
+		CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+
+		str.Format("%s==>%s (%ld,%ld)\n", tt, "未在游戏中 0", cp.x, cp.y);
+		addLog(str);
 	}
 	
-	checkGame_state();
-//	OnBnClickedButtonKeypress4();
-	//CPoint cp = findImage("d://mainmenu.bmp", 1499, 442, 1571,476);
-	//CString str;
-	//CTime t = CTime::GetCurrentTime();
-	//CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
-
-	//str.Format("%s==>%s\n", tt, "帐号已经使用完成 0");
-	//addLog(str);
 	//CStdioFile file;
 	//if (file.Open(_T("d:\\log.txt"), CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate, NULL))
 	//{

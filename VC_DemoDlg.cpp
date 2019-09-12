@@ -164,7 +164,8 @@ CPoint findImage(string strPath_findImage,int left,int top,int right,int bottom)
 		//changeX,changeY 相对游戏框坐标
 		long changeX = matchLoc.x -dleft;
 		long changeY = matchLoc.y - dtop;
-;
+		img.release();
+		templ.release();
 		/* long changeX = dleft - 1120;
 		long changeY = dtop - 0; */
 		infor.Format("x=%ld,y=%ld,maxVal=%0.2lf,changeX=%ld,changeY=%ld", matchLoc.x, matchLoc.y, maxVal, changeX, changeY);
@@ -272,7 +273,9 @@ CPoint findSureButton_state()
 	int SCREEN_CX = pDlg->m_screenWidth;//#1920
 	 
 	//x = 1727, y = 70,can't tell you if game is over or other
- 
+	img.release();
+	templ.release();
+
 	long changeX = dleft - (SCREEN_CX - 800);
 	long changeY = dtop - 0;
 	/* long changeX = dleft - 1120;
@@ -296,8 +299,7 @@ CPoint findSureButton_state()
 		pt.y = 0;
 		return pt;
 	}
-	img.release();
-	templ.release();
+
 	return pt;
 	}
 	catch (Exception &e)

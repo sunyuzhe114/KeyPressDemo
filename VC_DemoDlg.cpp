@@ -21,6 +21,7 @@ using namespace std;
 #endif
 #define APP_NAME "notepad++"
 int  Game_state = -1;//Game_state = 100;用户已经用完，200，还可以再玩
+int not_in_game_time = 0;//检测到未在游戏中次数
 // CVC_DemoDlg 对话框
 int Global_checkTime = 0;
 double rate = 2.5;//* dbZoomScale
@@ -1374,6 +1375,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 
 			str.Format("%s==>%s (%ld,%ld)\n", tt, "发现在在游戏中 0", cp.x, cp.y);
 			addLog(str);
+			not_in_game_time = 0;
 		}
 		else
 		{
@@ -1383,7 +1385,13 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			CString tt = t.Format("%Y-%m-%d_%H-%M-%S"); 
 			str.Format("%s==>%s (%ld,%ld)\n", tt, "未在游戏中 0", cp.x, cp.y);
 			addLog(str);
-			Game_state = 300;
+			not_in_game_time++;
+			if (not_in_game_time >= 2)
+			{
+				not_in_game_time = 0;
+				Game_state = 300;
+				break;
+			}
 		}
 
 

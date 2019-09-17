@@ -1,5 +1,5 @@
-
-// VC_DemoDlg.cpp : ÊµÏÖÎÄ¼ş
+ï»¿
+// VC_DemoDlg.cpp : å®ç°æ–‡ä»¶
 //
 
 #include "stdafx.h"
@@ -20,8 +20,9 @@ using namespace std;
 #define new DEBUG_NEW
 #endif
 #define APP_NAME "notepad++"
-int  Game_state = -1;
-// CVC_DemoDlg ¶Ô»°¿ò
+int  Game_state = -1;//Game_state = 100;ç”¨æˆ·å·²ç»ç”¨å®Œï¼Œ200ï¼Œè¿˜å¯ä»¥å†ç©
+int not_in_game_time = 0;//æ£€æµ‹åˆ°æœªåœ¨æ¸¸æˆä¸­æ¬¡æ•°
+// CVC_DemoDlg å¯¹è¯æ¡†
 int Global_checkTime = 0;
 double rate = 2.5;//* dbZoomScale
 CVC_DemoDlg *pDlg;
@@ -50,6 +51,7 @@ float dbZoomScale = 1.0;
 int checkGame_state( );
 DWORD WINAPI    changeUser_Thread(LPVOID pp);
 void addLog(CString infor);
+void addLog_important(CString infor);
 void addLog(CString infor)
 {
 	CTime time=CTime::GetCurrentTime();
@@ -61,6 +63,14 @@ void addLog(CString infor)
 		pDlg->m_listLog.ResetContent();
 	}
 	pDlg->m_editLogInfor.SetWindowTextA(strshow);
+}
+void addLog_important(CString infor)
+{
+	CTime time = CTime::GetCurrentTime();
+	CString date = time.Format("%H:%M:%S");
+	CString strshow = date + "   " + infor;
+	pDlg->m_list_time_log.InsertString(0, strshow);
+	 
 }
 int my_M_MoveTo(HANDLE m_hdl, int x, int y) 
 { 
@@ -78,107 +88,127 @@ int my_M_MoveTo(HANDLE m_hdl, int x, int y)
 	return M_MoveTo(  m_hdl,   x + changeX,   y+changeY);
 	//return M_MoveTo(m_hdl, x  , y );
 }
-//ÕÒÖ¸¶¨Í¼Î»ÖÃ£¬letf,top,right,buttomÔÚÖ¸¶¨·¶Î§
+
+//æ‰¾æŒ‡å®šå›¾ä½ç½®ï¼Œletf,top,right,buttomåœ¨æŒ‡å®šèŒƒå›´ = > å‘ç°åœ¨åœ¨æ¸¸æˆä¸­ 0 (1463, 54)
 CPoint findImage(string strPath_findImage,int left,int top,int right,int bottom)
 {
-	pDlg->saveScreen(); 
 	CPoint pt(0, 0);
-	img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
-	templ = cv::imread(strPath_findImage, IMREAD_COLOR);
-	//! [copy_source]
-	/// Source image to display
-	Mat img_display;
-	img.copyTo(img_display);
-	//! [copy_source]
+	try {
+		//pDlg->saveScreen();
+		
+		img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
+		templ = cv::imread(strPath_findImage, IMREAD_COLOR);
+		//! [copy_source]
+		/// Source image to display
+		Mat img_display;
+		img.copyTo(img_display);
+		//! [copy_source]
 
-	//! [create_result_matrix]
-	/// Create the result matrix
-	int result_cols = img.cols - templ.cols + 1;
-	int result_rows = img.rows - templ.rows + 1;
+		//! [create_result_matrix]
+		/// Create the result matrix
+		int result_cols = img.cols - templ.cols + 1;
+		int result_rows = img.rows - templ.rows + 1;
 
-	result.create(result_rows, result_cols, CV_32FC1);
-	//! [create_result_matrix]
+		result.create(result_rows, result_cols, CV_32FC1);
+		//! [create_result_matrix]
 
-	//! [match_template]
-	/// Do the Matching and Normalize
+		//! [match_template]
+		/// Do the Matching and Normalize
 
-	matchTemplate(img, templ, result, match_method);
+		matchTemplate(img, templ, result, match_method);
 
-	//! [match_template]
+		//! [match_template]
 
-	//! [normalize]
-	normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat());
-	//! [normalize]
+		//! [normalize]
+		normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat());
+		//! [normalize]
 
-	//! [best_match]
-	/// Localizing the best match with minMaxLoc
-	double minVal; double maxVal; Point minLoc; Point maxLoc;
-	Point matchLoc;
+		//! [best_match]
+		/// Localizing the best match with minMaxLoc
+		double minVal; double maxVal; Point minLoc; Point maxLoc;
+		Point matchLoc;
 
-	minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
-	//! [best_match]
+		minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
+		//! [best_match]
 
-	//! [match_loc]
-	/// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
-	if (match_method == TM_SQDIFF || match_method == TM_SQDIFF_NORMED)
-	{
-		matchLoc = minLoc;
-	}
-	else
-	{
-		matchLoc = maxLoc;
-	}
+		//! [match_loc]
+		/// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
+		if (match_method == TM_SQDIFF || match_method == TM_SQDIFF_NORMED)
+		{
+			matchLoc = minLoc;
+		}
+		else
+		{
+			matchLoc = maxLoc;
+		}
 
-	//! [match_loc]
+		//! [match_loc]
 
-	//! [imshow]
-	/// Show me what you got
+		//! [imshow]
+		/// Show me what you got
 
-	//rectangle(img_display, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
-	//rectangle(result, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
+		//rectangle(img_display, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
+		//rectangle(result, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
 
-	//imshow(image_window, img_display);
-	//imshow(result_window, result);
-	//! [imshow]
+		//imshow(image_window, img_display);
+		//imshow(result_window, result);
+		//! [imshow]
 
-	CString infor;
+		CString infor;
 
-	//x = 1727, y = 70,can't tell you if game is over or other
-	bool bResult = -1;
-	int SCREEN_CX = pDlg->m_screenWidth;//#1920
+		//x = 1727, y = 70,can't tell you if game is over or other
+		bool bResult = -1;
+		int SCREEN_CX = pDlg->m_screenWidth;//#1920
 
-	//x = 1727, y = 70,can't tell you if game is over or other
+		//x = 1727, y = 70,can't tell you if game is over or other
+		//matchloc.x ,matchloc.yæ˜¯ç›¸å¯¹äºç³»ç»Ÿåæ ‡
+		//changeX,changeY ç›¸å¯¹æ¸¸æˆæ¡†åæ ‡
+		long changeX = matchLoc.x -dleft;
+		long changeY = matchLoc.y - dtop;
+		img.release();
+		templ.release();
+		/* long changeX = dleft - 1120;
+		long changeY = dtop - 0; */
+		infor.Format("X=%ld,Y=%ld,x=%ld,y=%ld,maxVal=%0.2lf,", changeX, changeY,matchLoc.x, matchLoc.y, maxVal  );
+		addLog("game " + infor);
+		//if ((matchLoc.x - changeX) > 1255 && (matchLoc.x - changeX) < 1615 && (matchLoc.y - changeY) >= 275 && (matchLoc.y - changeY) <=430 && maxVal > 0.5 )
+		if (changeX > left && changeX <right && changeY >= top && changeY <= bottom && maxVal > 0.5)
+		{
 
-	long changeX = dleft - (SCREEN_CX - 800);
-	long changeY = dtop - 0;
-	/* long changeX = dleft - 1120;
-	long changeY = dtop - 0; */
-	infor.Format("x=%ld,y=%ld,maxVal=%0.2lf,changeX=%ld,changeY=%ld", matchLoc.x, matchLoc.y, maxVal, changeX, changeY);
-	addLog("find image" + infor);
-	//if ((matchLoc.x - changeX) > 1255 && (matchLoc.x - changeX) < 1615 && (matchLoc.y - changeY) >= 275 && (matchLoc.y - changeY) <=430 && maxVal > 0.5 )
-	if ((matchLoc.x - changeX) > (SCREEN_CX - 695) && (matchLoc.x - changeX) < (SCREEN_CX - 305) && (matchLoc.y - changeY) >= 275 && (matchLoc.y - changeY) <= 430 && maxVal > 0.5)
-	{
-
-		pt.x = matchLoc.x;
-		pt.y = matchLoc.y;
+			pt.x = matchLoc.x;
+			pt.y = matchLoc.y;
+			return pt;
+		}
+		else
+		{
+			infor += "æœªæ£€æµ‹åˆ°æŒ‰é’® ";
+			addLog(infor);
+			bResult = -1; Game_state = -1;
+			pt.x = 0;
+			pt.y = 0;
+			return pt;
+		}
+		img.release();
+		templ.release();
 		return pt;
 	}
-	else
+	catch (Exception &e)
 	{
-		infor += "Î´¼ì²âµ½°´Å¥ ";
-		addLog(infor);
-		bResult = -1;Game_state = -1;
-		pt.x = 0;
-		pt.y = 0;
-		return pt;
+		addLog("error findimg");
 	}
-	img.release();
-	templ.release();
+	pt.x = 0;
+	pt.y = 0;
 	return pt;
+
 }
 CPoint findSureButton_state()
 {
 	CPoint pt(0,0);
+	try {
+
+		 
+	
+	
 	img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
 	templ = cv::imread("d:\\confirm.png", IMREAD_COLOR);
 	//! [copy_source]
@@ -244,7 +274,9 @@ CPoint findSureButton_state()
 	int SCREEN_CX = pDlg->m_screenWidth;//#1920
 	 
 	//x = 1727, y = 70,can't tell you if game is over or other
- 
+	img.release();
+	templ.release();
+
 	long changeX = dleft - (SCREEN_CX - 800);
 	long changeY = dtop - 0;
 	/* long changeX = dleft - 1120;
@@ -261,142 +293,171 @@ CPoint findSureButton_state()
 	}
 	else
 	{
-		infor += "Î´¼ì²âµ½°´Å¥ ";
+		infor += "æœªæ£€æµ‹åˆ°æŒ‰é’® ";
 		addLog(infor);
 		bResult = -1;Game_state = -1;
 		pt.x = 0;
 		pt.y = 0;
 		return pt;
 	}
-	img.release();
-	templ.release();
+
 	return pt;
+	}
+	catch (Exception &e)
+	{
+		addLog("catch error findSureButton_state");
+	}
+	pt.x = 0;
+	pt.y = 0;
+	return pt;
+
 }
-//0±íÊ¾ÒÑ¾­ÕÊºÅÓÃ¹â
-//1±íÊ¾»¹¿ÉÒÔÔÙÍæ
-//-1±íÊ¾Î´¼ì²âµ½
+//0è¡¨ç¤ºå·²ç»å¸å·ç”¨å…‰
+//1è¡¨ç¤ºè¿˜å¯ä»¥å†ç©
+//-1è¡¨ç¤ºæœªæ£€æµ‹åˆ°
 int checkGame_state()
 {
-	img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
-	templ = cv::imread("d:\\fightagain.png", IMREAD_COLOR);
-	//! [copy_source]
-	/// Source image to display
-	Mat img_display;
-	img.copyTo(img_display);
-	//! [copy_source]
-
-	//! [create_result_matrix]
-	/// Create the result matrix
-	int result_cols = img.cols - templ.cols + 1;
-	int result_rows = img.rows - templ.rows + 1;
-
-	result.create(result_rows, result_cols, CV_32FC1);
-	//! [create_result_matrix]
-
-	//! [match_template]
-	/// Do the Matching and Normalize
-
-	matchTemplate(img, templ, result, match_method);
-
-	//! [match_template]
-
-	//! [normalize]
-	normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat());
-	//! [normalize]
-
-	//! [best_match]
-	/// Localizing the best match with minMaxLoc
-	double minVal; double maxVal; Point minLoc; Point maxLoc;
-	Point matchLoc;
-
-	minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
-	//! [best_match]
-
-	//! [match_loc]
-	/// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
-	if (match_method == TM_SQDIFF || match_method == TM_SQDIFF_NORMED)
+	try
 	{
-		matchLoc = minLoc;
-	}
-	else
-	{
-		matchLoc = maxLoc;
-	}
+		img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
+		templ = cv::imread("d:\\fightagain.png", IMREAD_COLOR);
+		//! [copy_source]
+		/// Source image to display
+		Mat img_display;
+		img.copyTo(img_display);
+		//! [copy_source]
 
-	//! [match_loc]
+		//! [create_result_matrix]
+		/// Create the result matrix
+		int result_cols = img.cols - templ.cols + 1;
+		int result_rows = img.rows - templ.rows + 1;
 
-	//! [imshow]
-	/// Show me what you got
+		result.create(result_rows, result_cols, CV_32FC1);
+		//! [create_result_matrix]
 
-	//rectangle(img_display, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
-	//rectangle(result, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
-	 
-	//imshow(image_window, img_display);
-	//imshow(result_window, result);
-	//! [imshow]
-	int SCREEN_CX = pDlg->m_screenWidth;//#1920
-	CString infor; 
-	//x = 1727, y = 70,can't tell you if game is over or other
-	bool bResult = -1;
-	long changeX = dleft - (SCREEN_CX -800);
-	long changeY = dtop-0  ; 
-	infor.Format("x=%ld,y=%ld,maxVal=%0.2lf,changeX=%ld,changeY=%ld", matchLoc.x, matchLoc.y, maxVal, changeX, changeY);
-	
-	if ((matchLoc.x- changeX) > (SCREEN_CX-200) && (matchLoc.x-changeX) < SCREEN_CX && (matchLoc.y- changeY) >= 0 && (matchLoc.y - changeY) <= 75 && maxVal > 0.5 )
-	{
-	//here may have error
-		//È¡É«·ÖÎö
-		Mat NewImg = img(Rect(matchLoc.x, matchLoc.y, 80, 30));
-		Mat means, stddev, covar;
-		cv:Scalar tempVal = cv::mean(NewImg);
-		float matMean = tempVal.val[0];
-		CString strResult;
-		//42 34 56//not change to grey
-		// 43 29 45 //grey
+		//! [match_template]
+		/// Do the Matching and Normalize
 
+		matchTemplate(img, templ, result, match_method);
 
+		//! [match_template]
 
-		strResult.Format("means  : %0.0f %0.0f %0.0f\n", tempVal.val[0], tempVal.val[1], tempVal.val[2]);//RGBÈıÍ¨µÀ£¬ËùÒÔ¾ùÖµ½á¹ûÊÇ3ĞĞÒ»ÁĞ
-		  
-		//imshow("test", NewImg);
-		if (tempVal.val[1] <= 30 && tempVal.val[2] <= 46)
-		{ 
-			CString str;
-			CTime t = CTime::GetCurrentTime();
-			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
-			 
-			str.Format("%s==>%s\r\n", tt,"ÕÊºÅÒÑ¾­Ê¹ÓÃÍê³É 0");
-			CStdioFile file;
-			if (file.Open(_T("d:\\log.txt"), CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate, NULL))
-			{
-				file.SeekToEnd();
-				file.WriteString(str);
-				file.Close();
-			}
-			
-			addLog("ÕÊºÅÒÑ¾­Ê¹ÓÃÍê³É 0");
-			Game_state =100;
-			bResult = 100;// 
+		//! [normalize]
+		normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat());
+		//! [normalize]
+
+		//! [best_match]
+		/// Localizing the best match with minMaxLoc
+		double minVal; double maxVal; Point minLoc; Point maxLoc;
+		Point matchLoc;
+
+		minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
+		//! [best_match]
+
+		//! [match_loc]
+		/// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
+		if (match_method == TM_SQDIFF || match_method == TM_SQDIFF_NORMED)
+		{
+			matchLoc = minLoc;
 		}
 		else
 		{
-			infor = "¼ì²âµ½ÓÎÏ·»¹¿ÉÒÔÔÙÍæ 1";
-			addLog(infor);
-			bResult = 200;//¼ì²âµ½ÓÎÏ·»¹¿ÉÒÔÔÙÍæ
-			Game_state = 200;
-		//	pDlg->MessageBoxA("¼ì²âµ½ÓÎÏ·»¹¿ÉÒÔÔÙÍæ,", "error", MB_OK);
+			matchLoc = maxLoc;
 		}
+
+		//! [match_loc]
+
+		//! [imshow]
+		/// Show me what you got
+
+		//rectangle(img_display, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
+		//rectangle(result, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
+
+		//imshow(image_window, img_display);
+		//imshow(result_window, result);
+		//! [imshow]
+		int SCREEN_CX = pDlg->m_screenWidth;//#1920
+		CString infor;
+		//x = 1727, y = 70,can't tell you if game is over or other
+		bool bResult = -1;
+		long changeX = dleft - (SCREEN_CX - 800);
+		long changeY = dtop - 0;
+		infor.Format("x=%ld,y=%ld,maxVal=%0.2lf,changeX=%ld,changeY=%ld", matchLoc.x, matchLoc.y, maxVal, changeX, changeY);
+
+		if ((matchLoc.x - changeX) > (SCREEN_CX - 200) && (matchLoc.x - changeX) < SCREEN_CX && (matchLoc.y - changeY) >= 0 && (matchLoc.y - changeY) <= 75 && maxVal > 0.5)
+		{
+			//here may have error
+				//å–è‰²åˆ†æ
+			try
+			{
+
+				Mat NewImg = img(Rect(matchLoc.x, matchLoc.y, 80, 30));
+				Mat means, stddev, covar;
+				cv:Scalar tempVal = cv::mean(NewImg);
+				float matMean = tempVal.val[0];
+				CString strResult;
+				//42 34 56//not change to grey
+				// 43 29 45 //grey
+
+
+
+				strResult.Format("means  : %0.0f %0.0f %0.0f\n", tempVal.val[0], tempVal.val[1], tempVal.val[2]);//RGBä¸‰é€šé“ï¼Œæ‰€ä»¥å‡å€¼ç»“æœæ˜¯3è¡Œä¸€åˆ—
+
+				//imshow("test", NewImg);
+				if (tempVal.val[1] <= 30 && tempVal.val[2] <= 46)
+				//if(TRUE)
+				{
+					CString str;
+					CTime t = CTime::GetCurrentTime();
+					CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+
+					str.Format("%s==>%s\r\n", tt, "å¸å·å·²ç»ä½¿ç”¨å®Œæˆ 0");
+					CStdioFile file;
+					if (file.Open(_T("d:\\log.txt"), CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate, NULL))
+					{
+						file.SeekToEnd();
+						file.WriteString(str);
+						file.Close();
+					}
+					addLog_important(str);
+					addLog("å¸å·å·²ç»ä½¿ç”¨å®Œæˆ 0");
+					Game_state = 100;
+					bResult = 100;// 
+				}
+				else
+				{
+					infor = "æ£€æµ‹åˆ°æ¸¸æˆè¿˜å¯ä»¥å†ç© 1";
+					addLog(infor);
+					bResult = 200;//æ£€æµ‹åˆ°æ¸¸æˆè¿˜å¯ä»¥å†ç©
+					Game_state = 200;
+					//	pDlg->MessageBoxA("æ£€æµ‹åˆ°æ¸¸æˆè¿˜å¯ä»¥å†ç©,", "error", MB_OK);
+				}
+			}
+			catch (exception& e)
+			{
+				img.release();
+				templ.release();
+				infor += "error execptio -1 ";
+				addLog(infor);
+				return -1;
+			}
+		}
+		else
+		{
+  			infor += "æœªæ£€æµ‹åˆ°çª—å£ -1 ";
+			addLog(infor);
+			//pDlg->MessageBoxA("æœªæ£€æµ‹åˆ°çª—å£,", "error", MB_OK);
+			bResult = -1; Game_state = -1;
+		}
+		img.release();
+		templ.release();
+		return bResult;
 	}
-	else
+	catch (Exception &e)
 	{
-		infor  += "Î´¼ì²âµ½´°¿Ú -1 ";
-		addLog(infor);
-		//pDlg->MessageBoxA("Î´¼ì²âµ½´°¿Ú,", "error", MB_OK);
-		bResult= -1;Game_state = -1;
+		addLog("error checkGame_state");
+		return -1;
 	}
-	img.release();
-	templ.release(); 
-	return bResult;
 }
 /**
  * @function MatchingMethod
@@ -404,88 +465,96 @@ int checkGame_state()
  */
 bool MatchingMethod()
 {
-	img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
-	templ = cv::imread("d:\\f.bmp", IMREAD_COLOR);
-	//! [copy_source]
-	/// Source image to display
-	Mat img_display;
-	img.copyTo(img_display);
-	//! [copy_source]
-
-	//! [create_result_matrix]
-	/// Create the result matrix
-	int result_cols = img.cols - templ.cols + 1;
-	int result_rows = img.rows - templ.rows + 1;
-
-	result.create(result_rows, result_cols, CV_32FC1);
-	//! [create_result_matrix]
-
-	//! [match_template]
-	/// Do the Matching and Normalize
-
-	matchTemplate(img, templ, result, match_method);
-
-	//! [match_template]
-
-	//! [normalize]
-	normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat());
-	//! [normalize]
-
-	//! [best_match]
-	/// Localizing the best match with minMaxLoc
-	double minVal; double maxVal; Point minLoc; Point maxLoc;
-	Point matchLoc;
-
-	minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
-	//! [best_match]
-
-	//! [match_loc]
-	/// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
-	if (match_method == TM_SQDIFF || match_method == TM_SQDIFF_NORMED)
+	try
 	{
-		matchLoc = minLoc;
+		img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
+		templ = cv::imread("d:\\f.bmp", IMREAD_COLOR);
+		//! [copy_source]
+		/// Source image to display
+		Mat img_display;
+		img.copyTo(img_display);
+		//! [copy_source]
+
+		//! [create_result_matrix]
+		/// Create the result matrix
+		int result_cols = img.cols - templ.cols + 1;
+		int result_rows = img.rows - templ.rows + 1;
+
+		result.create(result_rows, result_cols, CV_32FC1);
+		//! [create_result_matrix]
+
+		//! [match_template]
+		/// Do the Matching and Normalize
+
+		matchTemplate(img, templ, result, match_method);
+
+		//! [match_template]
+
+		//! [normalize]
+		normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat());
+		//! [normalize]
+
+		//! [best_match]
+		/// Localizing the best match with minMaxLoc
+		double minVal; double maxVal; Point minLoc; Point maxLoc;
+		Point matchLoc;
+
+		minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
+		//! [best_match]
+
+		//! [match_loc]
+		/// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
+		if (match_method == TM_SQDIFF || match_method == TM_SQDIFF_NORMED)
+		{
+			matchLoc = minLoc;
+		}
+		else
+		{
+			matchLoc = maxLoc;
+		}
+
+		//! [match_loc]
+
+		//! [imshow]
+		/// Show me what you got
+
+		//rectangle(img_display, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
+		//rectangle(result, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
+
+		//imshow(image_window, img_display);
+		//imshow(result_window, result);
+		//! [imshow]
+		img.release();
+		templ.release();;
+		CString infor;
+		long changeX = dleft - 1120;
+		long changeY = dtop - 0;
+		infor.Format("x=%ld,y=%ld,maxVal=%0.2lf,changeX=%ld,changeY=%ld", matchLoc.x, matchLoc.y, maxVal, changeX, changeY);
+		addLog("MatchingMethod  " + infor);
+		if ((matchLoc.x - changeX) > 1650 && (matchLoc.x - changeX) < 1920 && (matchLoc.y - changeY) >= 0 && (matchLoc.y - changeY) <= 45 && maxVal > 0.5)
+			//if (matchLoc.y <= 45 && maxVal > 0.5 &&matchLoc.x > 1650 && matchLoc.x < 1920)
+		{
+			infor += "æ£€æµ‹æ­£ç¡®";
+			pDlg->m_editLogInfor.SetWindowTextA(infor);
+			return TRUE;
+		}
+		else
+		{
+			pDlg->m_editLogInfor.SetWindowTextA(infor);
+			return FALSE;
+		}
+
 	}
-	else
+	catch (Exception &e)
 	{
-		matchLoc = maxLoc;
-	}
-
-	//! [match_loc]
-
-	//! [imshow]
-	/// Show me what you got
-
-	//rectangle(img_display, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
-	//rectangle(result, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
-
-	//imshow(image_window, img_display);
-	//imshow(result_window, result);
-	//! [imshow]
-	img.release();
-	templ.release();;
-	CString infor; 
-	long changeX = dleft - 1120;
-	long changeY = dtop - 0;
-	infor.Format("x=%ld,y=%ld,maxVal=%0.2lf,changeX=%ld,changeY=%ld", matchLoc.x, matchLoc.y, maxVal, changeX, changeY);
-	addLog("MatchingMethod  " + infor);
-	if ((matchLoc.x - changeX) > 1650 && (matchLoc.x - changeX) < 1920 && (matchLoc.y - changeY) >= 0 && (matchLoc.y - changeY) <= 45 && maxVal > 0.5)
-	//if (matchLoc.y <= 45 && maxVal > 0.5 &&matchLoc.x > 1650 && matchLoc.x < 1920)
-	{
-		infor += "¼ì²âÕıÈ·";
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
-		return TRUE;
-	}
-	else
-	{
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		addLog("error MatchingMethod");
 		return FALSE;
 	}
-
 }
 CVC_DemoDlg::CVC_DemoDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CVC_DemoDlg::IDD, pParent)
 	, m_intMinute(120)
-	, m_edit_keyword(_T("ÓÂÊ¿")
+	, m_edit_keyword(_T("å‹‡å£«")
 	)
 	, m_checkTimes(5)
 	, m_screenWidth(1920)
@@ -510,6 +579,7 @@ void CVC_DemoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST2, m_listLog);
 	DDX_Text(pDX, IDC_EDIT7, m_screenWidth);
 	DDX_Check(pDX, IDC_CHECK1, bHuangLong);
+	DDX_Control(pDX, IDC_LIST3, m_list_time_log);
 }
 
 BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
@@ -542,22 +612,23 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_CHECK1, &CVC_DemoDlg::OnBnClickedCheck1)
 	ON_WM_TIMER()
 	ON_WM_CLOSE()
+	ON_BN_CLICKED(IDC_BUTTON_KEY_ON_SCREEN, &CVC_DemoDlg::OnBnClickedButtonKeyOnScreen)
 END_MESSAGE_MAP()
 
 
-// CVC_DemoDlg ÏûÏ¢´¦Àí³ÌĞò
+// CVC_DemoDlg æ¶ˆæ¯å¤„ç†ç¨‹åº
 
 BOOL CVC_DemoDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	// ÉèÖÃ´Ë¶Ô»°¿òµÄÍ¼±ê¡£µ±Ó¦ÓÃ³ÌĞòÖ÷´°¿Ú²»ÊÇ¶Ô»°¿òÊ±£¬¿ò¼Ü½«×Ô¶¯
-	//  Ö´ĞĞ´Ë²Ù×÷
-	SetIcon(m_hIcon, TRUE);			// ÉèÖÃ´óÍ¼±ê
-	SetIcon(m_hIcon, FALSE);		// ÉèÖÃĞ¡Í¼±ê
+	// è®¾ç½®æ­¤å¯¹è¯æ¡†çš„å›¾æ ‡ã€‚å½“åº”ç”¨ç¨‹åºä¸»çª—å£ä¸æ˜¯å¯¹è¯æ¡†æ—¶ï¼Œæ¡†æ¶å°†è‡ªåŠ¨
+	//  æ‰§è¡Œæ­¤æ“ä½œ
+	SetIcon(m_hIcon, TRUE);			// è®¾ç½®å¤§å›¾æ ‡
+	SetIcon(m_hIcon, FALSE);		// è®¾ç½®å°å›¾æ ‡
 
-	// TODO: ÔÚ´ËÌí¼Ó¶îÍâµÄ³õÊ¼»¯´úÂë
-	msdk_handle = INVALID_HANDLE_VALUE;	//³õÊ¼ÎªÎ´´ò¿ª
+	// TODO: åœ¨æ­¤æ·»åŠ é¢å¤–çš„åˆå§‹åŒ–ä»£ç 
+	msdk_handle = INVALID_HANDLE_VALUE;	//åˆå§‹ä¸ºæœªæ‰“å¼€
 	pDlg = this;
 	// Get desktop dc
 
@@ -568,7 +639,7 @@ BOOL CVC_DemoDlg::OnInitDialog()
 
 	dbZoomScale = horizontalDPI / 96.0f;
 	CString strScale;
-	strScale.Format("·Ö±æ±ÈÀı%0.2lf", dbZoomScale);
+	strScale.Format("åˆ†è¾¨æ¯”ä¾‹%0.2lf", dbZoomScale);
 	m_editLog.SetWindowTextA(strScale);
 
 	CString infor;
@@ -599,22 +670,22 @@ BOOL CVC_DemoDlg::OnInitDialog()
 	SetTimer(0, TIMER_LENGTH, NULL);
 	::SetWindowPos((HWND)(this->m_hWnd), HWND_TOP, 0, 0, 800, 600, SWP_SHOWWINDOW| SWP_NOSIZE);
 	OnBnClickedButtonKeypress4();
-	return TRUE;  // ³ı·Ç½«½¹µãÉèÖÃµ½¿Ø¼ş£¬·ñÔò·µ»Ø TRUE
+	return TRUE;  // é™¤éå°†ç„¦ç‚¹è®¾ç½®åˆ°æ§ä»¶ï¼Œå¦åˆ™è¿”å› TRUE
 }
 
-// Èç¹ûÏò¶Ô»°¿òÌí¼Ó×îĞ¡»¯°´Å¥£¬ÔòĞèÒªÏÂÃæµÄ´úÂë
-//  À´»æÖÆ¸ÃÍ¼±ê¡£¶ÔÓÚÊ¹ÓÃÎÄµµ/ÊÓÍ¼Ä£ĞÍµÄ MFC Ó¦ÓÃ³ÌĞò£¬
-//  Õâ½«ÓÉ¿ò¼Ü×Ô¶¯Íê³É¡£
+// å¦‚æœå‘å¯¹è¯æ¡†æ·»åŠ æœ€å°åŒ–æŒ‰é’®ï¼Œåˆ™éœ€è¦ä¸‹é¢çš„ä»£ç 
+//  æ¥ç»˜åˆ¶è¯¥å›¾æ ‡ã€‚å¯¹äºä½¿ç”¨æ–‡æ¡£/è§†å›¾æ¨¡å‹çš„ MFC åº”ç”¨ç¨‹åºï¼Œ
+//  è¿™å°†ç”±æ¡†æ¶è‡ªåŠ¨å®Œæˆã€‚
 
 void CVC_DemoDlg::OnPaint()
 {
 	if (IsIconic())
 	{
-		CPaintDC dc(this); // ÓÃÓÚ»æÖÆµÄÉè±¸ÉÏÏÂÎÄ
+		CPaintDC dc(this); // ç”¨äºç»˜åˆ¶çš„è®¾å¤‡ä¸Šä¸‹æ–‡
 
 		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
 
-		// Ê¹Í¼±êÔÚ¹¤×÷Çø¾ØĞÎÖĞ¾ÓÖĞ
+		// ä½¿å›¾æ ‡åœ¨å·¥ä½œåŒºçŸ©å½¢ä¸­å±…ä¸­
 		int cxIcon = GetSystemMetrics(SM_CXICON);
 		int cyIcon = GetSystemMetrics(SM_CYICON);
 		CRect rect;
@@ -622,7 +693,7 @@ void CVC_DemoDlg::OnPaint()
 		int x = (rect.Width() - cxIcon + 1) / 2;
 		int y = (rect.Height() - cyIcon + 1) / 2;
 
-		// »æÖÆÍ¼±ê
+		// ç»˜åˆ¶å›¾æ ‡
 		dc.DrawIcon(x, y, m_hIcon);
 	}
 	else
@@ -631,8 +702,8 @@ void CVC_DemoDlg::OnPaint()
 	}
 }
 
-//µ±ÓÃ»§ÍÏ¶¯×îĞ¡»¯´°¿ÚÊ±ÏµÍ³µ÷ÓÃ´Ëº¯ÊıÈ¡µÃ¹â±ê
-//ÏÔÊ¾¡£
+//å½“ç”¨æˆ·æ‹–åŠ¨æœ€å°åŒ–çª—å£æ—¶ç³»ç»Ÿè°ƒç”¨æ­¤å‡½æ•°å–å¾—å…‰æ ‡
+//æ˜¾ç¤ºã€‚
 HCURSOR CVC_DemoDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
@@ -648,12 +719,12 @@ void CVC_DemoDlg::OnBnClickedButtonOpen()
 
 	CString l_Str;
 	if (msdk_handle != INVALID_HANDLE_VALUE) {
-		AfxMessageBox("¶Ë¿ÚÒÑ¾­´ò¿ª£¬Çë¹Ø±Õ¶Ë¿ÚÔÙÖØĞÂ´ò¿ª");
+		AfxMessageBox("ç«¯å£å·²ç»æ‰“å¼€ï¼Œè¯·å…³é—­ç«¯å£å†é‡æ–°æ‰“å¼€");
 	}
 	msdk_handle = M_Open(1);
 	M_ResolutionUsed(msdk_handle, 1920, 1080);
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
-		AfxMessageBox("¶Ë¿Ú´ò¿ªÊ§°Ü£¬ÇëÈ·ÈÏÄúµÄUSBÉè±¸ÒÑ¾­²åÉÏµçÄÔ");
+		AfxMessageBox("ç«¯å£æ‰“å¼€å¤±è´¥ï¼Œè¯·ç¡®è®¤æ‚¨çš„USBè®¾å¤‡å·²ç»æ’ä¸Šç”µè„‘");
 	}
 	else {
 		GetDlgItem(IDC_BUTTON_OPEN)->EnableWindow(false);
@@ -662,17 +733,10 @@ void CVC_DemoDlg::OnBnClickedButtonOpen()
 
 void CVC_DemoDlg::OnBnClickedButtonClose()
 {
-	if (msdk_handle != INVALID_HANDLE_VALUE) {
-		M_Close(msdk_handle);
-		msdk_handle = INVALID_HANDLE_VALUE;
-		GetDlgItem(IDC_BUTTON_OPEN)->EnableWindow(true);
-	}
-	else {
-		AfxMessageBox("»¹Î´´ò¿ª¶Ë¿Ú£¬ÇëÏÈ´ò¿ª¶Ë¿Ú");
-	}
+	ShellExecute(this->m_hWnd, "open", "https://github.com/sunyuzhe114/KeyPressDemo/blob/master/x64/Release/VC_Demo.exe", NULL, NULL, SW_SHOWMAXIMIZED);
 }
 
-//ÒÑ¾­ÓëchangeUser_And_Login_ThreadºÏ²¢
+//å·²ç»ä¸changeUser_And_Login_Threadåˆå¹¶
 DWORD WINAPI    LoginUser_Thread(LPVOID pp)
 {
 	HANDLE msdk_handle = (HANDLE)pp;
@@ -696,12 +760,12 @@ DWORD WINAPI    LoginUser_Thread(LPVOID pp)
 		RetSw = M_LeftUp(msdk_handle );*/
 
 		RetSw = M_DelayRandom(3000, 4000);
-		//°´5ºÅ¼ü£¬
+		//æŒ‰5å·é”®ï¼Œ
 		RetSw = M_KeyPress(msdk_handle, Keyboard_5, 1);
 		RetSw = M_DelayRandom(400, 600);
-		infor += "°´5ºÅ¼ü\r\n";
+		infor += "æŒ‰5å·é”®\r\n";
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
-		//µã»÷È·ÈÏ
+		//ç‚¹å‡»ç¡®è®¤
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
@@ -710,19 +774,19 @@ DWORD WINAPI    LoginUser_Thread(LPVOID pp)
 		}
 		RetSw = M_LeftClick(msdk_handle, 1);
 		RetSw = M_DelayRandom(1800, 2000);
-		infor += "°´È·¶¨\r\n";
+		infor += "æŒ‰ç¡®å®š\r\n";
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
-		//¹ö¶¯3´Îµ½ÁË 
+		//æ»šåŠ¨3æ¬¡åˆ°äº† 
 		for (int i = 0; i < 3; i++)
 		{
 			RetSw = M_MouseWheel(msdk_handle, 1);
 			RetSw = M_DelayRandom(1000, 1200);
 		}
 
-		infor += "¹öÂÖ3´Î\r\n";
+		infor += "æ»šè½®3æ¬¡\r\n";
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
 
-		//×ßµ½µØµã
+		//èµ°åˆ°åœ°ç‚¹
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
@@ -734,10 +798,10 @@ DWORD WINAPI    LoginUser_Thread(LPVOID pp)
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
 
-		infor += "Ñ¡¶¨×ø±ê\r\n";
+		infor += "é€‰å®šåæ ‡\r\n";
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
 
-		//µã»÷È·ÈÏ
+		//ç‚¹å‡»ç¡®è®¤
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
@@ -746,11 +810,11 @@ DWORD WINAPI    LoginUser_Thread(LPVOID pp)
 		}
 		RetSw = M_LeftClick(msdk_handle, 1);
 		RetSw = M_DelayRandom(1800, 2000);
-		infor += "°´È·¶¨\r\n";
+		infor += "æŒ‰ç¡®å®š\r\n";
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
 
 
-		//×ßµ½µØµã
+		//èµ°åˆ°åœ°ç‚¹
 		for (int j = 0; j < 2; j++)
 		{
 			for (int i = 0; i < 1; i++)
@@ -763,12 +827,12 @@ DWORD WINAPI    LoginUser_Thread(LPVOID pp)
 			RetSw = M_DelayRandom(800, 1000);
 
 		}
-		infor += "×ßµ½µØµã\r\n";
+		infor += "èµ°åˆ°åœ°ç‚¹\r\n";
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
-		//µã»÷ 
+		//ç‚¹å‡» 
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
@@ -779,7 +843,7 @@ DWORD WINAPI    LoginUser_Thread(LPVOID pp)
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_LeftDoubleClick(msdk_handle, 1);
 		RetSw = M_DelayRandom(800, 1000);
-		infor += "µã»÷\r\n";
+		infor += "ç‚¹å‡»\r\n";
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
 		pDlg->begin_check_game();
@@ -821,12 +885,12 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		}
 		RetSw = M_LeftClick(msdk_handle, 1);
 		RetSw = M_DelayRandom(3800, 4500);
-		addLog("µã»÷Ñ¡¶¨½ÇÉ«");
+		addLog("ç‚¹å‡»é€‰å®šè§’è‰²");
 		if (bStop)break;
 
 		if (bChangeUser == true)
 		{
-			addLog("°´ÏÂ·½ÏòÓÒ¼ü");
+			addLog("æŒ‰ä¸‹æ–¹å‘å³é”®");
 			RetSw = M_KeyPress(msdk_handle, Keyboard_RightArrow, 1);
 			RetSw = M_DelayRandom(2100, 2300);
 
@@ -836,13 +900,13 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		RetSw = M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
 		RetSw = M_DelayRandom(1400, 1600);
 		RetSw = M_DelayRandom(6000, 7000);
-		//°´5ºÅ¼ü£¬
+		//æŒ‰5å·é”®ï¼Œ
 		if (bStop)break;
 		RetSw = M_KeyPress(msdk_handle, Keyboard_5, 1);
 		RetSw = M_DelayRandom(400, 600);
-		 
-		addLog("°´5ºÅ¼ü");
-		//µã»÷È·ÈÏ
+		RetSw = M_DelayRandom(400, 600);
+		addLog("æŒ‰5å·é”®");
+		//ç‚¹å‡»ç¡®è®¤
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
@@ -852,19 +916,20 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		RetSw = M_LeftClick(msdk_handle, 1);
 		RetSw = M_DelayRandom(1800, 2000);
 		 
-		addLog("°´È·¶¨");
+		addLog("æŒ‰ç¡®å®š");
 		if (bStop)break;
-		//¹ö¶¯3´Îµ½ÁË 
+		//æ»šåŠ¨3æ¬¡åˆ°äº† 
 		for (int i = 0; i < 3; i++)
 		{
 			RetSw = M_MouseWheel(msdk_handle, -1);
-			RetSw = M_DelayRandom(2000, 2200);
+			RetSw = M_DelayRandom(2200, 2500);
 		}
 		if (bStop)break;
 		 
-		addLog("¹öÂÖ3´Î");
+		addLog("æ»šè½®3æ¬¡");
 		if (bStop)break;
-		//×ßµ½µØµã
+		RetSw = M_DelayRandom(800, 1000);
+		//èµ°åˆ°åœ°ç‚¹
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
@@ -872,22 +937,17 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			RetSw = M_DelayRandom(500, 600);
 		}
 		if (bStop)break;
+		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_LeftClick(msdk_handle, 1);
+
+
+
 		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_DelayRandom(800, 1000);
+		
+		addLog("é€‰å®šåæ ‡");
 		if (bStop)break;
-		RetSw = M_DelayRandom(800, 1000);
-		RetSw = M_DelayRandom(800, 1000);
-		RetSw = M_DelayRandom(800, 1000);
-		addLog("Ïò×óÒÆ¶¯Ò»²½");
-		RetSw = M_KeyPress(msdk_handle, Keyboard_Douhao, 1);
-		RetSw = M_DelayRandom(800, 1000);
-		addLog("ÏòÓÒÒÆ¶¯¶ş²½");
-		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
-		RetSw = M_DelayRandom(800, 1000);
-		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
-		addLog("Ñ¡¶¨×ø±ê");
-		if (bStop)break;
-		//µã»÷È·ÈÏ
+		//ç‚¹å‡»ç¡®è®¤
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
@@ -895,12 +955,14 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			RetSw = M_DelayRandom(500, 600);
 		}
 		RetSw = M_LeftClick(msdk_handle, 1);
+
+		addLog("ç‚¹å‡»ç¡®è®¤");
 		if (bStop)break;
 		RetSw = M_DelayRandom(1800, 2000);
-		addLog("µã»÷ÆÁÄ»ÈËÎï¿ªÊ¼ÒÆ¶¯"); 
+		addLog("ç‚¹å‡»å±å¹•äººç‰©å¼€å§‹ç§»åŠ¨"); 
 
 		if (bStop)break;
-		//×ßµ½µØµã
+		//èµ°åˆ°åœ°ç‚¹
 		for (int j = 0; j < 2; j++)
 		{
 			for (int i = 0; i < 1; i++)
@@ -913,6 +975,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			RetSw = M_DelayRandom(800, 1000);
 
 		}
+		addLog("å³å‡»èµ°åˆ°åœ°ç‚¹");
 		for (int j = 0; j < 2; j++)
 		{
 			for (int i = 0; i < 1; i++)
@@ -926,24 +989,61 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 
 		}
 		if (bStop)break; 
-		addLog("×ßµ½µØµã"); 
+		addLog("å³å‡»èµ°åˆ°åœ°ç‚¹"); 
+
+		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
 		if (bStop)break;
-		//µã»÷ 
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_DelayRandom(800, 1000);
+		addLog("é”®ç›˜å‘å·¦ç§»åŠ¨ä¸€æ­¥");
+		RetSw = M_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		addLog("å‘å·¦ç§»åŠ¨ä¸€æ­¥");
+		RetSw = M_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		addLog("å‘å·¦ç§»åŠ¨ä¸€æ­¥");
+		RetSw = M_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		addLog("å‘å³ç§»åŠ¨äºŒæ­¥");
+		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_JuHao, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_JuHao, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+
+
+		if (bStop)break;
+		//ç‚¹å‡» 
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
 			if (pDlg->bHuangLong == true)
 			{
 				RetSw = my_M_MoveTo(msdk_handle, (int)((1710) / rate), (int)((405) / rate));
-				addLog("ÒÆ¶¯µ½ÇàÁú");
+				addLog("ç§»åŠ¨åˆ°é’é¾™");
 			}
 			else
 			{
 				RetSw = my_M_MoveTo(msdk_handle, (int)((1324) / rate), (int)((441) / rate));
-				addLog("ÒÆ¶¯µ½»ÆÁú");
+				addLog("ç§»åŠ¨åˆ°é»„é¾™");
 			}
 			RetSw = M_DelayRandom(500, 600);
 		}
@@ -956,16 +1056,61 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		RetSw = M_DelayRandom(2200, 4200);
 
 		RetSw = M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
-		addLog("°´ÏÂ¿Õ¸ñ×¼±¸ÓÎÏ·");
+		addLog("æŒ‰ä¸‹ç©ºæ ¼å‡†å¤‡æ¸¸æˆ");
 
 		pDlg->begin_check_game();
 		if (bStop)break;
 	} while (0);
-	infor += "exit \r\n";
-	pDlg->m_editLogInfor.SetWindowTextA(infor);
+	 
+	addLog("changeUser_And_Login_Thread exit");
 	return 0;
 }
-
+DWORD WINAPI    testThread_Game(LPVOID pp)
+{
+	HANDLE msdk_handle = (HANDLE)pp;
+	unsigned int RetSw = 0;
+	DWORD m_dTimeBeginPress_BIGSKILL = 0;
+	CString text;
+	pDlg->m_editLogInfor.GetWindowTextA(text);
+	//char* inputText = "sun8010305652";\USES_CONVERSION;
+	USES_CONVERSION;
+	char* inputText = new char[256];
+	strcpy(inputText, text);
+	RetSw = M_KeyInputString(msdk_handle, inputText, strlen(inputText));
+	// RetSw = M_KeyInputString(msdk_handle, text.GetBuffer(0, strlen(inputText));
+	/*RetSw = M_DelayRandom(3000, 4000); 
+	RetSw = M_KeyPress(msdk_handle, Keyboard_s, 1);
+	RetSw = M_DelayRandom(300, 1000);
+	RetSw = M_KeyPress(msdk_handle, Keyboard_u, 1);
+	RetSw = M_DelayRandom(400, 600);
+	RetSw = M_KeyPress(msdk_handle, Keyboard_n, 1);
+	RetSw = M_DelayRandom(400, 600);
+	RetSw = M_KeyPress(msdk_handle, Keyboard_8, 1);
+	RetSw = M_DelayRandom(300, 1000);
+	RetSw = M_KeyPress(msdk_handle, Keyboard_0, 1);
+	RetSw = M_DelayRandom(400, 600);
+	RetSw = M_KeyPress(msdk_handle, Keyboard_1, 1);
+	RetSw = M_DelayRandom(300, 1000);
+	RetSw = M_KeyPress(msdk_handle, Keyboard_0, 1);
+	RetSw = M_DelayRandom(400, 600);
+	RetSw = M_KeyPress(msdk_handle, Keyboard_3, 1);
+	RetSw = M_DelayRandom(300, 1000);
+	RetSw = M_KeyPress(msdk_handle, Keyboard_0, 1);
+	RetSw = M_DelayRandom(400, 600);
+	RetSw = M_KeyPress(msdk_handle, Keyboard_5, 1);
+	RetSw = M_DelayRandom(300, 1000);
+	RetSw = M_KeyPress(msdk_handle, Keyboard_6, 1);
+	RetSw = M_DelayRandom(400, 600);
+	RetSw = M_KeyPress(msdk_handle, Keyboard_5, 1);
+	RetSw = M_DelayRandom(300, 1000);
+	RetSw = M_KeyPress(msdk_handle, Keyboard_2, 1);
+	RetSw = M_DelayRandom(400, 600);
+	 */
+	 
+	return 0;
+		 
+		 
+	}
 DWORD WINAPI    checkThread_Game(LPVOID pp)
 {
 	HANDLE msdk_handle = (HANDLE)pp;
@@ -998,7 +1143,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 
 		RetSw = M_DelayRandom(800, 1000);
 		CString strInfor;
-		strInfor.Format("%ldÃë", (GetTickCount() - m_dTimeBegin) / 1000);
+		strInfor.Format("%ldç§’", (GetTickCount() - m_dTimeBegin) / 1000);
 		pDlg->m_editLog.SetWindowText(strInfor);
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_KeyPress(msdk_handle, Keyboard_f, 1);
@@ -1057,8 +1202,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			CString strInfor;
 			strInfor.Format("bFind = %d Keyboard_PageDown\r\n", Game_state);
 			pDlg->m_editLogInfor.SetWindowTextA(strInfor);
-
-
+			not_in_game_time = 0;  
 			RetSw = M_KeyPress(msdk_handle, Keyboard_PageDown, 1);
 			RetSw = M_DelayRandom(400, 600);
 			RetSw = M_KeyDown(msdk_handle, Keyboard_KongGe);
@@ -1103,11 +1247,29 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
 			RetSw = M_DelayRandom(200, 500);
 			RetSw = M_DelayRandom(200, 500);
-			RetSw = M_KeyPress(msdk_handle, Keyboard_F10, 1);
-			RetSw = M_DelayRandom(3100, 4500);
-			RetSw = M_KeyDown(msdk_handle, Keyboard_KongGe);
-			RetSw = M_DelayRandom(400, 600);
-			RetSw = M_KeyUp(msdk_handle, Keyboard_KongGe);
+			//è¿™é‡Œå¯ä»¥ç‚¹å‡»ä¸€ä¸‹å†æŒ‰F10
+
+			
+
+
+			RetSw = M_DelayRandom(200, 500);
+			if (Game_state == 200)
+			{
+				for (int i = 0; i < 1; i++)
+				{
+					RetSw = M_ResetMousePos(msdk_handle);
+					RetSw = my_M_MoveTo(msdk_handle, 1385 / rate, 110 / rate);
+					RetSw = M_DelayRandom(800, 1000);
+				}
+				RetSw = M_DelayRandom(800, 1000);
+				RetSw = M_LeftClick(msdk_handle, 1);
+				RetSw = M_DelayRandom(200, 500);
+				RetSw = M_KeyPress(msdk_handle, Keyboard_F10, 1);
+				RetSw = M_DelayRandom(3100, 4500);
+				RetSw = M_KeyDown(msdk_handle, Keyboard_KongGe);
+				RetSw = M_DelayRandom(400, 600);
+				RetSw = M_KeyUp(msdk_handle, Keyboard_KongGe);
+			}
 
 			if (Game_state == 100)
 			{
@@ -1151,7 +1313,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		RetSw = M_KeyPress(msdk_handle, Keyboard_f, 1);
 		if (bStop)break;
 
-		//Èç¹û³¤Ê±¼äÎŞ·¨Í¨¹Ø£¬Òª·ÅÒ»´Î´óÕĞ
+		//å¦‚æœé•¿æ—¶é—´æ— æ³•é€šå…³ï¼Œè¦æ”¾ä¸€æ¬¡å¤§æ‹›
 
 		if (GetTickCount() - m_dTimeBeginPress_BIGSKILL > 120000)
 		{
@@ -1196,7 +1358,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			CString strInfor;
 			strInfor.Format("bFind = %d Keyboard_PageDown\r\n", Game_state);
 			pDlg->m_editLogInfor.SetWindowTextA(strInfor);
-
+			not_in_game_time = 0;
 			
 			RetSw = M_KeyPress(msdk_handle, Keyboard_PageDown, 1);
 			RetSw = M_DelayRandom(400, 600);
@@ -1241,12 +1403,16 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			RetSw = M_DelayRandom(400, 600);
 			RetSw = M_KeyPress(msdk_handle, Keyboard_x, 1);
 			RetSw = M_DelayRandom(200, 500);
-			RetSw = M_DelayRandom(200, 500);
-			RetSw = M_KeyPress(msdk_handle, Keyboard_F10, 1);
-			RetSw = M_DelayRandom(3100, 4500);
-			RetSw = M_KeyDown(msdk_handle, Keyboard_KongGe);
-			RetSw = M_DelayRandom(400, 600);
-			RetSw = M_KeyUp(msdk_handle, Keyboard_KongGe); 
+
+			if (Game_state == 200)
+			{
+				RetSw = M_DelayRandom(200, 500);
+				RetSw = M_KeyPress(msdk_handle, Keyboard_F10, 1);
+				RetSw = M_DelayRandom(3100, 4500);
+				RetSw = M_KeyDown(msdk_handle, Keyboard_KongGe);
+				RetSw = M_DelayRandom(400, 600);
+				RetSw = M_KeyUp(msdk_handle, Keyboard_KongGe);
+			}
 
 			if (Game_state == 100)
 			{
@@ -1258,6 +1424,32 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			{
 
 			continue;
+			}
+		}
+		CPoint cp = findImage("d://ingame.png", 340, 40, 400, 60);
+		if (cp.x != 0 && cp.y != 0)
+		{
+			//Â·Â¢ÃÃ–Ã”ÃšÃ”ÃšÃ“ÃÃÂ·Ã–Ã 0 (1400,51)
+
+
+			CString str; 
+
+			str.Format("%s (%ld,%ld)\n",  "å‘ç°åœ¨åœ¨æ¸¸æˆä¸­ 0", cp.x, cp.y);
+			addLog(str);
+			not_in_game_time = 0;
+		}
+		else
+		{
+
+			CString str; 
+			str.Format(" %s (%ld,%ld)\n", "æœªåœ¨æ¸¸æˆä¸­ 0", cp.x, cp.y);
+			addLog(str);
+			not_in_game_time++;
+			if (not_in_game_time >= 2)
+			{
+				not_in_game_time = 0;
+				Game_state = 300;
+				break;
 			}
 		}
 
@@ -1294,19 +1486,23 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
 
 	RetSw = M_DelayRandom(10000, 15000);
-	if (Global_checkTime < pDlg->m_checkTimes && bFullStop == false)
+	if (Game_state == 300)
+	{
+		pDlg->playerlogin();
+	}
+	else if (Global_checkTime < pDlg->m_checkTimes && bFullStop == false&& Game_state <= 200)
 	{
 		CString infor;
 		infor.Format("stop continue remains %ld \r\n", pDlg->m_checkTimes-Global_checkTime);
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
 		Global_checkTime++;
-		//ÕâÀï¼ÓÈë·Ö½â¶¯×÷£¬°´I¼ü £¬¿ª·Ö½â
-		//ÕâÀï¼ÓÈë·Ö½â¶¯×÷£¬°´I¼ü £¬¿ª·Ö½â
+		//è¿™é‡ŒåŠ å…¥åˆ†è§£åŠ¨ä½œï¼ŒæŒ‰Ié”® ï¼Œå¼€åˆ†è§£
+		//è¿™é‡ŒåŠ å…¥åˆ†è§£åŠ¨ä½œï¼ŒæŒ‰Ié”® ï¼Œå¼€åˆ†è§£
 		RetSw = M_DelayRandom(800, 1000);
-		//ÕâÀï¼ÓÈë·Ö½â¶¯×÷£¬°´I¼ü £¬¿ª·Ö½â
+		//è¿™é‡ŒåŠ å…¥åˆ†è§£åŠ¨ä½œï¼ŒæŒ‰Ié”® ï¼Œå¼€åˆ†è§£
 		RetSw = M_KeyPress(msdk_handle, Keyboard_DanYinHao, 1);
 		RetSw = M_DelayRandom(2200, 3000);
-		//·Ö½â×°±¸
+		//åˆ†è§£è£…å¤‡
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
@@ -1317,7 +1513,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		RetSw = M_LeftClick(msdk_handle, 1);
 		RetSw = M_DelayRandom(800, 1000);
 
-		//È«²¿·Ö½â×°±¸
+		//å…¨éƒ¨åˆ†è§£è£…å¤‡
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
@@ -1331,29 +1527,29 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		pDlg->saveScreen();
 		CPoint pt = findSureButton_state();
 		 
-		infor.Format("²éÕÒÈ·¶¨°´Å¥%d,%d", pt.x, pt.y);
+		infor.Format("æŸ¥æ‰¾ç¡®å®šæŒ‰é’®%d,%d", pt.x, pt.y);
 		addLog(infor);
 		if (pt.x == -1)
 		{
-			addLog("²éÕÒÈ·¶¨°´Å¥fail");
+			addLog("æŸ¥æ‰¾ç¡®å®šæŒ‰é’®fail");
 		}
 		else
 		{
 			pt.x += 15;
 			pt.y += 15;
-			//È·ÈÏ·ÖÎö×°±¸
+			//ç¡®è®¤åˆ†æè£…å¤‡
 			for (int i = 0; i < 1; i++)
 			{
 				RetSw = M_ResetMousePos(msdk_handle);
 				RetSw = M_DelayRandom(500, 600);
-				//ÕâÀïÊ¹ÓÃµÄÊÇ¾ø¶Ô×ø±ê
+				//è¿™é‡Œä½¿ç”¨çš„æ˜¯ç»å¯¹åæ ‡
 				RetSw = M_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
 				RetSw = M_DelayRandom(500, 600);
 				RetSw = M_DelayRandom(500, 600);
 			}
 			RetSw = M_LeftClick(msdk_handle, 1);
 
-			infor.Format("¾ø¶Ô×ø±ê MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
+			infor.Format("ç»å¯¹åæ ‡ MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
 			addLog(infor);
 
 			RetSw = M_DelayRandom(800, 1000);
@@ -1384,30 +1580,30 @@ void CVC_DemoDlg::saveScreen()
 	CWnd *pDesktop = this->GetDesktopWindow();
 	CDC *pdeskdc = pDesktop->GetDC();
 	CRect re;
-	//»ñÈ¡´°¿ÚµÄ´óĞ¡
+	//è·å–çª—å£çš„å¤§å°
 	pDesktop->GetClientRect(&re);
 	CBitmap bmp;
 	bmp.CreateCompatibleBitmap(pdeskdc, re.Width(), re.Height());
-	//´´½¨Ò»¸ö¼æÈİµÄÄÚ´æ»­°å
+	//åˆ›å»ºä¸€ä¸ªå…¼å®¹çš„å†…å­˜ç”»æ¿
 	CDC memorydc;
 	memorydc.CreateCompatibleDC(pdeskdc);
-	//Ñ¡ÖĞ»­±Ê
+	//é€‰ä¸­ç”»ç¬”
 	CBitmap *pold = memorydc.SelectObject(&bmp);
-	//»æÖÆÍ¼Ïñ
+	//ç»˜åˆ¶å›¾åƒ
 	memorydc.BitBlt(0, 0, re.Width(), re.Height(), pdeskdc, 0, 0, SRCCOPY);
-	//»ñÈ¡Êó±êÎ»ÖÃ£¬È»ºóÌí¼ÓÊó±êÍ¼Ïñ
+	//è·å–é¼ æ ‡ä½ç½®ï¼Œç„¶åæ·»åŠ é¼ æ ‡å›¾åƒ
 	CPoint po;
 	GetCursorPos(&po);
 	HICON hinco = (HICON)GetCursor();
 	memorydc.DrawIcon(po.x - 10, po.y - 10, hinco);
-	//Ñ¡ÖĞÔ­À´µÄ»­±Ê
+	//é€‰ä¸­åŸæ¥çš„ç”»ç¬”
 	memorydc.SelectObject(pold);
 	BITMAP bit;
 	bmp.GetBitmap(&bit);
-	//¶¨Òå Í¼Ïñ´óĞ¡£¨µ¥Î»£ºbyte£©
+	//å®šä¹‰ å›¾åƒå¤§å°ï¼ˆå•ä½ï¼šbyteï¼‰
 	DWORD size = bit.bmWidthBytes * bit.bmHeight;
 	LPSTR lpdata = (LPSTR)GlobalAlloc(GPTR, size);
-	//ºóÃæÊÇ´´½¨Ò»¸öbmpÎÄ¼şµÄ±ØĞëÎÄ¼şÍ·
+	//åé¢æ˜¯åˆ›å»ºä¸€ä¸ªbmpæ–‡ä»¶çš„å¿…é¡»æ–‡ä»¶å¤´
 	BITMAPINFOHEADER pbitinfo;
 	pbitinfo.biBitCount = 24;
 	pbitinfo.biClrImportant = 0;
@@ -1426,7 +1622,7 @@ void CVC_DemoDlg::saveScreen()
 	bfh.bfType = ((WORD)('M' << 8) | 'B');
 	bfh.bfSize = size + 54;
 	bfh.bfOffBits = 54;
-	//Ğ´ÈëÎÄ¼ş
+	//å†™å…¥æ–‡ä»¶
 	CFile file;
 	//CString strFileName(GetAppPathW().c_str());
 	//strFileName += _T("ScreenShot\\");
@@ -1450,9 +1646,9 @@ void CVC_DemoDlg::saveScreen()
 
 void CVC_DemoDlg::begin_check_game()
 {
-m_dTimeBegin = GetTickCount();
-	UpdateData(true);
-	m_timeLimit = m_intMinute;//·ÖÖÓ
+	m_dTimeBegin = GetTickCount();
+	//UpdateData(true);
+	m_timeLimit = m_intMinute;//åˆ†é’Ÿ
 	bStop = false;
 	bFullStop = false;
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
@@ -1475,14 +1671,14 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress()
 
 void CVC_DemoDlg::OnBnClickedButtonMover()
 {
-	m_checkTimes = 5;
+	m_checkTimes =6;
 	UpdateData(false);
 }
 
 void CVC_DemoDlg::OnBnClickedButtonMoveto()
 { 
 	//if (msdk_handle == INVALID_HANDLE_VALUE) {
-	//	AfxMessageBox("»¹Î´´ò¿ª¶Ë¿Ú£¬ÇëÏÈ´ò¿ª¶Ë¿Ú");
+	//	AfxMessageBox("è¿˜æœªæ‰“å¼€ç«¯å£ï¼Œè¯·å…ˆæ‰“å¼€ç«¯å£");
 	//	return;
 	//}
 	//unsigned int RetSw;
@@ -1496,9 +1692,10 @@ void CVC_DemoDlg::OnBnClickedButtonMoveto()
 
 void CVC_DemoDlg::OnBnClickedButtonGetmousepos()
 {
+	UpdateData(TRUE);
 	Global_checkTime = 0;
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
-		AfxMessageBox("»¹Î´´ò¿ª¶Ë¿Ú£¬ÇëÏÈ´ò¿ª¶Ë¿Ú");
+		AfxMessageBox("è¿˜æœªæ‰“å¼€ç«¯å£ï¼Œè¯·å…ˆæ‰“å¼€ç«¯å£");
 		return;
 	}
 	CString strtemp;
@@ -1506,7 +1703,7 @@ void CVC_DemoDlg::OnBnClickedButtonGetmousepos()
 	int x_pos, y_pos;
 	RetSw = M_GetCurrMousePos(msdk_handle, &x_pos, &y_pos);
 	if (RetSw != 0) {
-		AfxMessageBox("»ñÈ¡Êó±ê×ø±ê´íÎó");
+		AfxMessageBox("è·å–é¼ æ ‡åæ ‡é”™è¯¯");
 		return;
 	}
 	else {
@@ -1534,8 +1731,61 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 
 
 	saveScreen();
+	int RetSw = M_DelayRandom(2800, 3000);
+	CPoint pt = findImage("d://close.png", 380, 440, 390, 460);
+	if (pt.x != 0 && pt.y != 0)
+	{
+
+		CString str = "";
+		CTime t = CTime::GetCurrentTime();
+		CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+		str.Format("%s==>%s (%ld,%ld)\n", tt, "å‘ç°å¹¿å‘Šå…³é—­ 0", pt.x, pt.y);
+
+		//str.Format("%s==>%s (%ld,%ld)\n", tt, "å‘ç°åœ¨åœ¨æ¸¸æˆä¸­ 0",cp.x,cp.y);
+		addLog(str);
+	}
+	else
+	{
+
+		CString str = "";
+		CTime t = CTime::GetCurrentTime();
+		CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+
+		str.Format("%s==>%s (%ld,%ld)\n", tt, "æœªç°å¹¿å‘Š 0", pt.x, pt.y);
+		addLog(str);
+	}
+
+	CString infor;
+	infor.Format("æŸ¥æ‰¾ç¡®å®šæŒ‰é’®%d,%d", pt.x, pt.y);
+	addLog(infor);
+	if (pt.x == -1)
+	{
+		addLog("æŸ¥æ‰¾ç¡®å®šæŒ‰é’®fail");
+	}
+	else
+	{
+		pt.x += 15;
+		pt.y += 15;
+		//ç¡®è®¤åˆ†æè£…å¤‡
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			RetSw = M_DelayRandom(500, 600);
+			//è¿™é‡Œä½¿ç”¨çš„æ˜¯ç»å¯¹åæ ‡
+			RetSw = M_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+			RetSw = M_DelayRandom(500, 600);
+			RetSw = M_DelayRandom(500, 600);
+		}
+		RetSw = M_LeftClick(msdk_handle, 1);
+
+		infor.Format("ç»å¯¹åæ ‡ MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
+		addLog(infor);
+
+		RetSw = M_DelayRandom(800, 1000); 
+	}
+
+	RetSw = M_DelayRandom(2800, 3000);
 	 
-	 int RetSw =  M_DelayRandom(2800, 3000);
 
 	for (int i = 0; i < 1; i++)
 	{
@@ -1548,10 +1798,10 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 	
 	
 	RetSw = M_DelayRandom(800, 1000);
-	//ÕâÀï¼ÓÈë·Ö½â¶¯×÷£¬°´I¼ü £¬¿ª·Ö½â
+	//è¿™é‡ŒåŠ å…¥åˆ†è§£åŠ¨ä½œï¼ŒæŒ‰Ié”® ï¼Œå¼€åˆ†è§£
 	RetSw = M_KeyPress(msdk_handle, Keyboard_DanYinHao, 1);
 	RetSw = M_DelayRandom(2200, 3000);
-	//·Ö½â×°±¸
+	//åˆ†è§£è£…å¤‡
 	for (int i = 0; i < 1; i++)
 	{
 		RetSw = M_ResetMousePos(msdk_handle);
@@ -1562,7 +1812,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 	RetSw = M_LeftClick(msdk_handle, 1);
 	RetSw = M_DelayRandom(800, 1000);
 
-	//È«²¿·Ö½â×°±¸
+	//å…¨éƒ¨åˆ†è§£è£…å¤‡
 	for (int i = 0; i < 1; i++)
 	{
 		RetSw = M_ResetMousePos(msdk_handle);
@@ -1574,32 +1824,31 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 	RetSw = M_DelayRandom(800, 1000);
 	RetSw = M_DelayRandom(800, 1000);
 	saveScreen();
-	CPoint pt= findSureButton_state();
-	
-	CString infor;
-	infor.Format("²éÕÒÈ·¶¨°´Å¥%d,%d",pt.x,pt.y);
+	pt= findSureButton_state();
+	 
+	infor.Format("æŸ¥æ‰¾ç¡®å®šæŒ‰é’®%d,%d",pt.x,pt.y);
 	addLog(infor);
 	if (pt.x == -1)
 	{
-		addLog("²éÕÒÈ·¶¨°´Å¥fail");
+		addLog("æŸ¥æ‰¾ç¡®å®šæŒ‰é’®fail");
 	}
 	else
 	{
 		pt.x += 15;
 		pt.y += 15;
-		//È·ÈÏ·ÖÎö×°±¸
+		//ç¡®è®¤åˆ†æè£…å¤‡
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
 			RetSw = M_DelayRandom(500, 600);
-			//ÕâÀïÊ¹ÓÃµÄÊÇ¾ø¶Ô×ø±ê
+			//è¿™é‡Œä½¿ç”¨çš„æ˜¯ç»å¯¹åæ ‡
 			RetSw = M_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
 			RetSw = M_DelayRandom(500, 600);
 			RetSw = M_DelayRandom(500, 600);
 		}
 		RetSw = M_LeftClick(msdk_handle, 1);
 		
-		infor.Format("¾ø¶Ô×ø±ê MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
+		infor.Format("ç»å¯¹åæ ‡ MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
 		addLog(infor);
 		
 		RetSw = M_DelayRandom(800, 1000);
@@ -1620,8 +1869,8 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 void CVC_DemoDlg::OnBnClickedButtonKeypress5()
 {
 	m_dTimeBegin = GetTickCount();
-	UpdateData();
-	m_timeLimit = m_intMinute;//·ÖÖÓ
+	//UpdateData();
+	m_timeLimit = m_intMinute;//åˆ†é’Ÿ
 	bStop = false;
 	bChangeUser = true;
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
@@ -1638,7 +1887,7 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress5()
 
 void CVC_DemoDlg::OnBnClickedButtonKeypress4()
 {
-	UpdateData(TRUE);
+	
 	for (int i = (m_listWindow.GetCount() - 1); i >= 0; i--)
 		m_listWindow.DeleteString(i);
 
@@ -1647,7 +1896,7 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress4()
 
 	DWORD timebegin = GetTickCount();
 	bool bFindWindows = false;
-	while (pMainWnd)//ÏÈÁĞ¾ÙËùÓĞµÄ´°¿Ú
+	while (pMainWnd)//å…ˆåˆ—ä¸¾æ‰€æœ‰çš„çª—å£
 	{
 		CString strClassName;
 		CString text;
@@ -1665,16 +1914,16 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress4()
 
 
 
-			//	if((strClassName=="#32770"&&(text.Fin2d("´íÎó")!=-1||text.Find("microsoft visual c++")!=-1||text.Find("microsoft internet")!=-1||text.Find("°²È«¾¯±¨")!=-1||text.Find("°²È«ĞÅÏ¢")!=-1||text.Find("windows internet explorer")!=-1||text.Find("Á¬½Óµ½")!=-1) 19910205LGD
+			//	if((strClassName=="#32770"&&(text.Fin2d("é”™è¯¯")!=-1||text.Find("microsoft visual c++")!=-1||text.Find("microsoft internet")!=-1||text.Find("å®‰å…¨è­¦æŠ¥")!=-1||text.Find("å®‰å…¨ä¿¡æ¯")!=-1||text.Find("windows internet explorer")!=-1||text.Find("è¿æ¥åˆ°")!=-1) 19910205LGD
 			//		||(strClassName=="Internet Explorer_TridentDlgFrame")))//||text.Find("object Error")!=-1
 			if (strClassName.Find(m_edit_keyword) != -1 || text.Find(m_edit_keyword) != -1)
 
-			{//Èç¹ûÊÇie´°¿ÚÔò¼ÌĞø½øĞĞ·ÖÎö¡£
+			{//å¦‚æœæ˜¯ieçª—å£åˆ™ç»§ç»­è¿›è¡Œåˆ†æã€‚
 				CRect rect;
 				::GetWindowRect(pMainWnd->m_hWnd, &rect);
 				CString strWindow;
 				//strWindow.Format("%lx,%s",pMainWnd->m_hWnd,strClassName); 
-				if (rect.Width() > 500 && rect.Height() > 500)
+				if (rect.Width() > 500 && rect.Height() ==600)
 				{
 					dleft = rect.left;
 					dtop = rect.top;
@@ -1684,10 +1933,10 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress4()
 				}
 
 				//HWND h=::GetWindow(pMainWnd->m_hWnd,GW_CHILD);
-				//while(h)//·ÖÎöie´°¿ÚÄÚ²¿½á¹¹
-				//{//¹ã¸æ´°¿ÚÒÔ¼°´ó²¿·Ö¶ñÒâÍøÕ¾µÄµ¯³ö´°¿Ú¶¼ÓĞÒ»¸ö¹²Í¬ÌØµã
-				//	//Ö»ÓĞÎÄ±¾ÏÔÊ¾Çø£¬Ã»ÓĞ¹¤¾ßÀ¸
-				//	//ÈôÒ»¸ö´°¿ÚÎªie´°¿ÚÔò¿´ÆäÊÇ·ñÓĞ¹¤¾ßÀ¸£¬¼°¿ÉÖªËüÊÇ·ñÎª¹ã¸æ´°¿Ú
+				//while(h)//åˆ†æieçª—å£å†…éƒ¨ç»“æ„
+				//{//å¹¿å‘Šçª—å£ä»¥åŠå¤§éƒ¨åˆ†æ¶æ„ç½‘ç«™çš„å¼¹å‡ºçª—å£éƒ½æœ‰ä¸€ä¸ªå…±åŒç‰¹ç‚¹
+				//	//åªæœ‰æ–‡æœ¬æ˜¾ç¤ºåŒºï¼Œæ²¡æœ‰å·¥å…·æ 
+				//	//è‹¥ä¸€ä¸ªçª—å£ä¸ºieçª—å£åˆ™çœ‹å…¶æ˜¯å¦æœ‰å·¥å…·æ ï¼ŒåŠå¯çŸ¥å®ƒæ˜¯å¦ä¸ºå¹¿å‘Šçª—å£
 
 				//	GetClassName(h,strClassName.GetBufferSetLength(100),100);
 				//	::GetWindowText(h,text.GetBufferSetLength(256),256); 
@@ -1707,19 +1956,19 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress4()
 
 void CVC_DemoDlg::OnEnChangeEdit2()
 {
-	// TODO:  Èç¹û¸Ã¿Ø¼şÊÇ RICHEDIT ¿Ø¼ş£¬Ëü½«²»
-	// ·¢ËÍ´ËÍ¨Öª£¬³ı·ÇÖØĞ´ CDialogEx::OnInitDialog()
-	// º¯Êı²¢µ÷ÓÃ CRichEditCtrl().SetEventMask()£¬
-	// Í¬Ê±½« ENM_CHANGE ±êÖ¾¡°»ò¡±ÔËËãµ½ÑÚÂëÖĞ¡£
+	// TODO:  å¦‚æœè¯¥æ§ä»¶æ˜¯ RICHEDIT æ§ä»¶ï¼Œå®ƒå°†ä¸
+	// å‘é€æ­¤é€šçŸ¥ï¼Œé™¤éé‡å†™ CDialogEx::OnInitDialog()
+	// å‡½æ•°å¹¶è°ƒç”¨ CRichEditCtrl().SetEventMask()ï¼Œ
+	// åŒæ—¶å°† ENM_CHANGE æ ‡å¿—â€œæˆ–â€è¿ç®—åˆ°æ©ç ä¸­ã€‚
 
-	// TODO:  ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
+	// TODO:  åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
 }
 
 void CVC_DemoDlg::playerlogin()
 {
 	m_dTimeBegin = GetTickCount(); 
-	UpdateData();
-	m_timeLimit = m_intMinute;//·ÖÖÓ
+	//UpdateData();
+	m_timeLimit = m_intMinute;//åˆ†é’Ÿ
 	bStop = false;
 	bChangeUser = false;
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
@@ -1729,7 +1978,7 @@ void CVC_DemoDlg::playerlogin()
 	Sleep(3000);
 
 
-	HANDLE hThread = CreateThread(NULL, 0, changeUser_And_Login_Thread, (LPVOID)msdk_handle, 0, NULL);// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
+	HANDLE hThread = CreateThread(NULL, 0, changeUser_And_Login_Thread, (LPVOID)msdk_handle, 0, NULL);// TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
 
 }
 void CVC_DemoDlg::OnBnClickedButtonKeypress6()
@@ -1776,7 +2025,7 @@ void CVC_DemoDlg::setShowWindowSize(int posX, int posY, int width, int height)
 
 	DWORD timebegin = GetTickCount();
 	bool bFindWindows = false;
-	while (pMainWnd)//ÏÈÁĞ¾ÙËùÓĞµÄ´°¿Ú
+	while (pMainWnd)//å…ˆåˆ—ä¸¾æ‰€æœ‰çš„çª—å£
 	{
 		CString strClassName;
 		CString text;
@@ -1794,11 +2043,11 @@ void CVC_DemoDlg::setShowWindowSize(int posX, int posY, int width, int height)
 
 
 
-			//	if((strClassName=="#32770"&&(text.Find("´íÎó")!=-1||text.Find("microsoft visual c++")!=-1||text.Find("microsoft internet")!=-1||text.Find("°²È«¾¯±¨")!=-1||text.Find("°²È«ĞÅÏ¢")!=-1||text.Find("windows internet explorer")!=-1||text.Find("Á¬½Óµ½")!=-1) 
+			//	if((strClassName=="#32770"&&(text.Find("é”™è¯¯")!=-1||text.Find("microsoft visual c++")!=-1||text.Find("microsoft internet")!=-1||text.Find("å®‰å…¨è­¦æŠ¥")!=-1||text.Find("å®‰å…¨ä¿¡æ¯")!=-1||text.Find("windows internet explorer")!=-1||text.Find("è¿æ¥åˆ°")!=-1) 
 			//		||(strClassName=="Internet Explorer_TridentDlgFrame")))//||text.Find("object Error")!=-1
 			if (strClassName.Find(m_edit_keyword) != -1 || text.Find(m_edit_keyword) != -1)
 
-			{//Èç¹ûÊÇie´°¿ÚÔò¼ÌĞø½øĞĞ·ÖÎö¡£
+			{//å¦‚æœæ˜¯ieçª—å£åˆ™ç»§ç»­è¿›è¡Œåˆ†æã€‚
 
 				CString strSelectedWindow, strWindow;
 				if (m_listWindow.GetCurSel() != -1)
@@ -1809,10 +2058,10 @@ void CVC_DemoDlg::setShowWindowSize(int posX, int posY, int width, int height)
 				{
 
 					HWND h = ::GetWindow(pMainWnd->m_hWnd, GW_CHILD);
-					while (h)//·ÖÎöie´°¿ÚÄÚ²¿½á¹¹
-					{//¹ã¸æ´°¿ÚÒÔ¼°´ó²¿·Ö¶ñÒâÍøÕ¾µÄµ¯³ö´°¿Ú¶¼ÓĞÒ»¸ö¹²Í¬ÌØµã
-						//Ö»ÓĞÎÄ±¾ÏÔÊ¾Çø£¬Ã»ÓĞ¹¤¾ßÀ¸
-						//ÈôÒ»¸ö´°¿ÚÎªie´°¿ÚÔò¿´ÆäÊÇ·ñÓĞ¹¤¾ßÀ¸£¬¼°¿ÉÖªËüÊÇ·ñÎª¹ã¸æ´°¿Ú
+					while (h)//åˆ†æieçª—å£å†…éƒ¨ç»“æ„
+					{//å¹¿å‘Šçª—å£ä»¥åŠå¤§éƒ¨åˆ†æ¶æ„ç½‘ç«™çš„å¼¹å‡ºçª—å£éƒ½æœ‰ä¸€ä¸ªå…±åŒç‰¹ç‚¹
+						//åªæœ‰æ–‡æœ¬æ˜¾ç¤ºåŒºï¼Œæ²¡æœ‰å·¥å…·æ 
+						//è‹¥ä¸€ä¸ªçª—å£ä¸ºieçª—å£åˆ™çœ‹å…¶æ˜¯å¦æœ‰å·¥å…·æ ï¼ŒåŠå¯çŸ¥å®ƒæ˜¯å¦ä¸ºå¹¿å‘Šçª—å£
 
 						GetClassName(h, strClassName.GetBufferSetLength(100), 100);
 						::GetWindowText(h, text.GetBufferSetLength(256), 256);
@@ -1861,7 +2110,7 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress7()
 
 void CVC_DemoDlg::OnLbnSelchangeList1()
 {
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
+	// TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
 }
 
 
@@ -1882,7 +2131,7 @@ void CVC_DemoDlg::OnBnClickedButtonGetmousepos2()
 
 void CVC_DemoDlg::OnBnClickedButtonKeypress8()
 {
-	ShellExecute(this->m_hWnd, "open", "Á¢¼´ÏÂÏß.bat", NULL, "D:\\", SW_SHOWMAXIMIZED);
+	ShellExecute(this->m_hWnd, "open", "ç«‹å³ä¸‹çº¿.bat", NULL, "D:\\", SW_SHOWMAXIMIZED);
 }
 
 
@@ -1898,21 +2147,64 @@ void CVC_DemoDlg::OnEnChangeEdit7()
 
 void CVC_DemoDlg::OnBnClickedButtonOpen3()
 {
+ 
+	
+ 
+
+ 
+	/*RetSw = M_LeftDown(msdk_handle );
+	RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_LeftUp(msdk_handle );*/
+
+
+
+	//img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
+	//try {
+
+	//	Mat NewImg = img(Rect(40, -5, 80, 30));
+	//}
+	//catch (Exception &e)
+	//{
+	//	addLog("catch error");
+	//}
+	//
+	//checkGame_state();
 //	OnBnClickedButtonKeypress4();
-	//CPoint cp = findImage("d://mainmenu.bmp", 1499, 442, 1571,476);
-	CString str;
+
+
+	//#æµ‹è¯•æ˜¯å¦åœ¨æ¸¸æˆä¸­
+	saveScreen();//390,54
+ 	//CPoint cp = findImage("d://ingame.png", 380, 44, 460,58);
+	CPoint cp = findImage("d://close.png", 380, 440, 390, 460);
+	if (cp.x != 0 && cp.y != 0)
+	{
+
+	CString str="";
 	CTime t = CTime::GetCurrentTime();
 	CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+	str.Format("%s==>%s (%ld,%ld)\n", tt, "å‘ç°å¹¿å‘Šå…³é—­ 0", cp.x, cp.y);
 
-	str.Format("%s==>%s\n", tt, "ÕÊºÅÒÑ¾­Ê¹ÓÃÍê³É 0");
+	//str.Format("%s==>%s (%ld,%ld)\n", tt, "å‘ç°åœ¨åœ¨æ¸¸æˆä¸­ 0",cp.x,cp.y);
 	addLog(str);
-	CStdioFile file;
-	if (file.Open(_T("d:\\log.txt"), CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate, NULL))
-	{
-		file.SeekToEnd();
-		file.WriteString(str);
-		file.Close();
 	}
+	else 
+	{
+
+		CString str = "";
+		CTime t = CTime::GetCurrentTime();
+		CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+
+		str.Format("%s==>%s (%ld,%ld)\n", tt, "æœªåœ¨æ¸¸æˆä¸­ 0", cp.x, cp.y);
+		addLog(str);
+	} 
+	
+	//CStdioFile file;
+	//if (file.Open(_T("d:\\log.txt"), CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate, NULL))
+	//{
+	//	file.SeekToEnd();
+	//	file.WriteString(str);
+	//	file.Close();
+	//}
 }
 
 
@@ -1964,13 +2256,13 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 		::GetWindowText(pMainWnd->m_hWnd, text.GetBufferSetLength(256), 256);
 		if (text.Find(m_edit_keyword) != -1)
 		{
-			addLog("ÔçÆğ¶¯");
+			addLog("æ—©èµ·åŠ¨");
 			KillTimer(0);
 			playerlogin();
 		}
 		else
 		{
-			if (text.Find("ÃÔÄã°æ") != -1)
+			if (text.Find("è¿·ä½ ç‰ˆ") != -1)
 			{
 				::PostMessage(pMainWnd->m_hWnd, WM_CLOSE, NULL, NULL);
 			}
@@ -1996,7 +2288,7 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 		}
 		else
 		{
-			if (text.Find("ÃÔÄã°æ") != -1)
+			if (text.Find("è¿·ä½ ç‰ˆ") != -1)
 			{
 				::PostMessage(pMainWnd->m_hWnd, WM_CLOSE, NULL, NULL);
 			}
@@ -2014,4 +2306,15 @@ void CVC_DemoDlg::OnClose()
 	KillTimer(0);
 
 	CDialogEx::OnClose();
+}
+
+
+void CVC_DemoDlg::OnBnClickedButtonKeyOnScreen()
+{
+	if (msdk_handle == INVALID_HANDLE_VALUE) {
+		OnBnClickedButtonOpen();
+	}
+	Sleep(3000);
+
+	HANDLE hThread = CreateThread(NULL, 0, testThread_Game, (LPVOID)msdk_handle, 0, NULL);
 }

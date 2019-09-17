@@ -393,7 +393,7 @@ int checkGame_state()
 
 				Mat NewImg = img(Rect(matchLoc.x, matchLoc.y, 80, 30));
 				Mat means, stddev, covar;
-			cv:Scalar tempVal = cv::mean(NewImg);
+				cv:Scalar tempVal = cv::mean(NewImg);
 				float matMean = tempVal.val[0];
 				CString strResult;
 				//42 34 56//not change to grey
@@ -404,8 +404,8 @@ int checkGame_state()
 				strResult.Format("means  : %0.0f %0.0f %0.0f\n", tempVal.val[0], tempVal.val[1], tempVal.val[2]);//RGB三通道，所以均值结果是3行一列
 
 				//imshow("test", NewImg);
-				if (tempVal.val[1] <= 30 && tempVal.val[2] <= 46)
-					//if(TRUE)
+					if (tempVal.val[1] <= 30 && tempVal.val[2] <= 46)
+				//if(TRUE)
 				{
 					CString str;
 					CTime t = CTime::GetCurrentTime();
@@ -1498,15 +1498,15 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		Global_checkTime++;
 
 		int RetSw = M_DelayRandom(4800, 6000);
-		pDlg->saveScreen();
-		CPoint pt = findImage("d://close.png", 380, 440, 390, 460);
-		if (pt.x != 0 && pt.y != 0)
+		 pDlg->saveScreen();
+		CPoint pt_close = findImage("d://close.png", 380, 440, 390, 460);
+		if (pt_close.x != 0 && pt_close.y != 0)
 		{
 
 			CString str = "";
 			CTime t = CTime::GetCurrentTime();
 			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
-			str.Format("%s==>%s (%ld,%ld)\n", tt, "发现广告关闭 0", pt.x, pt.y);
+			str.Format("%s==>%s (%ld,%ld)\n", tt, "发现广告关闭 0", pt_close.x, pt_close.y);
 
 			//str.Format("%s==>%s (%ld,%ld)\n", tt, "发现在在游戏中 0",cp.x,cp.y);
 			addLog(str);
@@ -1518,37 +1518,37 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			CTime t = CTime::GetCurrentTime();
 			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
 
-			str.Format("%s==>%s (%ld,%ld)\n", tt, "未现广告 0", pt.x, pt.y);
+			str.Format("%s==>%s (%ld,%ld)\n", tt, "未现广告 0", pt_close.x, pt_close.y);
 			addLog(str);
 		}
 		 
-		infor.Format("查找关闭按钮%d,%d", pt.x, pt.y);
+		infor.Format("查找关闭按钮%d,%d", pt_close.x, pt_close.y);
 		addLog(infor);
-		if (pt.x == -1)
+		if (pt_close.x == 0 && pt_close.y == 0)
 		{
 			addLog("查找关闭按钮fail");
 		}
 		else
 		{
-			pt.x += 15;
-			pt.y += 15;
+			pt_close.x += 15;
+			pt_close.y += 15;
 			//确认分析装备
 			for (int i = 0; i < 1; i++)
 			{
 				RetSw = M_ResetMousePos(msdk_handle);
 				RetSw = M_DelayRandom(500, 600);
 				//这里使用的是绝对坐标
-				RetSw = M_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+				RetSw = M_MoveTo(msdk_handle, (int)(pt_close.x / rate), (int)(pt_close.y / rate));
 				RetSw = M_DelayRandom(500, 600);
 				RetSw = M_DelayRandom(500, 600);
 			}
 			RetSw = M_LeftClick(msdk_handle, 1);
 
-			infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
+			infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt_close.x / rate), (int)(pt_close.y / rate));
 			addLog(infor);
 
 			RetSw = M_DelayRandom(800, 1000);
-		}
+		} 
 
 		RetSw = M_DelayRandom(2800, 3000);
 
@@ -1583,7 +1583,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		
 		pDlg->saveScreen();
 		
-		pt = findSureButton_state();
+		CPoint pt = findSureButton_state();
 
 		infor.Format("查找确定按钮%d,%d", pt.x, pt.y);
 		addLog(infor);

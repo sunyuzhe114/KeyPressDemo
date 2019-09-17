@@ -1496,6 +1496,62 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		infor.Format("stop continue remains %ld \r\n", pDlg->m_checkTimes - Global_checkTime);
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
 		Global_checkTime++;
+
+		int RetSw = M_DelayRandom(4800, 6000);
+		pDlg->saveScreen();
+		CPoint pt = findImage("d://close.png", 380, 440, 390, 460);
+		if (pt.x != 0 && pt.y != 0)
+		{
+
+			CString str = "";
+			CTime t = CTime::GetCurrentTime();
+			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+			str.Format("%s==>%s (%ld,%ld)\n", tt, "发现广告关闭 0", pt.x, pt.y);
+
+			//str.Format("%s==>%s (%ld,%ld)\n", tt, "发现在在游戏中 0",cp.x,cp.y);
+			addLog(str);
+		}
+		else
+		{
+
+			CString str = "";
+			CTime t = CTime::GetCurrentTime();
+			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+
+			str.Format("%s==>%s (%ld,%ld)\n", tt, "未现广告 0", pt.x, pt.y);
+			addLog(str);
+		}
+		 
+		infor.Format("查找关闭按钮%d,%d", pt.x, pt.y);
+		addLog(infor);
+		if (pt.x == -1)
+		{
+			addLog("查找关闭按钮fail");
+		}
+		else
+		{
+			pt.x += 15;
+			pt.y += 15;
+			//确认分析装备
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				RetSw = M_DelayRandom(500, 600);
+				//这里使用的是绝对坐标
+				RetSw = M_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+				RetSw = M_DelayRandom(500, 600);
+				RetSw = M_DelayRandom(500, 600);
+			}
+			RetSw = M_LeftClick(msdk_handle, 1);
+
+			infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
+			addLog(infor);
+
+			RetSw = M_DelayRandom(800, 1000);
+		}
+
+		RetSw = M_DelayRandom(2800, 3000);
+
 		//这里加入分解动作，按I键 ，开分解
 		//这里加入分解动作，按I键 ，开分解
 		RetSw = M_DelayRandom(800, 1000);
@@ -1524,8 +1580,10 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		RetSw = M_LeftClick(msdk_handle, 1);
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
+		
 		pDlg->saveScreen();
-		CPoint pt = findSureButton_state();
+		
+		pt = findSureButton_state();
 
 		infor.Format("查找确定按钮%d,%d", pt.x, pt.y);
 		addLog(infor);

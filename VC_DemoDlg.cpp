@@ -1447,7 +1447,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 				continue;
 			}
 		}
-		CPoint cp = findImage("d://ingame.png", 340, 40, 400, 60);
+		CPoint cp = findImage("d://ingamenew.png", 340, 40, 400, 60);
 		if (cp.x != 0 && cp.y != 0)
 		{
 			//·¢ÏÖÔÚÔÚÓÎÏ·ÖÐ 0 (1400,51)

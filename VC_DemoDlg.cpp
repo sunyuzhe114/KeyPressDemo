@@ -556,7 +556,7 @@ CVC_DemoDlg::CVC_DemoDlg(CWnd* pParent /*=NULL*/)
 	, m_intMinute(120)
 	, m_edit_keyword(_T("勇士")
 	)
-	, m_checkTimes(5)
+	, m_checkTimes(6)
 	, m_screenWidth(1920)
 	, bHuangLong(FALSE)
 {
@@ -1490,7 +1490,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 	{
 		pDlg->playerlogin();
 	}
-	else if (Global_checkTime < pDlg->m_checkTimes && bFullStop == false && Game_state <= 200)
+	else if (Global_checkTime <= pDlg->m_checkTimes && bFullStop == false && Game_state <= 200)
 	{
 		CString infor;
 		infor.Format("stop continue remains %ld \r\n", pDlg->m_checkTimes - Global_checkTime);

@@ -38,7 +38,8 @@ LONG dtop = 0;
 bool use_mask = false;
 Mat img;
 Mat templ;
-Mat mask; Mat result;
+Mat mask;
+Mat result;
 const char* image_window = "Source Image";
 const char* result_window = "Result window";
 bool MatchingMethod();
@@ -2254,7 +2255,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 	//#测试是否在游戏中
 	saveScreen();//390,54
 	//CPoint cp = findImage("d://ingame.png", 380, 44, 460,58);
-	CPoint cp = findImage("d://close.png", 380, 440, 390, 460);
+	CPoint cp = findImage("d://ingamenew.png", 380, 440, 390, 460);
 	if (cp.x != 0 && cp.y != 0)
 	{
 

@@ -75,4 +75,6 @@ public:
 	afx_msg void OnClose();
 	CListBox m_list_time_log;
 	afx_msg void OnBnClickedButtonKeyOnScreen();
+	afx_msg void OnBnClickedCheck2();
+	BOOL bOnlyForTest;
 };

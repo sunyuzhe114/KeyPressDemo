@@ -20,6 +20,7 @@ using namespace std;
 #define new DEBUG_NEW
 #endif
 #define APP_NAME "notepad++"
+ 
 int  Game_state = -1;//Game_state = 100;用户已经用完，200，还可以再玩
 int not_in_game_time = 0;//检测到未在游戏中次数
 // CVC_DemoDlg 对话框
@@ -426,7 +427,7 @@ int checkGame_state()
 				strResult.Format("means  : %0.0f %0.0f %0.0f\n", tempVal.val[0], tempVal.val[1], tempVal.val[2]);//RGB三通道，所以均值结果是3行一列
 
 				//imshow("test", NewImg);
-					if (tempVal.val[1] <= 30 && tempVal.val[2] <= 46)
+					if (tempVal.val[1] <= 30 && tempVal.val[2] <= 46||pDlg->bOnlyForTest)
 				//if(TRUE)
 				{
 					CString str;
@@ -581,6 +582,7 @@ CVC_DemoDlg::CVC_DemoDlg(CWnd* pParent /*=NULL*/)
 	, m_checkTimes(6)
 	, m_screenWidth(1920)
 	, bHuangLong(FALSE)
+	, bOnlyForTest(FALSE)
 {
 	m_rate = 2.5;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -602,6 +604,7 @@ void CVC_DemoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT7, m_screenWidth);
 	DDX_Check(pDX, IDC_CHECK1, bHuangLong);
 	DDX_Control(pDX, IDC_LIST3, m_list_time_log);
+	DDX_Check(pDX, IDC_CHECK2, bOnlyForTest);
 }
 
 BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
@@ -635,6 +638,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_WM_TIMER()
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_BUTTON_KEY_ON_SCREEN, &CVC_DemoDlg::OnBnClickedButtonKeyOnScreen)
+	ON_BN_CLICKED(IDC_CHECK2, &CVC_DemoDlg::OnBnClickedCheck2)
 END_MESSAGE_MAP()
 
 
@@ -815,7 +819,7 @@ DWORD WINAPI    LoginUser_Thread(LPVOID pp)
 			RetSw = my_new_MoveTo(msdk_handle, (int)((1518) / rate), (int)((277) / rate));
 			RetSw = M_DelayRandom(500, 600);
 		}
-		RetSw = M_LeftClick(msdk_handle, 1);
+		RetSw = M_LeftClick(msdk_handle, 2);
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_DelayRandom(800, 1000);
@@ -830,7 +834,7 @@ DWORD WINAPI    LoginUser_Thread(LPVOID pp)
 			RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
 			RetSw = M_DelayRandom(500, 600);
 		}
-		RetSw = M_LeftClick(msdk_handle, 1);
+		RetSw = M_LeftClick(msdk_handle, 2);
 		RetSw = M_DelayRandom(1800, 2000);
 		infor += "按确定\r\n";
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
@@ -1609,7 +1613,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 
 		infor.Format("查找确定按钮%d,%d", pt.x, pt.y);
 		addLog(infor);
-		if (pt.x == -1)
+		if (pt.x == 0)
 		{
 			addLog("查找确定按钮fail");
 		}
@@ -1811,6 +1815,9 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 
 
 	saveScreen();
+
+
+
 	int RetSw = M_DelayRandom(2800, 3000);
 	CPoint pt = findImage("d://close.png", 380, 440, 390, 460);
 	if (pt.x != 0 && pt.y != 0)
@@ -1838,7 +1845,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 	CString infor;
 	infor.Format("查找确定按钮%d,%d", pt.x, pt.y);
 	addLog(infor);
-	if (pt.x == -1)
+	if (pt.x == 0)
 	{
 		addLog("查找确定按钮fail");
 	}
@@ -1908,7 +1915,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 
 	infor.Format("查找确定按钮%d,%d", pt.x, pt.y);
 	addLog(infor);
-	if (pt.x == -1)
+	if (pt.x == 0)
 	{
 		addLog("查找确定按钮fail");
 	}
@@ -2397,4 +2404,12 @@ void CVC_DemoDlg::OnBnClickedButtonKeyOnScreen()
 	Sleep(3000);
 
 	HANDLE hThread = CreateThread(NULL, 0, testThread_Game, (LPVOID)msdk_handle, 0, NULL);
+}
+
+
+void CVC_DemoDlg::OnBnClickedCheck2()
+{
+	CString strInfor;
+	UpdateData(); 
+	 
 }

@@ -775,7 +775,7 @@ DWORD WINAPI    LoginUser_Thread(LPVOID pp)
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = my_new_MoveTo(msdk_handle, 1385 / rate, 110 / rate);
+			RetSw = my_new_MoveTo(msdk_handle, 1200 / rate, 110 / rate);
 			RetSw = M_DelayRandom(800, 1000);
 		}
 		if (bStop)break;
@@ -890,7 +890,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = my_new_MoveTo(msdk_handle, 1385 / rate, 110 / rate);;
+			RetSw = my_new_MoveTo(msdk_handle, 1200 / rate, 110 / rate);;
 			RetSw = M_DelayRandom(800, 1000);
 		}
 		RetSw = M_DelayRandom(800, 1000);
@@ -1146,7 +1146,8 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 	for (int i = 0; i < 1; i++)
 	{
 		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = my_new_MoveTo(msdk_handle, 1385 / rate, 110 / rate);
+		//RetSw = my_new_MoveTo(msdk_handle, 1200 / rate, 110 / rate);
+		RetSw = my_new_MoveTo(msdk_handle, 1200 / rate, 110 / rate);
 		RetSw = M_DelayRandom(800, 1000);
 	}
 	RetSw = M_DelayRandom(800, 1000);
@@ -1284,7 +1285,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 				for (int i = 0; i < 1; i++)
 				{
 					RetSw = M_ResetMousePos(msdk_handle);
-					RetSw = my_new_MoveTo(msdk_handle, 1385 / rate, 110 / rate);
+					RetSw = my_new_MoveTo(msdk_handle, 1200 / rate, 110 / rate);
 					RetSw = M_DelayRandom(800, 1000);
 				}
 				RetSw = M_DelayRandom(800, 1000);
@@ -1810,13 +1811,9 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
 		OnBnClickedButtonOpen();
 	}
+	 
 
-
-
-
-	saveScreen();
-
-
+	saveScreen(); 
 
 	int RetSw = M_DelayRandom(2800, 3000);
 	CPoint pt = findImage("d://close.png", 380, 440, 390, 460);
@@ -1826,7 +1823,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 		CString str = "";
 		CTime t = CTime::GetCurrentTime();
 		CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
-		str.Format("%s==>%s (%ld,%ld)\n", tt, "发现广告关闭 0", pt.x, pt.y);
+		str.Format("%s==>%s (%ld,%ld)\n", tt, "发现广告关闭 ", pt.x, pt.y);
 
 		//str.Format("%s==>%s (%ld,%ld)\n", tt, "发现在在游戏中 0",cp.x,cp.y);
 		addLog(str);
@@ -1859,7 +1856,8 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 			RetSw = M_ResetMousePos(msdk_handle);
 			RetSw = M_DelayRandom(500, 600);
 			//这里使用的是绝对坐标
-			RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+			//RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+			RetSw = my_new_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
 			RetSw = M_DelayRandom(500, 600);
 			RetSw = M_DelayRandom(500, 600);
 		}
@@ -1877,7 +1875,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 	for (int i = 0; i < 1; i++)
 	{
 		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = my_new_MoveTo(msdk_handle, 1385 / rate, 110 / rate);
+		RetSw = my_new_MoveTo(msdk_handle, 1200 / rate, 110 / rate);
 		RetSw = M_DelayRandom(800, 1000);
 	}
 	RetSw = M_DelayRandom(800, 1000);

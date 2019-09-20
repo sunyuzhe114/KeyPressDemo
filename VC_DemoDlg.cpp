@@ -26,6 +26,7 @@ int not_in_game_time = 0;//检测到未在游戏中次数
 // CVC_DemoDlg 对话框
 int Global_checkTime = 0;
 double rate = 2.5;//* dbZoomScale
+CString str_matchineName;
 CVC_DemoDlg* pDlg;
 bool bStop = false;
 bool bFullStop = false;
@@ -583,6 +584,7 @@ CVC_DemoDlg::CVC_DemoDlg(CWnd* pParent /*=NULL*/)
 	, m_screenWidth(1920)
 	, bHuangLong(FALSE)
 	, bOnlyForTest(FALSE)
+	, m_matchinename(_T(""))
 {
 	m_rate = 2.5;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -605,6 +607,7 @@ void CVC_DemoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK1, bHuangLong);
 	DDX_Control(pDX, IDC_LIST3, m_list_time_log);
 	DDX_Check(pDX, IDC_CHECK2, bOnlyForTest);
+	DDX_Text(pDX, IDC_EDIT8, m_matchinename);
 }
 
 BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
@@ -639,6 +642,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_BUTTON_KEY_ON_SCREEN, &CVC_DemoDlg::OnBnClickedButtonKeyOnScreen)
 	ON_BN_CLICKED(IDC_CHECK2, &CVC_DemoDlg::OnBnClickedCheck2)
+	ON_EN_CHANGE(IDC_EDIT8, &CVC_DemoDlg::OnEnChangeEdit8)
 END_MESSAGE_MAP()
 
 
@@ -691,6 +695,14 @@ BOOL CVC_DemoDlg::OnInitDialog()
 		bHuangLong = atol(infor);
 		if (bHuangLong == 1)
 			((CButton*)(GetDlgItem(IDC_CHECK1)))->SetCheck(1);
+
+	}
+	::GetPrivateProfileString(APP_NAME, "m_matchname", "", infor.GetBufferSetLength(256), 256, "d://keypressDemo.ini");
+	if (infor != "")
+	{
+		SetDlgItemText(IDC_EDIT8, infor);
+		m_matchinename = infor;
+		 
 
 	}
 	SetTimer(0, TIMER_LENGTH, NULL);
@@ -2407,7 +2419,18 @@ void CVC_DemoDlg::OnBnClickedButtonKeyOnScreen()
 
 void CVC_DemoDlg::OnBnClickedCheck2()
 {
-	CString strInfor;
-	UpdateData(); 
+	UpdateData();
 	 
+	 
+}
+
+
+void CVC_DemoDlg::OnEnChangeEdit8()
+{
+	UpdateData();
+	 
+	CString rr;
+	rr.Format("%s", m_matchinename);
+	CWinApp* pApp = AfxGetApp();
+	::WritePrivateProfileString(APP_NAME, "m_matchname", rr, "d://keypressDemo.ini");
 }

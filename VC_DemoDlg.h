@@ -77,4 +77,6 @@ public:
 	afx_msg void OnBnClickedButtonKeyOnScreen();
 	afx_msg void OnBnClickedCheck2();
 	BOOL bOnlyForTest;
+	afx_msg void OnEnChangeEdit8();
+	CString m_matchinename;
 };

@@ -2418,8 +2418,8 @@ void CVC_DemoDlg::OnBnClickedButtonKeyOnScreen()
 
 
 void CVC_DemoDlg::OnBnClickedCheck2()
-{
-	UpdateData();
+{ 
+	UpdateData(); 
 	 
 	 
 }
@@ -2434,3 +2434,4 @@ void CVC_DemoDlg::OnEnChangeEdit8()
 	CWinApp* pApp = AfxGetApp();
 	::WritePrivateProfileString(APP_NAME, "m_matchname", rr, "d://keypressDemo.ini");
 }
+ 

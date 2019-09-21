@@ -2069,8 +2069,11 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress4()
 			}
 			else
 			{
-				addLog("hide window  " + text + " class " + strClassName);
-				::PostMessage(pMainWnd->m_hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
+				if (text != "")
+				{
+					addLog("hide window  " + text + " class " + strClassName);
+					::PostMessage(pMainWnd->m_hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
+				}
 			}
 		}
 

@@ -87,10 +87,45 @@ int move_to_relativePos(HANDLE m_hdl, int x, int y)
 	return M_MoveTo(m_hdl,  changeX,  changeY);
 
 }
+int my_hook_right_Click(HANDLE m_hdl, int times)
+{
+	int x_pos, y_pos;
+	int RetSw = M_GetCurrMousePos(m_hdl, &x_pos, &y_pos);
 
+	x_pos *= rate;
+	y_pos *= rate;
+
+
+	CString strinfor;
+	strinfor.Format("on %ld,%ld,R click win(%ld,%ld,%ld,%ld)", x_pos, y_pos, dleft, dtop, dleft + 800, dtop + 600);
+	addLog(strinfor);
+	if (x_pos > dleft && x_pos<(dleft + 800) && y_pos>dtop && y_pos < (dtop + 600))
+		return M_RightClick(m_hdl, times);
+	else
+	{
+		addLog("beyond scope");
+		return 0;
+	}
+}
 int my_hook_left_Click(HANDLE m_hdl, int times)
 {
-	return M_LeftClick(m_hdl, times);
+	int x_pos, y_pos;
+	int RetSw = M_GetCurrMousePos(m_hdl, &x_pos, &y_pos);
+
+	x_pos *= rate;
+	y_pos *= rate;
+
+	
+	CString strinfor;
+	strinfor.Format("on %ld,%ld,lclick win(%ld,%ld,%ld,%ld)",x_pos,y_pos,dleft,dtop,dleft+800,dtop+600);
+	addLog(strinfor);
+	if(x_pos>dleft&&x_pos<(dleft +800)&&y_pos>dtop&&y_pos<(dtop+600))
+		return M_LeftClick(m_hdl, times);
+	else
+	{
+		addLog("beyond scope");
+			return 0;
+	}
 }
 int my_hook_MoveTo(HANDLE m_hdl, int x, int y)
 {
@@ -879,7 +914,7 @@ DWORD WINAPI    LoginUser_Thread(LPVOID pp)
 				RetSw = my_new_MoveTo(msdk_handle, (int)((1753) / rate), (int)((503) / rate));
 				RetSw = M_DelayRandom(500, 600);
 			}
-			RetSw = M_RightClick(msdk_handle, 1);
+			RetSw = my_hook_right_Click(msdk_handle, 1);
 			RetSw = M_DelayRandom(800, 1000);
 
 		}
@@ -1028,7 +1063,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 				RetSw = my_new_MoveTo(msdk_handle, (int)((1753) / rate), (int)((503) / rate));
 				RetSw = M_DelayRandom(500, 600);
 			}
-			RetSw = M_RightClick(msdk_handle, 1);
+			RetSw = my_hook_right_Click(msdk_handle, 1);
 			RetSw = M_DelayRandom(800, 1000);
 
 		}
@@ -1041,7 +1076,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 				RetSw = my_new_MoveTo(msdk_handle, (int)((1660) / rate), (int)((503) / rate));
 				RetSw = M_DelayRandom(500, 600);
 			}
-			RetSw = M_RightClick(msdk_handle, 1);
+			RetSw = my_hook_right_Click(msdk_handle, 1);
 			RetSw = M_DelayRandom(800, 1000);
 
 		}

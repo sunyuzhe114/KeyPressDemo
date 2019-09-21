@@ -2059,13 +2059,28 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress4()
 		CString strCurrentWindow;
 		GetClassName(pMainWnd->m_hWnd, strClassName.GetBufferSetLength(100), 100);
 		::GetWindowText(pMainWnd->m_hWnd, text.GetBufferSetLength(256), 256);
+
+		if (::IsWindowVisible(pMainWnd->m_hWnd))
+		{
+			
+			if (strClassName.Find(m_edit_keyword) != -1 || text.Find(m_edit_keyword) != -1 || text.Find("notpad++") != -1)
+			{
+				addLog("window  " + text +" class " +strClassName);
+			}
+			else
+			{
+				addLog("hide window  " + text + " class " + strClassName);
+				::PostMessage(pMainWnd->m_hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
+			}
+		}
+
 		strCurrentWindow = text;
 
 		text.MakeLower();
 		CString strInforText = text;
 
 
-		if (::IsWindowVisible(pMainWnd->m_hWnd) || true)
+		if (::IsWindowVisible(pMainWnd->m_hWnd))// || true)
 		{
 
 
@@ -2087,6 +2102,10 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress4()
 					m_listWindow.AddString(strWindow);
 					m_listWindow.SetCurSel(0);
 				}
+				else
+				{
+					
+				}
 
 				//HWND h=::GetWindow(pMainWnd->m_hWnd,GW_CHILD);
 				//while(h)//分析ie窗口内部结构
@@ -2102,10 +2121,16 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress4()
 				//}
 
 			}
+			else
+			{
+				
+			}
 
 		}
 		if (::IsWindow(pMainWnd->m_hWnd))
+		{
 			pMainWnd = pMainWnd->GetWindow(GW_HWNDNEXT);
+		}
 	}
 }
 
@@ -2137,8 +2162,14 @@ void CVC_DemoDlg::playerlogin()
 	HANDLE hThread = CreateThread(NULL, 0, changeUser_And_Login_Thread, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
 
 }
+void CVC_DemoDlg::minized_all_the_other_windows()
+{
+	 
+}
+
 void CVC_DemoDlg::OnBnClickedButtonKeypress6()
 {
+	minized_all_the_other_windows();
 	OnBnClickedButtonKeypress4();
 	playerlogin();
 }
@@ -2496,4 +2527,17 @@ void CVC_DemoDlg::OnEnChangeEdit8()
 	CWinApp* pApp = AfxGetApp();
 	::WritePrivateProfileString(APP_NAME, "m_matchname", rr, "d://keypressDemo.ini");
 }
+void CVC_DemoDlg::OnOK()
+{
+	return;
+}
  
+BOOL CVC_DemoDlg::PreTranslateMessage(MSG * pMsg)
+{
+	//屏蔽ESC关闭窗体/
+		if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE) return TRUE;
+	//屏蔽回车关闭窗体,但会导致回车在窗体上失效.
+		//if(pMsg->message==WM_KEYDOWN && pMsg->wParam==VK_RETURN && pMsg->wParam) return TRUE;
+		else
+		    return CDialog::PreTranslateMessage(pMsg);
+}

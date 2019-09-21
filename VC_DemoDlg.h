@@ -51,6 +51,7 @@ public:
 	CListBox m_listWindow;
 	CString m_edit_keyword;
 	afx_msg void OnBnClickedButtonKeypress6();
+	void minized_all_the_other_windows();
 	void playerlogin();
 	double m_rate;
 	afx_msg void OnEnChangeEdit5();
@@ -79,4 +80,9 @@ public:
 	BOOL bOnlyForTest;
 	afx_msg void OnEnChangeEdit8();
 	CString m_matchinename;
+	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
+	afx_msg LRESULT OnNcHitTest(CPoint point);
+public:
+	virtual void OnOK(); 
+	virtual BOOL PreTranslateMessage(MSG* pMsg);  // PreTranslateMessage是消息在送给TranslateMessage函数之前被调用的
 };

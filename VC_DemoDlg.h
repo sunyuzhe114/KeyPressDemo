@@ -81,8 +81,9 @@ public:
 	afx_msg void OnEnChangeEdit8();
 	CString m_matchinename;
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
-	afx_msg LRESULT OnNcHitTest(CPoint point);
+	 
 public:
 	virtual void OnOK(); 
 	virtual BOOL PreTranslateMessage(MSG* pMsg);  // PreTranslateMessage是消息在送给TranslateMessage函数之前被调用的
+	afx_msg LRESULT OnNcHitTest(CPoint point);
 };

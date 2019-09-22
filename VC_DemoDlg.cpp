@@ -695,6 +695,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_KEY_ON_SCREEN, &CVC_DemoDlg::OnBnClickedButtonKeyOnScreen)
 	ON_BN_CLICKED(IDC_CHECK2, &CVC_DemoDlg::OnBnClickedCheck2)
 	ON_EN_CHANGE(IDC_EDIT8, &CVC_DemoDlg::OnEnChangeEdit8)
+	ON_WM_NCHITTEST()
 END_MESSAGE_MAP()
 
 
@@ -2543,4 +2544,18 @@ BOOL CVC_DemoDlg::PreTranslateMessage(MSG * pMsg)
 		//if(pMsg->message==WM_KEYDOWN && pMsg->wParam==VK_RETURN && pMsg->wParam) return TRUE;
 		else
 		    return CDialog::PreTranslateMessage(pMsg);
+}
+
+
+LRESULT CVC_DemoDlg::OnNcHitTest(CPoint point)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	int ret = CDialog::OnNcHitTest(point);
+
+	//if语句的前两行是用来禁止改变大小的，最后一行是用来禁止移动的
+	if (HTTOP == ret || HTBOTTOM == ret || HTLEFT == ret || HTRIGHT == ret
+		|| HTBOTTOMLEFT == ret || HTBOTTOMRIGHT == ret || HTTOPLEFT == ret || HTTOPRIGHT == ret || HTCAPTION == ret)
+		return HTCLIENT;
+
+	return ret; 
 }

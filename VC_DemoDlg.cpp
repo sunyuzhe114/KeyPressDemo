@@ -1810,15 +1810,18 @@ void CVC_DemoDlg::begin_check_game()
 		OnBnClickedButtonOpen();
 	}
 	Sleep(3000);
+	if (msdk_handle != INVALID_HANDLE_VALUE)
+	{
 
+		HANDLE hThread = CreateThread(NULL, 0, checkThread_Game, (LPVOID)msdk_handle, 0, NULL);
 
-	HANDLE hThread = CreateThread(NULL, 0, checkThread_Game, (LPVOID)msdk_handle, 0, NULL);
-
-	GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(false);
+		GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(false);
+	}
 }
 void CVC_DemoDlg::OnBnClickedButtonKeypress()
 {
 	OnBnClickedButtonKeypress4();
+
 	begin_check_game();
 
 
@@ -2179,7 +2182,10 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress6()
 {
 	minized_all_the_other_windows();
 	OnBnClickedButtonKeypress4();
-	playerlogin();
+	if (msdk_handle != INVALID_HANDLE_VALUE)
+	{
+		playerlogin();
+	}
 }
 
 
@@ -2347,7 +2353,14 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 		OnBnClickedButtonOpen();
 	}
 
-	move_to_relativePos(msdk_handle, 50, 50);
+	M_MoveTo3(msdk_handle, 150, 150);
+	int RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_LeftClick(msdk_handle,1);
+	RetSw = M_DelayRandom(800, 1000);
+	M_MoveTo3(msdk_handle, 250, 250);
+	RetSw = M_LeftClick(msdk_handle,1);
+	RetSw = M_DelayRandom(800, 1000);
+	//move_to_relativePos(msdk_handle, 50, 50);
 	return;
 
 	/*RetSw = M_LeftDown(msdk_handle );

@@ -32,10 +32,25 @@ CVC_DemoApp::CVC_DemoApp()
 CVC_DemoApp theApp;
 
 
-// CVC_DemoApp 初始化
+// CVC_DemoApp 初始化z
 
 BOOL CVC_DemoApp::InitInstance()
 {
+	// 创建互斥量
+	HANDLE m_hMutex = CreateMutex(NULL, FALSE, "Notpad+++");
+	// 检查错误代码
+
+	// 如果程序已经存在并且正在运行
+	if (GetLastError() == ERROR_ALREADY_EXISTS)
+
+	{
+		// 如果已有互斥量存在则释放句柄并复位互斥量
+		CloseHandle(m_hMutex);
+		m_hMutex = NULL;
+		// 程序退出
+		return FALSE;
+	}
+
 	CWinApp::InitInstance();
 
 

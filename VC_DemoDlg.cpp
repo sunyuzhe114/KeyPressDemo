@@ -632,7 +632,7 @@ CVC_DemoDlg::CVC_DemoDlg(CWnd* pParent /*=NULL*/)
 	, m_intMinute(120)
 	, m_edit_keyword(_T("勇士")
 	)
-	, m_checkTimes(6)
+	, m_checkTimes(11)
 	, m_screenWidth(1920)
 	, bHuangLong(FALSE)
 	, bOnlyForTest(FALSE)
@@ -1865,6 +1865,10 @@ void CVC_DemoDlg::OnBnClickedButtonGetmousepos()
 		SetTimer(0, TIMER_LENGTH, NULL);
 		m_listLog.ResetContent();
 		m_editLogInfor.SetWindowTextA("reset");
+		CString infor;
+		infor.Format("full stop  time remains %ld \r\n", pDlg->m_checkTimes - Global_checkTime);
+
+		pDlg->m_editLogInfor.SetWindowTextA(infor);
 	}
 }
 
@@ -2199,7 +2203,7 @@ void CVC_DemoDlg::OnEnChangeEdit6()
 
 void CVC_DemoDlg::OnBnClickedButtonMover2()
 {
-	m_checkTimes = 9;
+	m_checkTimes = 11;
 	UpdateData(false);
 }
 
@@ -2450,6 +2454,7 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 		::GetWindowText(pMainWnd->m_hWnd, text.GetBufferSetLength(256), 256);
 		if (text.Find(m_edit_keyword) != -1)
 		{
+			Global_checkTime = 0;
 			addLog("早起动");
 			KillTimer(0);
 			playerlogin();
@@ -2489,7 +2494,7 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 				addLog("lost focus " + text);
 			}*/
 
-
+		addLog("ontimer check ");
 	}
 	CDialogEx::OnTimer(nIDEvent);
 }

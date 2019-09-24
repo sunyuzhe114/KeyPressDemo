@@ -897,7 +897,7 @@ DWORD WINAPI    LoginUser_Thread(LPVOID pp)
 		move_to_relativePos(msdk_handle, 50, 50);
 		if (bStop)break;
 		RetSw = M_DelayRandom(800, 1000);
-		RetSw = my_hook_left_Click(msdk_handle, 1);
+		RetSw = M_LeftClick(msdk_handle, 1);
 		/*RetSw = M_LeftDown(msdk_handle );
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_LeftUp(msdk_handle );*/
@@ -1012,7 +1012,8 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		}*/
 		move_to_relativePos(msdk_handle, 50, 50);
 		RetSw = M_DelayRandom(800, 1000);
-		RetSw = my_hook_left_Click(msdk_handle, 1);
+		 
+		RetSw = M_LeftClick(msdk_handle, 1);
 		/*RetSw = M_LeftDown(msdk_handle );
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_LeftUp(msdk_handle );*/
@@ -1320,7 +1321,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 	//}
 	RetSw = move_to_relativePos(msdk_handle, 50, 50);
 	RetSw = M_DelayRandom(800, 1000);
-	RetSw = my_hook_left_Click(msdk_handle, 1);
+	RetSw = M_LeftClick(msdk_handle, 1);
 	
 	/*RetSw = M_LeftDown(msdk_handle );
 	RetSw = M_DelayRandom(800, 1000);
@@ -1460,7 +1461,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 				}*/
 				RetSw = move_to_relativePos(msdk_handle, 50, 50);
 				RetSw = M_DelayRandom(800, 1000);
-				RetSw = my_hook_left_Click(msdk_handle, 1);
+				RetSw = M_LeftClick(msdk_handle, 1);
 				RetSw = M_DelayRandom(200, 500);
 				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_F10, 1);
 				RetSw = M_DelayRandom(3100, 4500);
@@ -2059,7 +2060,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 	addLog("点击游戏窗口");
 	RetSw = move_to_relativePos(msdk_handle, 50, 50);
 	RetSw = M_DelayRandom(800, 1000);
-	RetSw = my_hook_left_Click(msdk_handle, 1);
+	RetSw = M_LeftClick(msdk_handle, 1);
 
 
 	RetSw = M_DelayRandom(800, 1000);

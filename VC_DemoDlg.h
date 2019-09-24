@@ -86,4 +86,6 @@ public:
 	virtual void OnOK(); 
 	virtual BOOL PreTranslateMessage(MSG* pMsg);  // PreTranslateMessage是消息在送给TranslateMessage函数之前被调用的
 	afx_msg LRESULT OnNcHitTest(CPoint point);
+	BOOL bOnlyDNF;
+	afx_msg void OnBnClickedCheck3();
 };

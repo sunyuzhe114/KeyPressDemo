@@ -52,7 +52,7 @@ int max_Trackbar = 5;
 float dbZoomScale = 1.0;
 /// Function Headers
 int checkGame_state();
-bool bGonlyDnf = true;
+bool bGonlyDnf = false;
 DWORD WINAPI    changeUser_Thread(LPVOID pp);
 void addLog(CString infor);
 void addLog_important(CString infor);

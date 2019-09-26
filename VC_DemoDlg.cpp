@@ -180,7 +180,7 @@ int my_hook_MoveTo(HANDLE m_hdl, int x, int y)
 	else
 	{	infor.Format("move mouse to %ld,%ld", x  , y  );
 		addLog(infor);
-		return M_MoveTo3(m_hdl, x  , y  );//return M_MoveTo3(m_hdl, x  , y );
+		return M_MoveTo(m_hdl, x  , y  );//return M_MoveTo3(m_hdl, x  , y );
 	}
 	
 	

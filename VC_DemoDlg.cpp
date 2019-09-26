@@ -171,7 +171,7 @@ int my_hook_MoveTo(HANDLE m_hdl, int x, int y)
 	 
 	CString infor;
 	
-	if (x < 100 && y < 100)
+	if (x < 500 && y < 100)
 	{
 		infor.Format("cancel move mouse to %ld,%ld", x, y);
 		addLog(infor);
@@ -196,7 +196,7 @@ int my_new_MoveTo(HANDLE m_hdl, int x, int y)
 	//long changeX = (dleft - 1120)/rate;
 	//long changeY = dtop/rate ;
 	CString infor;
-	infor.Format("move mouse to %ld,%ld", x + changeX, y + changeY);
+	infor.Format("my_new_MoveTo mouse to %ld,%ld", x + changeX, y + changeY);
 	addLog(infor);
 	return M_MoveTo(m_hdl, x + changeX, y + changeY);
 	//return M_MoveTo(m_hdl, x  , y );
@@ -2027,10 +2027,10 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = M_DelayRandom(500, 600);
+			RetSw = M_DelayRandom(500, 800);
 			//这里使用的是绝对坐标
-			//RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
-			RetSw = my_new_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+			RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+			//RetSw = my_new_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
 			RetSw = M_DelayRandom(500, 600);
 			RetSw = M_DelayRandom(500, 600);
 		}
@@ -2102,7 +2102,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 			RetSw = M_ResetMousePos(msdk_handle);
 			RetSw = M_DelayRandom(500, 600);
 			//这里使用的是绝对坐标
-			RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x  ), (int)(pt.y  ));
+			RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
 			//RetSw = my_new_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
 			RetSw = M_DelayRandom(500, 600);
 			RetSw = M_DelayRandom(500, 600);
@@ -2458,12 +2458,15 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 	{
 		addLog("No DNF");
 	}
-	M_MoveTo3(msdk_handle, 150, 150);
+	//
+	//23:17:48   ²éÕÒÈ·¶¨°´Å¥1018,399
+	M_ResetMousePos(msdk_handle);
+	M_DelayRandom(800, 1000);
+	M_MoveTo(msdk_handle, int(1018/rate), int(399/rate));
 	M_DelayRandom(800, 1000);
 
 	M_DelayRandom(800, 1000);
-
-	M_MoveTo(msdk_handle, 150, 150);
+	 
 	return;
 	/*if (msdk_handle == INVALID_HANDLE_VALUE) {
 		OnBnClickedButtonOpen();

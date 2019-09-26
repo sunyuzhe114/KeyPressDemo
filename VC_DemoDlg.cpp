@@ -158,16 +158,10 @@ int my_hook_left_Click(HANDLE m_hdl, int times)
 	CString strinfor;
 	strinfor.Format("on %ld,%ld,lclick win(%ld,%ld,%ld,%ld)",x_pos,y_pos,dleft,dtop,dleft+800,dtop+600);
 	addLog(strinfor);
-	if (x_pos > dleft && x_pos<(dleft + 800) && y_pos>dtop && y_pos < (dtop + 600))
-	{
-		if (isDNFWindow())
-		return M_LeftClick(m_hdl, times);
-	}
-	else
-	{
-		addLog("beyond scope");
-			return 0;
-	}
+	 
+	if (isDNFWindow())
+	return M_LeftClick(m_hdl, times);
+	 
 	return 0;
 }
 int my_hook_MoveTo(HANDLE m_hdl, int x, int y)
@@ -186,10 +180,10 @@ int my_hook_MoveTo(HANDLE m_hdl, int x, int y)
 	else
 	{	infor.Format("move mouse to %ld,%ld", x  , y  );
 		addLog(infor);
-		return M_MoveTo3(m_hdl, x  , y  );
+		return M_MoveTo3(m_hdl, x  , y  );//return M_MoveTo3(m_hdl, x  , y );
 	}
 	
-	//return M_MoveTo(m_hdl, x  , y );
+	
 }
 int my_new_MoveTo(HANDLE m_hdl, int x, int y)
 {
@@ -1793,7 +1787,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		else
 		{
 			pt.x += 15;
-			pt.y += 15;
+			pt.y += 12;
 			//确认分析装备
 			for (int i = 0; i < 1; i++)
 			{
@@ -2028,7 +2022,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 	else
 	{
 		pt.x += 15;
-		pt.y += 15;
+		pt.y += 12;
 		//确认分析装备
 		for (int i = 0; i < 1; i++)
 		{
@@ -2108,7 +2102,8 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 			RetSw = M_ResetMousePos(msdk_handle);
 			RetSw = M_DelayRandom(500, 600);
 			//这里使用的是绝对坐标
-			RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+			RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x  ), (int)(pt.y  ));
+			//RetSw = my_new_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
 			RetSw = M_DelayRandom(500, 600);
 			RetSw = M_DelayRandom(500, 600);
 		}
@@ -2463,16 +2458,21 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 	{
 		addLog("No DNF");
 	}
-	
+	M_MoveTo3(msdk_handle, 150, 150);
+	M_DelayRandom(800, 1000);
+
+	M_DelayRandom(800, 1000);
+
+	M_MoveTo(msdk_handle, 150, 150);
 	return;
 	/*if (msdk_handle == INVALID_HANDLE_VALUE) {
 		OnBnClickedButtonOpen();
 	}*/
 
-	//M_MoveTo3(msdk_handle, 150, 150);
+	//
 	//int RetSw = M_DelayRandom(800, 1000);
 	//RetSw = M_LeftClick(msdk_handle,1);
-	//RetSw = M_DelayRandom(800, 1000);
+	//
 	//M_MoveTo3(msdk_handle, 250, 250);
 	//RetSw = M_LeftClick(msdk_handle,1);
 	//RetSw = M_DelayRandom(800, 1000);

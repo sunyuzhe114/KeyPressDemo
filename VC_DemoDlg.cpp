@@ -114,7 +114,10 @@ int my_hook_KeyPress(HANDLE m_hdl, int HidKeyCode, int Nbr)
 {
 	if (isDNFWindow())
 	{
-		return M_KeyPress(m_hdl, HidKeyCode, Nbr);
+		 M_KeyDown(m_hdl, HidKeyCode);
+		 M_DelayRandom(300, 400);
+		return M_KeyUp(m_hdl, HidKeyCode);
+			//return M_KeyPress(m_hdl, HidKeyCode, Nbr);
 	}
 	else
 	{
@@ -664,6 +667,148 @@ bool MatchingMethod()
 		addLog("error MatchingMethod");
 		return FALSE;
 	}
+}
+DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
+{
+	HANDLE msdk_handle = (HANDLE)pp;
+ 
+	pDlg->saveScreen();
+
+	int RetSw = M_DelayRandom(2800, 3000);
+	CPoint pt = findImage("d://close.png", 380, 440, 390, 460);
+	if (pt.x != 0 && pt.y != 0)
+	{
+
+		CString str = "";
+		CTime t = CTime::GetCurrentTime();
+		CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+		str.Format("%s==>%s (%ld,%ld)\n", tt, "发现广告关闭 ", pt.x, pt.y);
+
+		//str.Format("%s==>%s (%ld,%ld)\n", tt, "发现在在游戏中 0",cp.x,cp.y);
+		addLog(str);
+	}
+	else
+	{
+
+		CString str = "";
+		CTime t = CTime::GetCurrentTime();
+		CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+
+		str.Format("%s==>%s (%ld,%ld)\n", tt, "未现广告 0", pt.x, pt.y);
+		addLog(str);
+	}
+
+	CString infor;
+	infor.Format("查找确定按钮%d,%d", pt.x, pt.y);
+	addLog(infor);
+	if (pt.x == 0)
+	{
+		addLog("查找确定按钮fail");
+	}
+	else
+	{
+		pt.x += 15;
+		pt.y += 12;
+		//确认分析装备
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			RetSw = M_DelayRandom(500, 800);
+			//这里使用的是绝对坐标
+			RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+			//RetSw = my_new_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+			RetSw = M_DelayRandom(500, 600);
+			RetSw = M_DelayRandom(500, 600);
+		}
+		RetSw = my_hook_left_Click(msdk_handle, 1);
+
+		infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
+		addLog(infor);
+
+		RetSw = M_DelayRandom(800, 1000);
+	}
+
+	RetSw = M_DelayRandom(2800, 3000);
+
+
+	//for (int i = 0; i < 1; i++)
+	//{
+	//	RetSw = M_ResetMousePos(msdk_handle);
+	//	RetSw = my_new_MoveTo(msdk_handle, 1200 / rate, 110 / rate);
+	//	RetSw = M_DelayRandom(800, 1000);
+	//}
+	addLog("点击游戏窗口");
+	RetSw = move_to_relativePos(msdk_handle, 50, 50);
+	RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_LeftClick(msdk_handle, 2);
+
+
+	RetSw = M_DelayRandom(1800, 2000);
+	//这里加入分解动作，按I键 ，开分解
+	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_DanYinHao, 1);
+	RetSw = M_DelayRandom(2200, 3000);
+	//分解装备
+	for (int i = 0; i < 1; i++)
+	{
+		RetSw = M_ResetMousePos(msdk_handle);
+		RetSw = M_DelayRandom(500, 600);
+		RetSw = my_new_MoveTo(msdk_handle, (int)((1566) / rate), (int)((336) / rate));
+		RetSw = M_DelayRandom(900, 1600);
+	}
+	RetSw = my_hook_left_Click(msdk_handle, 1);
+	RetSw = M_DelayRandom(800, 1000);
+
+	//全部分解装备
+	for (int i = 0; i < 1; i++)
+	{
+		RetSw = M_ResetMousePos(msdk_handle);
+		RetSw = M_DelayRandom(500, 600);
+		RetSw = my_new_MoveTo(msdk_handle, (int)((1371) / rate), (int)((351) / rate));
+		RetSw = M_DelayRandom(1500, 2600);
+	}
+	RetSw = my_hook_left_Click(msdk_handle, 1);
+	RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_DelayRandom(800, 1000);
+	pDlg->saveScreen();
+	pt = findSureButton_state();
+
+	infor.Format("查找确定按钮%d,%d", pt.x, pt.y);
+	addLog(infor);
+	if (pt.x == 0)
+	{
+		addLog("查找确定按钮fail");
+	}
+	else
+	{
+		pt.x += 15;
+		pt.y += 15;
+		//确认分析装备
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			RetSw = M_DelayRandom(500, 600);
+			//这里使用的是绝对坐标
+			RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+			//RetSw = my_new_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+			RetSw = M_DelayRandom(500, 600);
+			RetSw = M_DelayRandom(500, 600);
+		}
+		RetSw = my_hook_left_Click(msdk_handle, 1);
+
+		infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
+		addLog(infor);
+
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_DelayRandom(6200, 9000);
+
+
+		RetSw = M_DelayRandom(6200, 9000);
+	}
+	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+	RetSw = M_DelayRandom(2200, 3000);
+
+
+	return 0;
 }
 CVC_DemoDlg::CVC_DemoDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CVC_DemoDlg::IDD, pParent)
@@ -1691,126 +1836,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		Global_checkTime++;
 
 		int RetSw = M_DelayRandom(4800, 6000);
-		 pDlg->saveScreen();
-		CPoint pt_close = findImage("d://close.png", 380, 440, 390, 460);
-		if (pt_close.x != 0 && pt_close.y != 0)
-		{
-
-			CString str = "";
-			CTime t = CTime::GetCurrentTime();
-			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
-			str.Format("%s==>%s (%ld,%ld)\n", tt, "发现广告关闭 0", pt_close.x, pt_close.y);
-
-			//str.Format("%s==>%s (%ld,%ld)\n", tt, "发现在在游戏中 0",cp.x,cp.y);
-			addLog(str);
-		}
-		else
-		{
-
-			CString str = "";
-			CTime t = CTime::GetCurrentTime();
-			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
-
-			str.Format("%s==>%s (%ld,%ld)\n", tt, "未现广告 0", pt_close.x, pt_close.y);
-			addLog(str);
-		}
-		 
-		infor.Format("查找关闭按钮%d,%d", pt_close.x, pt_close.y);
-		addLog(infor);
-		if (pt_close.x == 0 && pt_close.y == 0)
-		{
-			addLog("查找关闭按钮fail");
-		}
-		else
-		{
-			pt_close.x += 15;
-			pt_close.y += 15;
-			//确认分析装备
-			for (int i = 0; i < 1; i++)
-			{
-				RetSw = M_ResetMousePos(msdk_handle);
-				RetSw = M_DelayRandom(500, 600);
-				//这里使用的是绝对坐标
-				RetSw = my_hook_MoveTo(msdk_handle, (int)(pt_close.x / rate), (int)(pt_close.y / rate));
-				RetSw = M_DelayRandom(500, 600);
-				RetSw = M_DelayRandom(500, 600);
-			}
-			RetSw = my_hook_left_Click(msdk_handle, 1);
-
-			infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt_close.x / rate), (int)(pt_close.y / rate));
-			addLog(infor);
-
-			RetSw = M_DelayRandom(800, 1000);
-		} 
-
-		RetSw = M_DelayRandom(2800, 3000);
-
-		//这里加入分解动作，按I键 ，开分解
-		//这里加入分解动作，按I键 ，开分解
-		RetSw = M_DelayRandom(800, 1000);
-		//这里加入分解动作，按I键 ，开分解
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_DanYinHao, 1);
-		RetSw = M_DelayRandom(2200, 3000);
-		//分解装备
-		for (int i = 0; i < 1; i++)
-		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = M_DelayRandom(500, 600);
-			RetSw = my_new_MoveTo(msdk_handle, (int)((1566) / rate), (int)((336) / rate));
-			RetSw = M_DelayRandom(500, 600);
-		}
-		RetSw = my_hook_left_Click(msdk_handle, 1);
-		RetSw = M_DelayRandom(800, 1000);
-
-		//全部分解装备
-		for (int i = 0; i < 1; i++)
-		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = M_DelayRandom(500, 600);
-			RetSw = my_new_MoveTo(msdk_handle, (int)((1371) / rate), (int)((347) / rate));
-			RetSw = M_DelayRandom(500, 600);
-		}
-		RetSw = my_hook_left_Click(msdk_handle, 1);
-		RetSw = M_DelayRandom(800, 1000);
-		RetSw = M_DelayRandom(800, 1000);
-		
-		pDlg->saveScreen();
-		
-		CPoint pt = findSureButton_state();
-
-		infor.Format("查找确定按钮%d,%d", pt.x, pt.y);
-		addLog(infor);
-		if (pt.x == 0)
-		{
-			addLog("查找确定按钮fail");
-		}
-		else
-		{
-			pt.x += 15;
-			pt.y += 12;
-			//确认分析装备
-			for (int i = 0; i < 1; i++)
-			{
-				RetSw = M_ResetMousePos(msdk_handle);
-				RetSw = M_DelayRandom(500, 600);
-				//这里使用的是绝对坐标
-				RetSw = my_new_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
-				RetSw = M_DelayRandom(500, 600);
-				RetSw = M_DelayRandom(500, 600);
-			}
-			RetSw = my_hook_left_Click(msdk_handle, 1);
-
-			infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
-			addLog(infor);
-
-			RetSw = M_DelayRandom(800, 1000);
-			RetSw = M_DelayRandom(6200, 9000);
-
-
-			RetSw = M_DelayRandom(6200, 9000);
-		}
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
-		RetSw = M_DelayRandom(2200, 3000);
+		fenjie_zhuangbei(msdk_handle);
 
 		pDlg->OnBnClickedButtonKeypress5();
 	}
@@ -1984,144 +2010,10 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
 		OnBnClickedButtonOpen();
 	}
-	 
+	HANDLE hThread = CreateThread(NULL, 0, fenjie_zhuangbei, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
 
-	saveScreen(); 
-
-	int RetSw = M_DelayRandom(2800, 3000);
-	CPoint pt = findImage("d://close.png", 380, 440, 390, 460);
-	if (pt.x != 0 && pt.y != 0)
-	{
-
-		CString str = "";
-		CTime t = CTime::GetCurrentTime();
-		CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
-		str.Format("%s==>%s (%ld,%ld)\n", tt, "发现广告关闭 ", pt.x, pt.y);
-
-		//str.Format("%s==>%s (%ld,%ld)\n", tt, "发现在在游戏中 0",cp.x,cp.y);
-		addLog(str);
-	}
-	else
-	{
-
-		CString str = "";
-		CTime t = CTime::GetCurrentTime();
-		CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
-
-		str.Format("%s==>%s (%ld,%ld)\n", tt, "未现广告 0", pt.x, pt.y);
-		addLog(str);
-	}
-
-	CString infor;
-	infor.Format("查找确定按钮%d,%d", pt.x, pt.y);
-	addLog(infor);
-	if (pt.x == 0)
-	{
-		addLog("查找确定按钮fail");
-	}
-	else
-	{
-		pt.x += 15;
-		pt.y += 12;
-		//确认分析装备
-		for (int i = 0; i < 1; i++)
-		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = M_DelayRandom(500, 800);
-			//这里使用的是绝对坐标
-			RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
-			//RetSw = my_new_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
-			RetSw = M_DelayRandom(500, 600);
-			RetSw = M_DelayRandom(500, 600);
-		}
-		RetSw = my_hook_left_Click(msdk_handle, 1);
-
-		infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
-		addLog(infor);
-
-		RetSw = M_DelayRandom(800, 1000);
-	}
-
-	RetSw = M_DelayRandom(2800, 3000);
-
-
-	//for (int i = 0; i < 1; i++)
-	//{
-	//	RetSw = M_ResetMousePos(msdk_handle);
-	//	RetSw = my_new_MoveTo(msdk_handle, 1200 / rate, 110 / rate);
-	//	RetSw = M_DelayRandom(800, 1000);
-	//}
-	addLog("点击游戏窗口");
-	RetSw = move_to_relativePos(msdk_handle, 50, 50);
-	RetSw = M_DelayRandom(800, 1000);
-	RetSw = M_LeftClick(msdk_handle, 1);
-
-
-	RetSw = M_DelayRandom(800, 1000);
-	//这里加入分解动作，按I键 ，开分解
-	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_DanYinHao, 1);
-	RetSw = M_DelayRandom(2200, 3000);
-	//分解装备
-	for (int i = 0; i < 1; i++)
-	{
-		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = M_DelayRandom(500, 600);
-		RetSw = my_new_MoveTo(msdk_handle, (int)((1566) / rate), (int)((336) / rate));
-		RetSw = M_DelayRandom(500, 600);
-	}
-	RetSw = my_hook_left_Click(msdk_handle, 1);
-	RetSw = M_DelayRandom(800, 1000);
-
-	//全部分解装备
-	for (int i = 0; i < 1; i++)
-	{
-		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = M_DelayRandom(500, 600);
-		RetSw = my_new_MoveTo(msdk_handle, (int)((1371) / rate), (int)((351) / rate));
-		RetSw = M_DelayRandom(500, 600);
-	}
-	RetSw = my_hook_left_Click(msdk_handle, 1);
-	RetSw = M_DelayRandom(800, 1000);
-	RetSw = M_DelayRandom(800, 1000);
-	saveScreen();
-	pt = findSureButton_state();
-
-	infor.Format("查找确定按钮%d,%d", pt.x, pt.y);
-	addLog(infor);
-	if (pt.x == 0)
-	{
-		addLog("查找确定按钮fail");
-	}
-	else
-	{
-		pt.x += 15;
-		pt.y += 15;
-		//确认分析装备
-		for (int i = 0; i < 1; i++)
-		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = M_DelayRandom(500, 600);
-			//这里使用的是绝对坐标
-			RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
-			//RetSw = my_new_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
-			RetSw = M_DelayRandom(500, 600);
-			RetSw = M_DelayRandom(500, 600);
-		}
-		RetSw = my_hook_left_Click(msdk_handle, 1);
-
-		infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
-		addLog(infor);
-
-		RetSw = M_DelayRandom(800, 1000);
-		RetSw = M_DelayRandom(6200, 9000);
-
-
-		RetSw = M_DelayRandom(6200, 9000);
-	}
-	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
-	RetSw = M_DelayRandom(2200, 3000);
-
-
+	//fenjie_zhuangbei(msdk_handle);
+	
 
 
 }

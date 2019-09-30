@@ -1783,7 +1783,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			str.Format(" %s (%ld,%ld)\n", "未在游戏中 0", cp.x, cp.y);
 			addLog(str);
 			not_in_game_time++;
-			if (not_in_game_time >= 2)
+			if (not_in_game_time >= 3)
 			{
 				not_in_game_time = 0;
 				Game_state = 300;

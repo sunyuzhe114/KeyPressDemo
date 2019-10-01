@@ -88,4 +88,6 @@ public:
 	afx_msg LRESULT OnNcHitTest(CPoint point);
 	BOOL bOnlyDNF;
 	afx_msg void OnBnClickedCheck3();
+	afx_msg void OnBnClickedCheck4();
+	BOOL m_bUseing_Num4;
 };

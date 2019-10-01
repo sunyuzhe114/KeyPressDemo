@@ -53,6 +53,7 @@ float dbZoomScale = 1.0;
 /// Function Headers
 int checkGame_state();
 bool bGonlyDnf = false;
+bool b_NUM4_Dnf = false;
 DWORD WINAPI    changeUser_Thread(LPVOID pp);
 void addLog(CString infor);
 void addLog_important(CString infor);
@@ -130,8 +131,8 @@ int my_hook_right_Click(HANDLE m_hdl, int times)
 	int x_pos, y_pos;
 	int RetSw = M_GetCurrMousePos(m_hdl, &x_pos, &y_pos);
 
-	x_pos *= rate;
-	y_pos *= rate;
+	//x_pos *= rate;
+	//y_pos *= rate;
 
 
 	CString strinfor;
@@ -201,7 +202,8 @@ int my_new_MoveTo(HANDLE m_hdl, int x, int y)
 	CString infor;
 	infor.Format("my_new_MoveTo mouse to %ld,%ld", x + changeX, y + changeY);
 	addLog(infor);
-	return M_MoveTo(m_hdl, x + changeX, y + changeY);
+	//return M_MoveTo(m_hdl, x + changeX, y + changeY);
+	return M_MoveTo3(m_hdl, (x + changeX)*rate, (y + changeY) * rate);
 	//return M_MoveTo(m_hdl, x  , y );
 }
 
@@ -707,7 +709,7 @@ DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 	}
 	else
 	{
-		pt.x += 15;
+		pt.x += 18;
 		pt.y += 12;
 		//确认分析装备
 		for (int i = 0; i < 1; i++)
@@ -745,18 +747,27 @@ DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 
 	RetSw = M_DelayRandom(1800, 2000);
 	//这里加入分解动作，按I键 ，开分解
-	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_DanYinHao, 1);
-	RetSw = M_DelayRandom(2200, 3000);
-	//分解装备
-	for (int i = 0; i < 1; i++)
+	if (b_NUM4_Dnf)
 	{
-		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = M_DelayRandom(500, 600);
-		RetSw = my_new_MoveTo(msdk_handle, (int)((1566) / rate), (int)((336) / rate));
-		RetSw = M_DelayRandom(900, 1600);
+		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_4, 1);
 	}
-	RetSw = my_hook_left_Click(msdk_handle, 1);
-	RetSw = M_DelayRandom(800, 1000);
+	else
+	{
+		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_DanYinHao, 1);
+		RetSw = M_DelayRandom(2200, 3000);
+		//分解装备
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			RetSw = M_DelayRandom(500, 600);
+			RetSw = my_new_MoveTo(msdk_handle, (int)((1566) / rate), (int)((336) / rate));
+			RetSw = M_DelayRandom(900, 1600);
+		}
+		RetSw = my_hook_left_Click(msdk_handle, 1);
+		RetSw = M_DelayRandom(800, 1000);
+	}
+	
+	
 
 	//全部分解装备
 	for (int i = 0; i < 1; i++)
@@ -780,8 +791,8 @@ DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 	}
 	else
 	{
-		pt.x += 15;
-		pt.y += 15;
+		pt.x += 18; 
+		pt.y += 12;
 		//确认分析装备
 		for (int i = 0; i < 1; i++)
 		{
@@ -815,12 +826,13 @@ CVC_DemoDlg::CVC_DemoDlg(CWnd* pParent /*=NULL*/)
 	, m_intMinute(120)
 	, m_edit_keyword(_T("勇士")
 	)
-	, m_checkTimes(11)
+	, m_checkTimes(24)
 	, m_screenWidth(1920)
 	, bHuangLong(FALSE)
 	, bOnlyForTest(FALSE)
 	, m_matchinename(_T(""))
 	, bOnlyDNF(FALSE)
+	, m_bUseing_Num4(FALSE)
 {
 	m_rate = 2.5;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -845,6 +857,7 @@ void CVC_DemoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK2, bOnlyForTest);
 	DDX_Text(pDX, IDC_EDIT8, m_matchinename);
 	DDX_Check(pDX, IDC_CHECK3, bOnlyDNF);
+	DDX_Check(pDX, IDC_CHECK4, m_bUseing_Num4);
 }
 
 BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
@@ -882,6 +895,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT8, &CVC_DemoDlg::OnEnChangeEdit8)
 	ON_WM_NCHITTEST()
 	ON_BN_CLICKED(IDC_CHECK3, &CVC_DemoDlg::OnBnClickedCheck3)
+	ON_BN_CLICKED(IDC_CHECK4, &CVC_DemoDlg::OnBnClickedCheck4)
 END_MESSAGE_MAP()
 
 
@@ -939,7 +953,17 @@ BOOL CVC_DemoDlg::OnInitDialog()
 	if (bGonlyDnf == true)
 		((CButton*)(GetDlgItem(IDC_CHECK3)))->SetCheck(1);
 
+	::GetPrivateProfileString(APP_NAME, "b_NUM4_Dnf", "", infor.GetBufferSetLength(256), 256, "d://keypressDemo.ini");
+	if (infor != "")
+	{
+		//SetDlgItemText(IDC_EDIT7, infor);
+		b_NUM4_Dnf = atol(infor);
+		if (b_NUM4_Dnf == 1)
+			((CButton*)(GetDlgItem(IDC_CHECK4)))->SetCheck(1);
 
+	}
+	if (b_NUM4_Dnf == true)
+		((CButton*)(GetDlgItem(IDC_CHECK4)))->SetCheck(1);
 	::GetPrivateProfileString(APP_NAME, "m_matchname", "", infor.GetBufferSetLength(256), 256, "d://keypressDemo.ini");
 	if (infor != "")
 	{
@@ -1235,7 +1259,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = my_new_MoveTo(msdk_handle, (int)((1518) / rate), (int)((277) / rate));
+			RetSw = my_new_MoveTo(msdk_handle, (int)((1510) / rate), (int)((277) / rate));
 			RetSw = M_DelayRandom(500, 600);
 		}
 		if (bStop)break;
@@ -1246,11 +1270,20 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		if (bStop)break;
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
+		RetSw = M_DelayRandom(2000, 2100);
 
 		addLog("选定坐标");
 		if (bStop)break;
 		//点击确认
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+			RetSw = M_DelayRandom(500, 600);
+		}
+		RetSw = my_hook_left_Click(msdk_handle, 1);
+		RetSw = M_DelayRandom(500, 1100);
+		//点击确认二次,保证点上
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
@@ -2203,7 +2236,7 @@ void CVC_DemoDlg::OnEnChangeEdit6()
 
 void CVC_DemoDlg::OnBnClickedButtonMover2()
 {
-	m_checkTimes = 11;
+	m_checkTimes = 15;
 	UpdateData(false);
 }
 
@@ -2354,10 +2387,9 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 	//23:17:48   ²éÕÒÈ·¶¨°´Å¥1018,399
 	M_ResetMousePos(msdk_handle);
 	M_DelayRandom(800, 1000);
-	M_MoveTo(msdk_handle, int(1018/rate), int(399/rate));
+	M_MoveTo3(msdk_handle, int(960), int(10));
 	M_DelayRandom(800, 1000);
-
-	M_DelayRandom(800, 1000);
+	 
 	 
 	return;
 	/*if (msdk_handle == INVALID_HANDLE_VALUE) {
@@ -2594,4 +2626,16 @@ void CVC_DemoDlg::OnBnClickedCheck3()
 {
 	UpdateData();
 	bGonlyDnf = bOnlyDNF;
+}
+
+
+void CVC_DemoDlg::OnBnClickedCheck4()
+{UpdateData();
+	b_NUM4_Dnf= m_bUseing_Num4;
+	CString strInfor;
+	UpdateData();
+	CString rr;
+	rr.Format("%d", b_NUM4_Dnf);
+	::WritePrivateProfileString(APP_NAME, "b_NUM4_Dnf", rr, "d://keypressDemo.ini");
+	// TODO: 在此添加控件通知处理程序代码
 }

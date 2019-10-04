@@ -138,7 +138,8 @@ int my_hook_right_Click(HANDLE m_hdl, int times)
 	CString strinfor;
 	strinfor.Format("on %ld,%ld,R click win(%ld,%ld,%ld,%ld)", x_pos, y_pos, dleft, dtop, dleft + 800, dtop + 600);
 	addLog(strinfor);
-	if (x_pos > dleft && x_pos<(dleft + 800) && y_pos>dtop && y_pos < (dtop + 600))
+	//if (x_pos > dleft && x_pos<(dleft + 800) && y_pos>dtop && y_pos < (dtop + 600))
+	if(true)
 	{
 		if(isDNFWindow())
 		return M_RightClick(m_hdl, times);
@@ -717,8 +718,9 @@ DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 			RetSw = M_ResetMousePos(msdk_handle);
 			RetSw = M_DelayRandom(500, 800);
 			//这里使用的是绝对坐标
-			RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
-			//RetSw = my_new_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+			//RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+			//这里也可以写个定值
+			RetSw = move_to_relativePos(msdk_handle, pt.x-dleft, pt.y-dtop);
 			RetSw = M_DelayRandom(500, 600);
 			RetSw = M_DelayRandom(500, 600);
 		}
@@ -760,7 +762,8 @@ DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
 			RetSw = M_DelayRandom(500, 600);
-			RetSw = my_new_MoveTo(msdk_handle, (int)((1566) / rate), (int)((336) / rate));
+			//RetSw = my_new_MoveTo(msdk_handle, (int)((1566) / rate), (int)((336) / rate));
+			RetSw = move_to_relativePos(msdk_handle, 440, 335 );
 			RetSw = M_DelayRandom(900, 1600);
 		}
 		RetSw = my_hook_left_Click(msdk_handle, 1);
@@ -774,7 +777,8 @@ DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 	{
 		RetSw = M_ResetMousePos(msdk_handle);
 		RetSw = M_DelayRandom(500, 600);
-		RetSw = my_new_MoveTo(msdk_handle, (int)((1371) / rate), (int)((351) / rate));
+		//RetSw = my_new_MoveTo(msdk_handle, (int)((1371) / rate), (int)((351) / rate));
+		RetSw = move_to_relativePos(msdk_handle, 240, 350);
 		RetSw = M_DelayRandom(1500, 2600);
 	}
 	RetSw = my_hook_left_Click(msdk_handle, 1);
@@ -799,8 +803,8 @@ DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 			RetSw = M_ResetMousePos(msdk_handle);
 			RetSw = M_DelayRandom(500, 600);
 			//这里使用的是绝对坐标
-			RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
-			//RetSw = my_new_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+			//RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+			RetSw = move_to_relativePos(msdk_handle, pt.x - dleft, pt.y - dtop);;
 			RetSw = M_DelayRandom(500, 600);
 			RetSw = M_DelayRandom(500, 600);
 		}
@@ -1041,122 +1045,7 @@ void CVC_DemoDlg::OnBnClickedButtonClose()
 	ShellExecute(this->m_hWnd, "open", "https://github.com/sunyuzhe114/KeyPressDemo/blob/master/x64/Release/VC_Demo.exe", NULL, NULL, SW_SHOWMAXIMIZED);
 }
 
-//已经与changeUser_And_Login_Thread合并
-DWORD WINAPI    LoginUser_Thread(LPVOID pp)
-{
-	HANDLE msdk_handle = (HANDLE)pp;
-	unsigned int RetSw = 0;
-	DWORD m_dTimeBeginPress_F10 = 0;
-
-	CString infor;
-	do {
-
-		/*for (int i = 0; i < 1; i++)
-		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = my_new_MoveTo(msdk_handle, 1200 / rate, 110 / rate);
-			RetSw = M_DelayRandom(800, 1000);
-		}*/
-		move_to_relativePos(msdk_handle, 50, 50);
-		if (bStop)break;
-		RetSw = M_DelayRandom(800, 1000);
-		RetSw = M_LeftClick(msdk_handle, 1);
-		/*RetSw = M_LeftDown(msdk_handle );
-		RetSw = M_DelayRandom(800, 1000);
-		RetSw = M_LeftUp(msdk_handle );*/
-
-		RetSw = M_DelayRandom(3000, 4000);
-		//按5号键，
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_5, 1);
-		RetSw = M_DelayRandom(400, 600);
-		infor += "按5号键\r\n";
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
-		//点击确认
-		for (int i = 0; i < 1; i++)
-		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
-			RetSw = M_DelayRandom(500, 600);
-		}
-		RetSw = my_hook_left_Click(msdk_handle, 1);
-		RetSw = M_DelayRandom(1800, 2000);
-		infor += "按确定\r\n";
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
-		//滚动3次到了 
-		for (int i = 0; i < 3; i++)
-		{
-			RetSw = M_MouseWheel(msdk_handle, 1);
-			RetSw = M_DelayRandom(1000, 1200);
-		}
-
-		infor += "滚轮3次\r\n";
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
-
-		//走到地点
-		for (int i = 0; i < 1; i++)
-		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = my_new_MoveTo(msdk_handle, (int)((1518) / rate), (int)((277) / rate));
-			RetSw = M_DelayRandom(500, 600);
-		}
-		RetSw = my_hook_left_Click(msdk_handle, 2);
-		RetSw = M_DelayRandom(800, 1000);
-		RetSw = M_DelayRandom(800, 1000);
-		RetSw = M_DelayRandom(800, 1000);
-
-		infor += "选定坐标\r\n";
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
-
-		//点击确认
-		for (int i = 0; i < 1; i++)
-		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
-			RetSw = M_DelayRandom(500, 600);
-		}
-		RetSw = my_hook_left_Click(msdk_handle, 2);
-		RetSw = M_DelayRandom(1800, 2000);
-		infor += "按确定\r\n";
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
-
-
-		//走到地点
-		for (int j = 0; j < 2; j++)
-		{
-			for (int i = 0; i < 1; i++)
-			{
-				RetSw = M_ResetMousePos(msdk_handle);
-				RetSw = my_new_MoveTo(msdk_handle, (int)((1753) / rate), (int)((503) / rate));
-				RetSw = M_DelayRandom(500, 600);
-			}
-			RetSw = my_hook_right_Click(msdk_handle, 1);
-			RetSw = M_DelayRandom(800, 1000);
-
-		}
-		infor += "走到地点\r\n";
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
-		RetSw = M_DelayRandom(800, 1000);
-		RetSw = M_DelayRandom(800, 1000);
-		RetSw = M_DelayRandom(800, 1000);
-		//点击 
-		for (int i = 0; i < 1; i++)
-		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = my_new_MoveTo(msdk_handle, (int)((1324) / rate), (int)((441) / rate));
-			RetSw = M_DelayRandom(500, 600);
-		}
-		RetSw = M_LeftDoubleClick(msdk_handle, 1);
-		RetSw = M_DelayRandom(800, 1000);
-		RetSw = M_LeftDoubleClick(msdk_handle, 1);
-		RetSw = M_DelayRandom(800, 1000);
-		infor += "点击\r\n";
-		pDlg->m_editLogInfor.SetWindowTextA(infor);
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_KongGe, 1);
-		pDlg->begin_check_game();
-
-	} while (0);
-	return 0;
-}
+ 
 DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 {
 	HANDLE msdk_handle = (HANDLE)pp;
@@ -1188,7 +1077,8 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = my_new_MoveTo(msdk_handle, (int)((1517) / rate), (int)((454) / rate));
+			//RetSw = my_new_MoveTo(msdk_handle, (int)((1517) / rate), (int)((454) / rate));
+			RetSw = move_to_relativePos(msdk_handle, 380, 460);
 			RetSw = M_DelayRandom(500, 600);
 		}
 		RetSw = my_hook_left_Click(msdk_handle, 1);
@@ -1231,7 +1121,8 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+			RetSw = move_to_relativePos(msdk_handle, 370, 320);
 			RetSw = M_DelayRandom(500, 600);
 		}
 		RetSw = my_hook_left_Click(msdk_handle, 1);
@@ -1259,7 +1150,8 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = my_new_MoveTo(msdk_handle, (int)((1510) / rate), (int)((277) / rate));
+			//RetSw = my_new_MoveTo(msdk_handle, (int)((1510) / rate), (int)((277) / rate));
+			RetSw = move_to_relativePos(msdk_handle, 385, 270);
 			RetSw = M_DelayRandom(500, 600);
 		}
 		if (bStop)break;
@@ -1278,7 +1170,8 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+			RetSw = move_to_relativePos(msdk_handle, 370, 320);
 			RetSw = M_DelayRandom(500, 600);
 		}
 		RetSw = my_hook_left_Click(msdk_handle, 1);
@@ -1287,7 +1180,8 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+			RetSw = move_to_relativePos(msdk_handle, 370, 320);
 			RetSw = M_DelayRandom(500, 600);
 		}
 		RetSw = my_hook_left_Click(msdk_handle, 1);
@@ -1307,7 +1201,8 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			for (int i = 0; i < 1; i++)
 			{
 				RetSw = M_ResetMousePos(msdk_handle);
-				RetSw = my_new_MoveTo(msdk_handle, (int)((1753) / rate), (int)((503) / rate));
+				//RetSw = my_new_MoveTo(msdk_handle, (int)((1753) / rate), (int)((503) / rate));
+				RetSw = move_to_relativePos(msdk_handle, 700, 500);
 				RetSw = M_DelayRandom(500, 600);
 			}
 			RetSw = my_hook_right_Click(msdk_handle, 1);
@@ -1321,7 +1216,8 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			for (int i = 0; i < 1; i++)
 			{
 				RetSw = M_ResetMousePos(msdk_handle);
-				RetSw = my_new_MoveTo(msdk_handle, (int)((1660) / rate), (int)((503) / rate));
+				//RetSw = my_new_MoveTo(msdk_handle, (int)((1660) / rate), (int)((503) / rate));
+				RetSw = move_to_relativePos(msdk_handle, 577, 460);
 				RetSw = M_DelayRandom(500, 600);
 			}
 			RetSw = my_hook_right_Click(msdk_handle, 1);
@@ -1394,13 +1290,16 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			RetSw = M_ResetMousePos(msdk_handle);
 			if (pDlg->bHuangLong == true)
 			{
-				RetSw = my_new_MoveTo(msdk_handle, (int)((1710) / rate), (int)((405) / rate));
-				addLog("移动到青龙");
+				//RetSw = my_new_MoveTo(msdk_handle, (int)((1710) / rate), (int)((405) / rate));
+				RetSw = move_to_relativePos(msdk_handle, 570, 390);
+				addLog("移动到黄龙");
+				
 			}
 			else
 			{
-				RetSw = my_new_MoveTo(msdk_handle, (int)((1324) / rate), (int)((441) / rate));
-				addLog("移动到黄龙");
+				//RetSw = my_new_MoveTo(msdk_handle, (int)((1324) / rate), (int)((441) / rate));
+				RetSw = move_to_relativePos(msdk_handle, 210, 440);
+				addLog("移动到青龙");
 			}
 			RetSw = M_DelayRandom(500, 600);
 		}
@@ -2385,16 +2284,16 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 	}
 	//
 	//23:17:48   ²éÕÒÈ·¶¨°´Å¥1018,399
-	M_ResetMousePos(msdk_handle);
-	M_DelayRandom(800, 1000);
-	M_MoveTo3(msdk_handle, int(960), int(10));
-	M_DelayRandom(800, 1000);
-	 
-	 
-	return;
-	/*if (msdk_handle == INVALID_HANDLE_VALUE) {
+	//M_ResetMousePos(msdk_handle);
+	//M_DelayRandom(800, 1000);
+	//M_MoveTo3(msdk_handle, int(960), int(10));
+	//M_DelayRandom(800, 1000);
+	// 
+	// 
+	//return;
+	if (msdk_handle == INVALID_HANDLE_VALUE) {
 		OnBnClickedButtonOpen();
-	}*/
+	}
 
 	//
 	//int RetSw = M_DelayRandom(800, 1000);
@@ -2428,8 +2327,8 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 
 	//#测试是否在游戏中
 	saveScreen();//390,54
-	/////CPoint pt_close = findImage("d://close.png", 380, 440, 390, 460);
-	CPoint cp = findImage("d://ingamenew.png", 340, 40, 400, 60);
+	CPoint cp = findImage("d://close.png", 380, 440, 390, 460);
+	/////CPoint cp = findImage("d://ingamenew.png", 340, 40, 400, 60);
 	if (cp.x != 0 && cp.y != 0)
 	{
 
@@ -2452,6 +2351,11 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 		addLog(str);
 	}
 
+	for (int i = 0; i < 200; i++)
+	{
+		M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
+		M_DelayRandom(5800, 6100);
+	}
 	//CStdioFile file;
 	//if (file.Open(_T("d:\\log.txt"), CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate, NULL))
 	//{

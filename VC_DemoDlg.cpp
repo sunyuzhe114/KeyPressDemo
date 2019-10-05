@@ -671,6 +671,38 @@ bool MatchingMethod()
 		return FALSE;
 	}
 }
+
+DWORD WINAPI    duanzao_space(LPVOID pp)
+{
+	HANDLE msdk_handle = (HANDLE)pp;
+
+
+	move_to_relativePos(msdk_handle, 50, 50);
+	M_DelayRandom(800, 1000);
+
+	M_LeftClick(msdk_handle, 1);
+
+	while (true)
+	{
+	M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
+	M_DelayRandom(800, 1100);
+	if (bStop)
+		break;
+	M_DelayRandom(800, 1100);
+	if (bStop)
+		break;
+	M_DelayRandom(800, 1100);
+	if (bStop)
+		break;
+	M_DelayRandom(800, 1100);
+	if (bStop)
+		break;
+ 
+
+	}
+	addLog("exit duanzao");
+	return 0;
+}
 DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 {
 	HANDLE msdk_handle = (HANDLE)pp;
@@ -900,6 +932,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_WM_NCHITTEST()
 	ON_BN_CLICKED(IDC_CHECK3, &CVC_DemoDlg::OnBnClickedCheck3)
 	ON_BN_CLICKED(IDC_CHECK4, &CVC_DemoDlg::OnBnClickedCheck4)
+	ON_BN_CLICKED(IDC_BUTTON_OPEN4, &CVC_DemoDlg::OnBnClickedButtonOpen4)
 END_MESSAGE_MAP()
 
 
@@ -2542,4 +2575,21 @@ void CVC_DemoDlg::OnBnClickedCheck4()
 	rr.Format("%d", b_NUM4_Dnf);
 	::WritePrivateProfileString(APP_NAME, "b_NUM4_Dnf", rr, "d://keypressDemo.ini");
 	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CVC_DemoDlg::OnBnClickedButtonOpen4()
+{
+	minized_all_the_other_windows();
+
+	if (msdk_handle == INVALID_HANDLE_VALUE) {
+		OnBnClickedButtonOpen();
+	}
+	OnBnClickedButtonKeypress4();
+	if (msdk_handle != INVALID_HANDLE_VALUE)
+	{
+		bStop = false;
+		HANDLE hThread = CreateThread(NULL, 0, duanzao_space, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
+
+	}
 }

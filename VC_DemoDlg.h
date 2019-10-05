@@ -90,4 +90,5 @@ public:
 	afx_msg void OnBnClickedCheck3();
 	afx_msg void OnBnClickedCheck4();
 	BOOL m_bUseing_Num4;
+	afx_msg void OnBnClickedButtonOpen4();
 };

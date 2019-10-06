@@ -73,7 +73,8 @@ void addLog_important(CString infor)
 {
 	CTime time = CTime::GetCurrentTime();
 	CString date = time.Format("%H:%M:%S");
-	CString strshow = date + "   " + infor;
+	CString strshow;
+	strshow.Format("(%ld) %s  %s", pDlg->m_list_time_log.GetCount()+1, date, infor);
 	pDlg->m_list_time_log.InsertString(0, strshow);
 
 }

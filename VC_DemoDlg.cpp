@@ -502,7 +502,7 @@ int checkGame_state()
 		bool bResult = -1;
 		long changeX = dleft - (SCREEN_CX - 800);
 		long changeY = dtop - 0;
-		infor.Format("x=%ld,y=%ld,maxVal=%0.2lf,changeX=%ld,changeY=%ld", matchLoc.x, matchLoc.y, maxVal, changeX, changeY);
+		infor.Format("checkGame_state x=%ld,y=%ld,maxVal=%0.2lf,changeX=%ld,changeY=%ld", matchLoc.x, matchLoc.y, maxVal, changeX, changeY);
 
 		if ((matchLoc.x - changeX) > (SCREEN_CX - 200) && (matchLoc.x - changeX) < SCREEN_CX && (matchLoc.y - changeY) >= 0 && (matchLoc.y - changeY) <= 75 && maxVal > 0.5)
 		{
@@ -545,11 +545,27 @@ int checkGame_state()
 					bResult = 100;// 
 				}
 				else
-				{
-					infor = "检测到游戏还可以再玩 1";
-					addLog(infor);
-					bResult = 200;//检测到游戏还可以再玩
-					Game_state = 200;
+					{//正常=1726,y=70,,
+						 //正常=1726,y=70,,(42,34,56)
+						//异常=1733,y=75    (37,49,55)
+						//这里还是要取色一下
+							CString strVal;
+							strVal.Format("(%0.0lf,%0.0lf,%0.0lf)", tempVal.val[0], tempVal.val[1], tempVal.val[2]);
+							if (tempVal.val[0] > 40)
+							{
+								infor = "检测到游戏还可以再玩 1" + infor + strVal;
+								addLog(infor);
+								bResult = 200;//检测到游戏还可以再玩
+								Game_state = 200;
+							}
+							else
+							{
+								infor += "未检测到窗口 -1 ";
+								addLog(infor);
+								//pDlg->MessageBoxA("未检测到窗口,", "error", MB_OK);
+								bResult = -1; Game_state = -1;
+							}
+						
 					//	pDlg->MessageBoxA("检测到游戏还可以再玩,", "error", MB_OK);
 				}
 			}
@@ -2328,67 +2344,43 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 		OnBnClickedButtonOpen();
 	}
 
-	//
-	//int RetSw = M_DelayRandom(800, 1000);
-	//RetSw = M_LeftClick(msdk_handle,1);
-	//
-	//M_MoveTo3(msdk_handle, 250, 250);
-	//RetSw = M_LeftClick(msdk_handle,1);
-	//RetSw = M_DelayRandom(800, 1000);
-	////move_to_relativePos(msdk_handle, 50, 50);
-	//return;
-
-	/*RetSw = M_LeftDown(msdk_handle );
-	RetSw = M_DelayRandom(800, 1000);
-	RetSw = M_LeftUp(msdk_handle );*/
+ 
 
 
 
-	//img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
-	//try {
-
-	//	Mat NewImg = img(Rect(40, -5, 80, 30));
-	//}
-	//catch (Exception &e)
-	//{
-	//	addLog("catch error");
-	//}
-	//
-	//checkGame_state();
+	saveScreen();//390,54
+	 checkGame_state();
 //	OnBnClickedButtonKeypress4();
 
 
 	//#测试是否在游戏中
-	saveScreen();//390,54
-	CPoint cp = findImage("d://close.png", 380, 440, 390, 460);
-	/////CPoint cp = findImage("d://ingamenew.png", 340, 40, 400, 60);
-	if (cp.x != 0 && cp.y != 0)
-	{
+	//发现广告
+	/////CPoint cp = findImage("d://close.png", 380, 440, 390, 460);
+	 //是否在游戏中
+	//CPoint cp = findImage("d://ingamenew.png", 340, 40, 400, 60);
+	//if (cp.x != 0 && cp.y != 0)
+	//{
 
-		CString str = "";
-		CTime t = CTime::GetCurrentTime();
-		CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
-		str.Format("%s==>%s (%ld,%ld)\n", tt, "发现广告关闭 0", cp.x, cp.y);
+	//	CString str = "";
+	//	CTime t = CTime::GetCurrentTime();
+	//	CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+	//	str.Format("%s==>%s (%ld,%ld)\n", tt, "发现广告关闭 0", cp.x, cp.y);
 
-		//str.Format("%s==>%s (%ld,%ld)\n", tt, "发现在在游戏中 0",cp.x,cp.y);
-		addLog(str);
-	}
-	else
-	{
+	//	//str.Format("%s==>%s (%ld,%ld)\n", tt, "发现在在游戏中 0",cp.x,cp.y);
+	//	addLog(str);
+	//}
+	//else
+	//{
 
-		CString str = "";
-		CTime t = CTime::GetCurrentTime();
-		CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+	//	CString str = "";
+	//	CTime t = CTime::GetCurrentTime();
+	//	CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
 
-		str.Format("%s==>%s (%ld,%ld)\n", tt, "未在游戏中 0", cp.x, cp.y);
-		addLog(str);
-	}
+	//	str.Format("%s==>%s (%ld,%ld)\n", tt, "未在游戏中 0", cp.x, cp.y);
+	//	addLog(str);
+	//}
 
-	for (int i = 0; i < 200; i++)
-	{
-		M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
-		M_DelayRandom(5800, 6100);
-	}
+ 
 	//CStdioFile file;
 	//if (file.Open(_T("d:\\log.txt"), CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate, NULL))
 	//{

@@ -779,6 +779,12 @@ DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 		addLog(infor);
 
 		RetSw = M_DelayRandom(800, 1000);
+		addLog("点击游戏窗口");
+		RetSw = move_to_relativePos(msdk_handle, 50, 50);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_LeftClick(msdk_handle, 2);
+		RetSw = M_DelayRandom(2800, 3000);
+
 	}
 
 	RetSw = M_DelayRandom(2800, 3000);

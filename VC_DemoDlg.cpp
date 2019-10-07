@@ -702,16 +702,19 @@ DWORD WINAPI    duanzao_space(LPVOID pp)
 	while (true)
 	{
 	M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
-	M_DelayRandom(800, 1100);
+	M_DelayRandom(300, 400);
 	if (bStop)
 		break;
-	M_DelayRandom(800, 1100);
+	my_hook_left_Click(msdk_handle, 1);
+	M_DelayRandom(300, 400);
 	if (bStop)
 		break;
-	M_DelayRandom(800, 1100);
+	my_hook_left_Click(msdk_handle, 1);
+	M_DelayRandom(300, 400);
 	if (bStop)
 		break;
-	M_DelayRandom(800, 1100);
+	my_hook_left_Click(msdk_handle, 1);
+	M_DelayRandom(300, 400);
 	if (bStop)
 		break;
  
@@ -956,6 +959,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_CHECK3, &CVC_DemoDlg::OnBnClickedCheck3)
 	ON_BN_CLICKED(IDC_CHECK4, &CVC_DemoDlg::OnBnClickedCheck4)
 	ON_BN_CLICKED(IDC_BUTTON_OPEN4, &CVC_DemoDlg::OnBnClickedButtonOpen4)
+	ON_MESSAGE(WM_HOTKEY, OnHotKey)
 END_MESSAGE_MAP()
 
 
@@ -985,6 +989,7 @@ BOOL CVC_DemoDlg::OnInitDialog()
 	strScale.Format("分辨比例%0.2lf", dbZoomScale);
 	m_editLog.SetWindowTextA(strScale);
 
+	RegisterHotKey(m_hWnd, 1000, MOD_CONTROL, VK_F12);
 	CString infor;
 
 	::GetPrivateProfileString(APP_NAME, "m_rate", "", infor.GetBufferSetLength(256), 256, "d://keypressDemo.ini");
@@ -2495,7 +2500,7 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 void CVC_DemoDlg::OnClose()
 {
 	KillTimer(0);
-
+	UnregisterHotKey(m_hWnd, 1000);
 	CDialogEx::OnClose();
 }
 
@@ -2591,4 +2596,17 @@ void CVC_DemoDlg::OnBnClickedButtonOpen4()
 		HANDLE hThread = CreateThread(NULL, 0, duanzao_space, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
 
 	}
+}
+
+LRESULT CVC_DemoDlg::OnHotKey(WPARAM wParam, LPARAM lParam)
+{
+	//wParam是注册热键的ID，lParam是关于按键的信息
+	if (wParam == 1000)
+	{
+		bStop = true;
+		bFullStop = true;
+		addLog("hotkey stop");
+	}
+	 
+		return 0;
 }

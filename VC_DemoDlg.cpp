@@ -2443,7 +2443,7 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 	{
 
 		CWnd* pMainWnd = AfxGetMainWnd()->GetForegroundWindow();
-
+		Global_checkTime = 0;
 		CString strClassName;
 		CString text;
 		CString strCurrentWindow;
@@ -2451,7 +2451,7 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 		::GetWindowText(pMainWnd->m_hWnd, text.GetBufferSetLength(256), 256);
 		if (text.Find(m_edit_keyword) != -1)
 		{
-			Global_checkTime = 0;
+			 
 			addLog("早起动");
 			KillTimer(0);
 			playerlogin();

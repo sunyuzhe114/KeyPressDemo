@@ -989,7 +989,11 @@ BOOL CVC_DemoDlg::OnInitDialog()
 	strScale.Format("分辨比例%0.2lf", dbZoomScale);
 	m_editLog.SetWindowTextA(strScale);
 
-	RegisterHotKey(m_hWnd, 1000, MOD_CONTROL, VK_F12);
+	bool bok=RegisterHotKey(m_hWnd, 1000, 0, VK_F11);
+	if (bok == false)
+	{
+		AfxMessageBox("hot key error");
+	}
 	CString infor;
 
 	::GetPrivateProfileString(APP_NAME, "m_rate", "", infor.GetBufferSetLength(256), 256, "d://keypressDemo.ini");

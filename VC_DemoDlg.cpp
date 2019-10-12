@@ -1187,7 +1187,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
 			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
-			RetSw = move_to_relativePos(msdk_handle, 370, 320);
+			RetSw = move_to_relativePos(msdk_handle, 370, 325);
 			RetSw = M_DelayRandom(500, 600);
 		}
 		RetSw = my_hook_left_Click(msdk_handle, 1);
@@ -1200,11 +1200,11 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		{
 			RetSw = M_MouseWheel(msdk_handle, -1);
 			if (bStop)break;
-			RetSw = M_DelayRandom(1000, 1100);
+			RetSw = M_DelayRandom(1000, 1300);
 			if (bStop)break;
-			RetSw = M_DelayRandom(1000, 1100);
+			RetSw = M_DelayRandom(1000, 1300);
 			if (bStop)break;
-			RetSw = M_DelayRandom(1000, 1100); 
+			RetSw = M_DelayRandom(1000, 1300); 
 		}
 		if (bStop)break;
 
@@ -1216,7 +1216,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
 			//RetSw = my_new_MoveTo(msdk_handle, (int)((1510) / rate), (int)((277) / rate));
-			RetSw = move_to_relativePos(msdk_handle, 385, 270);
+			RetSw = move_to_relativePos(msdk_handle, 385, 272);
 			RetSw = M_DelayRandom(500, 600);
 		}
 		if (bStop)break;

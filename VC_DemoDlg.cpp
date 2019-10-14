@@ -2037,7 +2037,40 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress5()
 
 void CVC_DemoDlg::OnBnClickedButtonKeypress4()
 {
+	minized_all_the_other_windows();
+	
+}
 
+
+void CVC_DemoDlg::OnEnChangeEdit2()
+{
+	// TODO:  如果该控件是 RICHEDIT 控件，它将不
+	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
+	// 函数并调用 CRichEditCtrl().SetEventMask()，
+	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
+
+	// TODO:  在此添加控件通知处理程序代码
+}
+
+void CVC_DemoDlg::playerlogin()
+{
+	m_dTimeBegin = GetTickCount();
+	//UpdateData();
+	m_timeLimit = m_intMinute;//分钟
+	bStop = false;
+	bChangeUser = false;
+	if (msdk_handle == INVALID_HANDLE_VALUE) {
+		OnBnClickedButtonOpen();
+	}
+
+	Sleep(3000);
+
+
+	HANDLE hThread = CreateThread(NULL, 0, changeUser_And_Login_Thread, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
+
+}
+void CVC_DemoDlg::minized_all_the_other_windows()
+{
 	for (int i = (m_listWindow.GetCount() - 1); i >= 0; i--)
 		m_listWindow.DeleteString(i);
 
@@ -2056,10 +2089,10 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress4()
 
 		if (::IsWindowVisible(pMainWnd->m_hWnd))
 		{
-			
-			if (strClassName.Find(m_edit_keyword) != -1 || text.Find(m_edit_keyword) != -1 || text.Find("notpad++") != -1)
+
+			if (strClassName.Find(m_edit_keyword) != -1 || text.Find(m_edit_keyword) != -1 || text.Find("notpad++") != -1 || text.Find("CPU") != -1)
 			{
-				addLog("window  " + text +" class " +strClassName);
+				addLog("window  " + text + " class " + strClassName);
 			}
 			else
 			{
@@ -2101,7 +2134,7 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress4()
 				}
 				else
 				{
-					
+
 				}
 
 				//HWND h=::GetWindow(pMainWnd->m_hWnd,GW_CHILD);
@@ -2120,7 +2153,7 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress4()
 			}
 			else
 			{
-				
+
 			}
 
 		}
@@ -2129,39 +2162,6 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress4()
 			pMainWnd = pMainWnd->GetWindow(GW_HWNDNEXT);
 		}
 	}
-}
-
-
-void CVC_DemoDlg::OnEnChangeEdit2()
-{
-	// TODO:  如果该控件是 RICHEDIT 控件，它将不
-	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
-	// 函数并调用 CRichEditCtrl().SetEventMask()，
-	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
-
-	// TODO:  在此添加控件通知处理程序代码
-}
-
-void CVC_DemoDlg::playerlogin()
-{
-	m_dTimeBegin = GetTickCount();
-	//UpdateData();
-	m_timeLimit = m_intMinute;//分钟
-	bStop = false;
-	bChangeUser = false;
-	if (msdk_handle == INVALID_HANDLE_VALUE) {
-		OnBnClickedButtonOpen();
-	}
-
-	Sleep(3000);
-
-
-	HANDLE hThread = CreateThread(NULL, 0, changeUser_And_Login_Thread, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
-
-}
-void CVC_DemoDlg::minized_all_the_other_windows()
-{
-	 
 }
 
 void CVC_DemoDlg::OnBnClickedButtonKeypress6()

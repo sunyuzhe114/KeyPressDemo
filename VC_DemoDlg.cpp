@@ -2588,18 +2588,25 @@ void CVC_DemoDlg::OnBnClickedCheck4()
 
 void CVC_DemoDlg::OnBnClickedButtonOpen4()
 {
+
 	minized_all_the_other_windows();
 
-	if (msdk_handle == INVALID_HANDLE_VALUE) {
-		OnBnClickedButtonOpen();
-	}
-	OnBnClickedButtonKeypress4();
-	if (msdk_handle != INVALID_HANDLE_VALUE)
+	if (pDlg->bOnlyForTest)
 	{
-		bStop = false;
-		HANDLE hThread = CreateThread(NULL, 0, duanzao_space, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
+	if (msdk_handle == INVALID_HANDLE_VALUE) {
+			OnBnClickedButtonOpen();
+		}
+		OnBnClickedButtonKeypress4();
+		if (msdk_handle != INVALID_HANDLE_VALUE)
+		{
+			bStop = false;
+			HANDLE hThread = CreateThread(NULL, 0, duanzao_space, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
+
+		}
+
 
 	}
+	
 }
 
 LRESULT CVC_DemoDlg::OnHotKey(WPARAM wParam, LPARAM lParam)

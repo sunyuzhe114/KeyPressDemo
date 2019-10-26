@@ -1178,9 +1178,12 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		//按5号键，
 		if (bStop)break;
 		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_5, 1);
-		RetSw = M_DelayRandom(400, 600);
+		RetSw = M_DelayRandom(1400, 1600);
 		if (bStop)break;
-		RetSw = M_DelayRandom(400, 600);
+		RetSw = M_DelayRandom(1400, 1600);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1400, 1600);
+		if (bStop)break;
 		addLog("按5号键");
 		//点击确认
 		for (int i = 0; i < 1; i++)
@@ -1191,7 +1194,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			RetSw = M_DelayRandom(500, 600);
 		}
 		RetSw = my_hook_left_Click(msdk_handle, 1);
-		RetSw = M_DelayRandom(1800, 2000);
+		RetSw = M_DelayRandom(3800, 4000);
 
 		addLog("按确定");
 		if (bStop)break;
@@ -2323,6 +2326,8 @@ void CVC_DemoDlg::OnBnClickedButtonGetmousepos2()
 
 void CVC_DemoDlg::OnBnClickedButtonKeypress8()
 {
+	bStop = true;
+	bFullStop = true;
 	ShellExecute(this->m_hWnd, "open", "立即下线.bat", NULL, "D:\\", SW_SHOWMAXIMIZED);
 }
 

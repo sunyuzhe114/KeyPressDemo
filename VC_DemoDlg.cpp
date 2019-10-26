@@ -989,7 +989,11 @@ BOOL CVC_DemoDlg::OnInitDialog()
 	strScale.Format("分辨比例%0.2lf", dbZoomScale);
 	m_editLog.SetWindowTextA(strScale);
 
-	RegisterHotKey(m_hWnd, 1000, MOD_CONTROL, VK_F12);
+	bool bok=RegisterHotKey(m_hWnd, 1000, 0, VK_F11);
+	if (bok == false)
+	{
+		AfxMessageBox("hot key error");
+	}
 	CString infor;
 
 	::GetPrivateProfileString(APP_NAME, "m_rate", "", infor.GetBufferSetLength(256), 256, "d://keypressDemo.ini");
@@ -1183,7 +1187,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
 			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
-			RetSw = move_to_relativePos(msdk_handle, 370, 320);
+			RetSw = move_to_relativePos(msdk_handle, 370, 325);
 			RetSw = M_DelayRandom(500, 600);
 		}
 		RetSw = my_hook_left_Click(msdk_handle, 1);
@@ -1196,11 +1200,11 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		{
 			RetSw = M_MouseWheel(msdk_handle, -1);
 			if (bStop)break;
-			RetSw = M_DelayRandom(1000, 1100);
+			RetSw = M_DelayRandom(1000, 1300);
 			if (bStop)break;
-			RetSw = M_DelayRandom(1000, 1100);
+			RetSw = M_DelayRandom(1000, 1300);
 			if (bStop)break;
-			RetSw = M_DelayRandom(1000, 1100); 
+			RetSw = M_DelayRandom(1000, 1300); 
 		}
 		if (bStop)break;
 
@@ -1212,7 +1216,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
 			//RetSw = my_new_MoveTo(msdk_handle, (int)((1510) / rate), (int)((277) / rate));
-			RetSw = move_to_relativePos(msdk_handle, 385, 270);
+			RetSw = move_to_relativePos(msdk_handle, 385, 272);
 			RetSw = M_DelayRandom(500, 600);
 		}
 		if (bStop)break;
@@ -1232,7 +1236,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
 			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
-			RetSw = move_to_relativePos(msdk_handle, 370, 320);
+			RetSw = move_to_relativePos(msdk_handle, 370, 323);
 			RetSw = M_DelayRandom(500, 600);
 		}
 		RetSw = my_hook_left_Click(msdk_handle, 1);
@@ -1242,7 +1246,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
 			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
-			RetSw = move_to_relativePos(msdk_handle, 370, 320);
+			RetSw = move_to_relativePos(msdk_handle, 370, 326);
 			RetSw = M_DelayRandom(500, 600);
 		}
 		RetSw = my_hook_left_Click(msdk_handle, 1);
@@ -2033,7 +2037,40 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress5()
 
 void CVC_DemoDlg::OnBnClickedButtonKeypress4()
 {
+	minized_all_the_other_windows();
+	
+}
 
+
+void CVC_DemoDlg::OnEnChangeEdit2()
+{
+	// TODO:  如果该控件是 RICHEDIT 控件，它将不
+	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
+	// 函数并调用 CRichEditCtrl().SetEventMask()，
+	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
+
+	// TODO:  在此添加控件通知处理程序代码
+}
+
+void CVC_DemoDlg::playerlogin()
+{
+	m_dTimeBegin = GetTickCount();
+	//UpdateData();
+	m_timeLimit = m_intMinute;//分钟
+	bStop = false;
+	bChangeUser = false;
+	if (msdk_handle == INVALID_HANDLE_VALUE) {
+		OnBnClickedButtonOpen();
+	}
+
+	Sleep(3000);
+
+
+	HANDLE hThread = CreateThread(NULL, 0, changeUser_And_Login_Thread, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
+
+}
+void CVC_DemoDlg::minized_all_the_other_windows()
+{
 	for (int i = (m_listWindow.GetCount() - 1); i >= 0; i--)
 		m_listWindow.DeleteString(i);
 
@@ -2052,10 +2089,10 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress4()
 
 		if (::IsWindowVisible(pMainWnd->m_hWnd))
 		{
-			
-			if (strClassName.Find(m_edit_keyword) != -1 || text.Find(m_edit_keyword) != -1 || text.Find("notpad++") != -1)
+
+			if (strClassName.Find(m_edit_keyword) != -1 || text.Find(m_edit_keyword) != -1 || text.Find("notpad++") != -1 || text.Find("CPU") != -1)
 			{
-				addLog("window  " + text +" class " +strClassName);
+				addLog("window  " + text + " class " + strClassName);
 			}
 			else
 			{
@@ -2097,7 +2134,7 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress4()
 				}
 				else
 				{
-					
+
 				}
 
 				//HWND h=::GetWindow(pMainWnd->m_hWnd,GW_CHILD);
@@ -2116,7 +2153,7 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress4()
 			}
 			else
 			{
-				
+
 			}
 
 		}
@@ -2125,39 +2162,6 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress4()
 			pMainWnd = pMainWnd->GetWindow(GW_HWNDNEXT);
 		}
 	}
-}
-
-
-void CVC_DemoDlg::OnEnChangeEdit2()
-{
-	// TODO:  如果该控件是 RICHEDIT 控件，它将不
-	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
-	// 函数并调用 CRichEditCtrl().SetEventMask()，
-	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
-
-	// TODO:  在此添加控件通知处理程序代码
-}
-
-void CVC_DemoDlg::playerlogin()
-{
-	m_dTimeBegin = GetTickCount();
-	//UpdateData();
-	m_timeLimit = m_intMinute;//分钟
-	bStop = false;
-	bChangeUser = false;
-	if (msdk_handle == INVALID_HANDLE_VALUE) {
-		OnBnClickedButtonOpen();
-	}
-
-	Sleep(3000);
-
-
-	HANDLE hThread = CreateThread(NULL, 0, changeUser_And_Login_Thread, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
-
-}
-void CVC_DemoDlg::minized_all_the_other_windows()
-{
-	 
 }
 
 void CVC_DemoDlg::OnBnClickedButtonKeypress6()
@@ -2443,16 +2447,15 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 	{
 
 		CWnd* pMainWnd = AfxGetMainWnd()->GetForegroundWindow();
-
+		Global_checkTime = 0;
 		CString strClassName;
 		CString text;
 		CString strCurrentWindow;
 		GetClassName(pMainWnd->m_hWnd, strClassName.GetBufferSetLength(100), 100);
 		::GetWindowText(pMainWnd->m_hWnd, text.GetBufferSetLength(256), 256);
 		if (text.Find(m_edit_keyword) != -1)
-		{
-
-			Global_checkTime = 0;
+		{ 
+			Global_checkTime = 0; 
 			addLog("早起动");
 			KillTimer(0);
 			playerlogin();
@@ -2585,18 +2588,25 @@ void CVC_DemoDlg::OnBnClickedCheck4()
 
 void CVC_DemoDlg::OnBnClickedButtonOpen4()
 {
+
 	minized_all_the_other_windows();
 
-	if (msdk_handle == INVALID_HANDLE_VALUE) {
-		OnBnClickedButtonOpen();
-	}
-	OnBnClickedButtonKeypress4();
-	if (msdk_handle != INVALID_HANDLE_VALUE)
+	if (pDlg->bOnlyForTest)
 	{
-		bStop = false;
-		HANDLE hThread = CreateThread(NULL, 0, duanzao_space, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
+	if (msdk_handle == INVALID_HANDLE_VALUE) {
+			OnBnClickedButtonOpen();
+		}
+		OnBnClickedButtonKeypress4();
+		if (msdk_handle != INVALID_HANDLE_VALUE)
+		{
+			bStop = false;
+			HANDLE hThread = CreateThread(NULL, 0, duanzao_space, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
+
+		}
+
 
 	}
+	
 }
 
 LRESULT CVC_DemoDlg::OnHotKey(WPARAM wParam, LPARAM lParam)

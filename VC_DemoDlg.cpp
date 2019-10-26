@@ -1929,7 +1929,7 @@ void CVC_DemoDlg::begin_check_game()
 	{
 
 		HANDLE hThread = CreateThread(NULL, 0, checkThread_Game, (LPVOID)msdk_handle, 0, NULL);
-
+		
 		GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(false);
 	}
 }
@@ -2451,6 +2451,7 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 		::GetWindowText(pMainWnd->m_hWnd, text.GetBufferSetLength(256), 256);
 		if (text.Find(m_edit_keyword) != -1)
 		{
+
 			Global_checkTime = 0;
 			addLog("早起动");
 			KillTimer(0);

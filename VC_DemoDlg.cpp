@@ -90,6 +90,27 @@ int move_to_relativePos(HANDLE m_hdl, int x, int y)
 	return M_MoveTo(m_hdl,  changeX,  changeY);
 
 }
+bool checkDNFWindow()
+{
+	 
+
+	CWnd* pMainWnd = AfxGetMainWnd()->GetForegroundWindow();
+
+	CString strClassName;
+	CString text;
+	CString strCurrentWindow;
+	GetClassName(pMainWnd->m_hWnd, strClassName.GetBufferSetLength(100), 100);
+	::GetWindowText(pMainWnd->m_hWnd, text.GetBufferSetLength(256), 256);
+	if (text.Find("勇士") != -1)
+	{
+
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
 bool isDNFWindow()
 {
 	if (bGonlyDnf==FALSE)return true;
@@ -1147,7 +1168,17 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			RetSw = M_DelayRandom(500, 600);
 		}
 		RetSw = my_hook_left_Click(msdk_handle, 1);
-		RetSw = M_DelayRandom(3800, 4500);
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100); 
 		addLog("点击选定角色");
 		if (bStop)break;
 
@@ -1178,11 +1209,16 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		//按5号键，
 		if (bStop)break;
 		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_5, 1);
-		RetSw = M_DelayRandom(1400, 1600);
 		if (bStop)break;
-		RetSw = M_DelayRandom(1400, 1600);
+		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
-		RetSw = M_DelayRandom(1400, 1600);
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
 		addLog("按5号键");
 		//点击确认
@@ -1190,11 +1226,18 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
 			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
-			RetSw = move_to_relativePos(msdk_handle, 370, 325);
+			RetSw = move_to_relativePos(msdk_handle, 370, 330);
 			RetSw = M_DelayRandom(500, 600);
 		}
 		RetSw = my_hook_left_Click(msdk_handle, 1);
-		RetSw = M_DelayRandom(3800, 4000);
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
 
 		addLog("按确定");
 		if (bStop)break;
@@ -1262,6 +1305,10 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		RetSw = M_DelayRandom(1000, 1100);
 		addLog("点击屏幕人物开始移动");
 
+		if(checkDNFWindow()==false)
+		{
+			break;
+		}
 		if (bStop)break;
 		//走到地点
 		for (int j = 0; j < 2; j++)

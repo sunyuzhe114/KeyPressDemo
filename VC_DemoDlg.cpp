@@ -1159,7 +1159,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		if (bStop)break;
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
-		RetSw = M_DelayRandom(2800, 3000);
+		RetSw = M_DelayRandom(2800, 4000);
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
@@ -1179,6 +1179,12 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
 		RetSw = M_DelayRandom(1000, 1100); 
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
 		addLog("点击选定角色");
 		if (bStop)break;
 
@@ -1205,8 +1211,25 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
 		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
 
 		//按5号键，
+		addLog("按5号键");
 		if (bStop)break;
 		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_5, 1);
 		if (bStop)break;
@@ -1220,15 +1243,16 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		if (bStop)break;
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
-		addLog("按5号键");
-		//点击确认
+		
+		//点击确认 这
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
 			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
-			RetSw = move_to_relativePos(msdk_handle, 370, 330);
+			RetSw = move_to_relativePos(msdk_handle, 370, 325);
 			RetSw = M_DelayRandom(500, 600);
 		}
+		addLog("按确定");
 		RetSw = my_hook_left_Click(msdk_handle, 1);
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
@@ -1239,18 +1263,18 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
 
-		addLog("按确定");
+		
 		if (bStop)break;
 		//滚动3次到了 
 		for (int i = 0; i < 3; i++)
 		{
 			RetSw = M_MouseWheel(msdk_handle, -1);
 			if (bStop)break;
-			RetSw = M_DelayRandom(1000, 1300);
+			RetSw = M_DelayRandom(1200, 1500);
 			if (bStop)break;
-			RetSw = M_DelayRandom(1000, 1300);
+			RetSw = M_DelayRandom(1200, 1500);
 			if (bStop)break;
-			RetSw = M_DelayRandom(1000, 1300); 
+			RetSw = M_DelayRandom(1200, 1500);
 		}
 		if (bStop)break;
 
@@ -1272,9 +1296,15 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 
 		if (bStop)break;
 		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break; 
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break; 
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break; 
+		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
-		RetSw = M_DelayRandom(2000, 2100);
-
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
 		addLog("选定坐标");
 		if (bStop)break;
 		//点击确认
@@ -1307,6 +1337,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 
 		if(checkDNFWindow()==false)
 		{
+			addLog("未检测到窗口，停止。。。");
 			break;
 		}
 		if (bStop)break;
@@ -1615,6 +1646,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
 			RetSw = M_DelayRandom(200, 500);
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
+			if (bStop)break;
 			RetSw = M_DelayRandom(200, 500);
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
 			RetSw = M_DelayRandom(200, 500);
@@ -1623,6 +1655,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
 			RetSw = M_DelayRandom(200, 500);
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
+			if (bStop)break;
 			RetSw = M_DelayRandom(400, 600);
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
 			RetSw = M_DelayRandom(200, 500);
@@ -1688,7 +1721,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		RetSw = M_KeyUp(msdk_handle, Keyboard_v);
 
 		RetSw = M_DelayRandom(400, 600);
-
+		if (bStop)break;
 		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
 		RetSw = M_DelayRandom(400, 600);
 		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_s, 1);
@@ -1719,6 +1752,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
 			RetSw = M_DelayRandom(200, 500);
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
+			if (bStop)break;
 			RetSw = M_DelayRandom(200, 500);
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
 			RetSw = M_DelayRandom(200, 500);
@@ -1730,7 +1764,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			//RetSw = my_hook_KeyPress(msdk_handle, Keyboard_F10, 1);
 			RetSw = M_DelayRandom(2400, 2600);
 		}
-
+		if (bStop)break;
 		pDlg->saveScreen();
 		checkGame_state();
 		strInfor.Format("bFind = %d Keyboard_PageDown\r\n", Game_state);
@@ -1776,12 +1810,14 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			RetSw = M_DelayRandom(400, 600);
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
 			RetSw = M_DelayRandom(200, 500);
+			if (bStop)break;
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
 			RetSw = M_DelayRandom(400, 600);
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
 			RetSw = M_DelayRandom(200, 500);
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
 			RetSw = M_DelayRandom(400, 600);
+			if (bStop)break;
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
 			RetSw = M_DelayRandom(200, 500);
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
@@ -1873,6 +1909,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 	RetSw = M_DelayRandom(10000, 15000);
 	if (Game_state == 300)
 	{
+
 		pDlg->playerlogin();
 	}
 	else if (Global_checkTime <= pDlg->m_checkTimes && bFullStop == false && Game_state <= 200)

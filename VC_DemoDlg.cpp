@@ -906,10 +906,10 @@ DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 }
 CVC_DemoDlg::CVC_DemoDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CVC_DemoDlg::IDD, pParent)
-	, m_intMinute(120)
+	, m_intMinute(1200)
 	, m_edit_keyword(_T("勇士")
 	)
-	, m_checkTimes(24)
+	, m_checkTimes(124)
 	, m_screenWidth(1920)
 	, bHuangLong(FALSE)
 	, bOnlyForTest(FALSE)
@@ -1131,6 +1131,487 @@ void CVC_DemoDlg::OnBnClickedButtonClose()
 	ShellExecute(this->m_hWnd, "open", "https://github.com/sunyuzhe114/KeyPressDemo/blob/master/x64/Release/VC_Demo.exe", NULL, NULL, SW_SHOWMAXIMIZED);
 }
 
+DWORD WINAPI    changeUser(LPVOID pp)
+{
+	HANDLE msdk_handle = (HANDLE)pp;
+	unsigned int RetSw = 0;
+	DWORD m_dTimeBeginPress_F10 = 0;
+	 
+	CString infor;
+
+	do {
+
+		/*for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			RetSw = my_new_MoveTo(msdk_handle, 1200 / rate, 110 / rate);;
+			RetSw = M_DelayRandom(800, 1000);
+		}*/
+		move_to_relativePos(msdk_handle, 50, 50);
+		RetSw = M_DelayRandom(800, 1000);
+
+		RetSw = M_LeftClick(msdk_handle, 1);
+		/*RetSw = M_LeftDown(msdk_handle );
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_LeftUp(msdk_handle );*/
+
+		if (bStop)break;
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+		RetSw = M_DelayRandom(2800, 4000);
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			//RetSw = my_new_MoveTo(msdk_handle, (int)((1517) / rate), (int)((454) / rate));
+			RetSw = move_to_relativePos(msdk_handle, 380, 460);
+			RetSw = M_DelayRandom(500, 600);
+		}
+		RetSw = my_hook_left_Click(msdk_handle, 1);
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		addLog("点击选定角色");
+		if (bStop)break;
+
+		if (bChangeUser == true)
+		{
+			addLog("按下方向右键");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_RightArrow, 1);
+			RetSw = M_DelayRandom(2100, 2300);
+
+		}
+
+
+		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_KongGe, 1);
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+
+	} while (0);
+	
+	addLog("登录线程停止 exit");
+	return 0;
+}
+DWORD WINAPI    changeUser_fenjie(LPVOID pp)
+{
+	HANDLE msdk_handle = (HANDLE)pp;
+	unsigned int RetSw = 0;
+	DWORD m_dTimeBeginPress_F10 = 0;
+	for (int i = 0; i < 16; i++)
+	{
+		fenjie_zhuangbei(pp);
+		changeUser(pp);
+		if (bStop)break;
+	}
+	addLog("changeUser_fenjie exit");
+	return 0;
+}
+
+DWORD WINAPI    cunqian(LPVOID pp)
+{
+	HANDLE msdk_handle = (HANDLE)pp;
+	unsigned int RetSw = 0;
+	DWORD m_dTimeBeginPress_F10 = 0;
+
+	CString infor;
+
+	do {
+
+
+		move_to_relativePos(msdk_handle, 50, 50);
+		RetSw = M_DelayRandom(800, 1000);
+
+		RetSw = M_LeftClick(msdk_handle, 1);
+	 
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+			RetSw = move_to_relativePos(msdk_handle, 250, 380);
+			RetSw = M_DelayRandom(500, 600);
+		}
+		addLog("按确定");
+		RetSw = my_hook_left_Click(msdk_handle, 1);
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+
+		//点击确认 这
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+			RetSw = move_to_relativePos(msdk_handle, 280, 130);
+			RetSw = M_DelayRandom(500, 600);
+		}
+		addLog("按确定");
+		RetSw = my_hook_left_Click(msdk_handle, 1);
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+
+		//点击确认 这
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+			RetSw = move_to_relativePos(msdk_handle, 350, 365);
+			RetSw = M_DelayRandom(500, 600);
+		}
+		addLog("按确定");
+		RetSw = my_hook_left_Click(msdk_handle, 1);
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		RetSw = my_hook_left_Click(msdk_handle, 1);
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break; 
+
+		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+	} while (0);
+
+	addLog("登录线程停止 exit");
+	return 0;
+}
+DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
+{
+	HANDLE msdk_handle = (HANDLE)pp;
+	unsigned int RetSw = 0;
+	DWORD m_dTimeBeginPress_F10 = 0;
+
+	CString infor;
+
+	do {
+
+		 
+		move_to_relativePos(msdk_handle, 50, 50);
+		RetSw = M_DelayRandom(800, 1000);
+
+		RetSw = M_LeftClick(msdk_handle, 1);
+		/*RetSw = M_LeftDown(msdk_handle );
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_LeftUp(msdk_handle );*/
+
+		 
+		//按5号键，
+		addLog("按5号键");
+		if (bStop)break;
+		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_5, 1);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+
+		//点击确认 这
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+			RetSw = move_to_relativePos(msdk_handle, 370, 325);
+			RetSw = M_DelayRandom(500, 600);
+		}
+		addLog("按确定");
+		RetSw = my_hook_left_Click(msdk_handle, 1);
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+
+
+		if (bStop)break;
+		//滚动3次到了 
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_MouseWheel(msdk_handle, -1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1200, 1500);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1200, 1500);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1200, 1500);
+		}
+		if (bStop)break;
+
+		addLog("滚轮1次");
+		if (bStop)break;
+		RetSw = M_DelayRandom(800, 1000);
+		//走到地点
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			//RetSw = my_new_MoveTo(msdk_handle, (int)((1510) / rate), (int)((277) / rate));
+			RetSw = move_to_relativePos(msdk_handle, 603, 282);
+			RetSw = M_DelayRandom(500, 600);
+		}
+		if (bStop)break;
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = my_hook_left_Click(msdk_handle, 1);
+
+
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		addLog("选定坐标");
+		if (bStop)break;
+		//点击确认
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+			RetSw = move_to_relativePos(msdk_handle, 370, 323);
+			RetSw = M_DelayRandom(500, 600);
+		}
+		RetSw = my_hook_left_Click(msdk_handle, 1);
+		RetSw = M_DelayRandom(500, 1100);
+		////点击确认二次,保证点上
+		//for (int i = 0; i < 1; i++)
+		//{
+		//	RetSw = M_ResetMousePos(msdk_handle);
+		//	//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+		//	RetSw = move_to_relativePos(msdk_handle, 370, 326);
+		//	RetSw = M_DelayRandom(500, 600);
+		//}
+		//RetSw = my_hook_left_Click(msdk_handle, 1);
+
+		addLog("点击确认");
+		if (bStop)break;
+		 
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+
+
+		pDlg->saveScreen();
+		CPoint pt = findImage("d://yaluo.png", 150, 0, 750, 400);
+		if (pt.x != 0 && pt.y != 0)
+		{
+
+			CString str = "";
+			CTime t = CTime::GetCurrentTime();
+			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+			str.Format("%s==>%s (%ld,%ld)\n", tt, "发现  yaluo", pt.x, pt.y);
+			addLog(str);
+		}
+		else
+		{
+
+			CString str = "";
+			CTime t = CTime::GetCurrentTime();
+			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+			str.Format("%s==>%s (%ld,%ld)\n", tt, "未现yaluo", pt.x, pt.y);
+			addLog(str);
+		}
+
+		CString infor;
+		infor.Format("查找确定按钮%d,%d", pt.x, pt.y);
+		addLog(infor);
+		if (pt.x == 0)
+		{
+			addLog("查找 yaluo fail");
+		}
+		else
+		{
+			pt.x += 18;
+			pt.y += 20;
+			//确认分析装备
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				RetSw = M_DelayRandom(500, 800);
+				//这里使用的是绝对坐标
+				//RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+				//这里也可以写个定值
+				RetSw = move_to_relativePos(msdk_handle, pt.x - dleft, pt.y - dtop);
+				RetSw = M_DelayRandom(500, 600);
+				RetSw = M_DelayRandom(500, 600);
+			}
+			RetSw = my_hook_left_Click(msdk_handle, 1);
+
+			infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
+			addLog(infor);
+
+			RetSw = M_DelayRandom(800, 1000);
+
+			RetSw = M_DelayRandom(800, 1000);
+
+			pt.x += 18;
+			pt.y += 92;
+			//当点击test时,使用升级分解机
+			if (pDlg->bOnlyForTest)
+				pt.y += 20;
+			//确认分析装备
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				RetSw = M_DelayRandom(500, 800);
+				//这里使用的是绝对坐标
+				//RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+				//这里也可以写个定值
+				RetSw = move_to_relativePos(msdk_handle, pt.x - dleft, pt.y - dtop);
+				RetSw = M_DelayRandom(500, 600);
+				RetSw = M_DelayRandom(500, 600);
+			}
+			RetSw = my_hook_left_Click(msdk_handle, 1);
+
+			infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
+			addLog(infor);
+
+			RetSw = M_DelayRandom(800, 1000);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;	
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break; 
+			RetSw = my_hook_left_Click(msdk_handle, 1); 
+
+			RetSw = M_DelayRandom(1000, 1100);
+			 
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+
+		}
+		if (bStop)break;
+	} while (0);
+
+	addLog("登录线程停止 exit");
+	return 0;
+}
+DWORD WINAPI    changeUser_cunqian(LPVOID pp)
+{
+	HANDLE msdk_handle = (HANDLE)pp;
+	unsigned int RetSw = 0;
+	DWORD m_dTimeBeginPress_F10 = 0;
+	for (int i = 0; i < 16; i++)
+	{
+		cunqian(pp);
+		changeUser(pp);
+		if (bStop)break;
+	}
+	addLog("changeUser_fenjie exit");
+	return 0;
+}
+DWORD WINAPI    changeUser_xiuli_fenjieji(LPVOID pp)
+{
+	HANDLE msdk_handle = (HANDLE)pp;
+	unsigned int RetSw = 0;
+	DWORD m_dTimeBeginPress_F10 = 0;
+	for (int i = 0; i < 16; i++)
+	{
+		xiuli_fenjieji(pp);
+		changeUser(pp);
+		if (bStop)break;
+	}
+	addLog("changeUser_fenjie exit");
+	return 0;
+}
  
 DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 {
@@ -1849,9 +2330,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		}
 		CPoint cp = findImage("d://ingamenew.png", 340, 40, 400, 60);
 		if (cp.x != 0 && cp.y != 0)
-		{
-			//·¢ÏÖÔÚÔÚÓÎÏ·ÖÐ 0 (1400,51)
-
+		{ 
 
 			CString str;
 
@@ -2035,23 +2514,30 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress()
 
 void CVC_DemoDlg::OnBnClickedButtonMover()
 {
-	m_checkTimes = 6;
-	UpdateData(false);
+	bStop = false;
+	 bChangeUser = true;
+	if (msdk_handle == INVALID_HANDLE_VALUE) {
+		OnBnClickedButtonOpen();
+	}
+
+	Sleep(3000);
+
+
+	HANDLE hThread = CreateThread(NULL, 0, changeUser_fenjie, (LPVOID)msdk_handle, 0, NULL);
 }
 
 void CVC_DemoDlg::OnBnClickedButtonMoveto()
 {
-	//if (msdk_handle == INVALID_HANDLE_VALUE) {
-	//	AfxMessageBox("还未打开端口，请先打开端口");
-	//	return;
-	//}
-	//unsigned int RetSw;
-	//RetSw = M_ResetMousePos(msdk_handle);
-	//RetSw = M_DelayRandom(800, 1000);
-	//RetSw = M_MoveR(msdk_handle, 100 / rate, 100 / rate);
-	//RetSw = my_hook_left_Click(msdk_handle, 1);
-	m_checkTimes = 0;
-	UpdateData(false);
+	bStop = false;
+	bChangeUser = true;
+	if (msdk_handle == INVALID_HANDLE_VALUE) {
+		OnBnClickedButtonOpen();
+	}
+
+	Sleep(3000);
+
+
+	HANDLE hThread = CreateThread(NULL, 0, changeUser_cunqian, (LPVOID)msdk_handle, 0, NULL);
 }
 
 void CVC_DemoDlg::OnBnClickedButtonGetmousepos()
@@ -2179,13 +2665,13 @@ void CVC_DemoDlg::minized_all_the_other_windows()
 
 			if (strClassName.Find(m_edit_keyword) != -1 || text.Find(m_edit_keyword) != -1 || text.Find("notpad++") != -1 || text.Find("CPU") != -1)
 			{
-				addLog("window  " + text + " class " + strClassName);
+				//addLog("window  " + text + " class " + strClassName);
 			}
 			else
 			{
 				if (text != "")
 				{
-					addLog("hide window  " + text + " class " + strClassName);
+					//addLog("hide window  " + text + " class " + strClassName);
 					::PostMessage(pMainWnd->m_hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
 				}
 			}
@@ -2287,8 +2773,16 @@ void CVC_DemoDlg::OnEnChangeEdit6()
 
 void CVC_DemoDlg::OnBnClickedButtonMover2()
 {
-	m_checkTimes = 15;
-	UpdateData(false);
+	bStop = false;
+	bChangeUser = true;
+	if (msdk_handle == INVALID_HANDLE_VALUE) {
+		OnBnClickedButtonOpen();
+	}
+
+	Sleep(3000);
+
+
+	HANDLE hThread = CreateThread(NULL, 0, changeUser_xiuli_fenjieji, (LPVOID)msdk_handle, 0, NULL);
 }
 
 
@@ -2427,15 +2921,150 @@ void CVC_DemoDlg::OnEnChangeEdit7()
 
 
 void CVC_DemoDlg::OnBnClickedButtonOpen3()
-{
-	if (isDNFWindow() == TRUE)
+{ 
+	unsigned int RetSw = 0;
+
+	pDlg->saveScreen();
+	CPoint pt = findImage("d://yaluo.png", 150, 0, 750, 400);
+	if (pt.x != 0 && pt.y != 0)
 	{
-		addLog("是DNF");
+
+		CString str = "";
+		CTime t = CTime::GetCurrentTime();
+		CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+		str.Format("%s==>%s (%ld,%ld)\n", tt, "发现  yaluo", pt.x, pt.y); 
+		addLog(str);
 	}
 	else
 	{
-		addLog("No DNF");
+
+		CString str = "";
+		CTime t = CTime::GetCurrentTime();
+		CString tt = t.Format("%Y-%m-%d_%H-%M-%S"); 
+		str.Format("%s==>%s (%ld,%ld)\n", tt, "未现yaluo", pt.x, pt.y);
+		addLog(str);
 	}
+
+	CString infor;
+	infor.Format("查找确定按钮%d,%d", pt.x, pt.y);
+	addLog(infor);
+	if (pt.x == 0)
+	{
+		addLog("查找 yaluo fail");
+	}
+	else
+	{
+		pt.x += 18;
+		pt.y += 20;
+		//确认分析装备
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			RetSw = M_DelayRandom(500, 800);
+			//这里使用的是绝对坐标
+			//RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+			//这里也可以写个定值
+			RetSw = move_to_relativePos(msdk_handle, pt.x - dleft, pt.y - dtop);
+			RetSw = M_DelayRandom(500, 600);
+			RetSw = M_DelayRandom(500, 600);
+		}
+		RetSw = my_hook_left_Click(msdk_handle, 1);
+
+		infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
+		addLog(infor);
+
+		RetSw = M_DelayRandom(800, 1000); 
+		 
+		RetSw = M_DelayRandom(800, 1000);
+
+		pt.x += 18;
+		pt.y += 92;
+		//确认分析装备
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			RetSw = M_DelayRandom(500, 800);
+			//这里使用的是绝对坐标
+			//RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+			//这里也可以写个定值
+			RetSw = move_to_relativePos(msdk_handle, pt.x - dleft, pt.y - dtop);
+			RetSw = M_DelayRandom(500, 600);
+			RetSw = M_DelayRandom(500, 600);
+		}
+		RetSw = my_hook_left_Click(msdk_handle, 1);
+
+		infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
+		addLog(infor);
+
+		RetSw = M_DelayRandom(800, 1000);
+	 
+		RetSw = M_DelayRandom(2800, 3000);
+		RetSw = my_hook_left_Click(msdk_handle, 1);
+	}
+	return;
+	pDlg->saveScreen();
+	pt = findImage("d://xiuli.png", 150, 100, 650, 400);
+	if (pt.x != 0 && pt.y != 0)
+	{
+
+		CString str = "";
+		CTime t = CTime::GetCurrentTime();
+		CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+		str.Format("%s==>%s (%ld,%ld)\n", tt, "发现xiuli", pt.x, pt.y);
+
+		//str.Format("%s==>%s (%ld,%ld)\n", tt, "发现在在游戏中 0",cp.x,cp.y);
+		addLog(str);
+	}
+	else
+	{
+
+		CString str = "";
+		CTime t = CTime::GetCurrentTime();
+		CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+
+		str.Format("%s==>%s (%ld,%ld)\n", tt, "未现xiuli", pt.x, pt.y);
+		addLog(str);
+	}
+
+	infor.Format("查找确定按钮%d,%d", pt.x, pt.y);
+	addLog(infor);
+	if (pt.x == 0)
+	{
+		addLog("查找 yaluo fail");
+	}
+	else
+	{
+		pt.x += 5;
+		pt.y += 5;
+		//确认分析装备
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			RetSw = M_DelayRandom(500, 800);
+			//这里使用的是绝对坐标
+			//RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+			//这里也可以写个定值
+			RetSw = move_to_relativePos(msdk_handle, pt.x - dleft, pt.y - dtop);
+			RetSw = M_DelayRandom(500, 600);
+			RetSw = M_DelayRandom(500, 600);
+		}
+		RetSw = my_hook_left_Click(msdk_handle, 1);
+
+		infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
+		addLog(infor);
+
+		RetSw = M_DelayRandom(800, 1000);
+		 
+	}
+
+	//if (isDNFWindow() == TRUE)
+	//{
+	//	addLog("是DNF");
+	//}
+	//else
+	//{
+	//	addLog("No DNF");
+	//}
 	//
 	//23:17:48   ²éÕÒÈ·¶¨°´Å¥1018,399
 	//M_ResetMousePos(msdk_handle);
@@ -2454,13 +3083,14 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 
 
 	saveScreen();//390,54
-	 checkGame_state();
+	// checkGame_state();
 //	OnBnClickedButtonKeypress4();
 
 
 	//#测试是否在游戏中
+	//CPoint pt = findImage("d://yaluo.png", 150, 100, 650, 400);
 	//发现广告
-	/////CPoint cp = findImage("d://close.png", 380, 440, 390, 460);
+	// CPoint cp = findImage("d://close.png", 380, 440, 390, 460);
 	 //是否在游戏中
 	//CPoint cp = findImage("d://ingamenew.png", 340, 40, 400, 60);
 	//if (cp.x != 0 && cp.y != 0)

@@ -54,8 +54,8 @@ BEGIN
     "\r\n"
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
     "LANGUAGE 4, 2\r\n"
-    "#include ""res\\VC_Demo.rc2""  // ·? Microsoft Visual C++ ±à?-μ?×ê?′\r\n"
-    "#include ""l.CHS\\afxres.rc""      // ±ê×?×é?t\r\n"
+    "#include ""res\\VC_Demo.rc2""  // 路? Microsoft Visual C++ 卤脿?-渭?脳锚?鈥?\n"
+    "#include ""l.CHS\\afxres.rc""      // 卤锚脳?脳茅?t\r\n"
     "#endif\r\n"
     "\0"
 END
@@ -85,9 +85,9 @@ CAPTION "notpad+++"
 FONT 9, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EDIT3,119,59,168,25,ES_MULTILINE | ES_AUTOHSCROLL
-    PUSHBUTTON      "0",IDC_BUTTON_MOVETO,202,244,27,27
+    PUSHBUTTON      "批存",IDC_BUTTON_MOVETO,202,244,27,27
     PUSHBUTTON      "更新",IDC_BUTTON_CLOSE,283,33,29,18
-    PUSHBUTTON      "6",IDC_BUTTON_MOVER,238,244,27,27
+    PUSHBUTTON      "批分",IDC_BUTTON_MOVER,238,244,27,27
     PUSHBUTTON      "打开端口",IDC_BUTTON_OPEN,281,7,31,24
     PUSHBUTTON      "begin",IDC_BUTTON_KEYPRESS,7,25,46,59
     PUSHBUTTON      "重置检测次数",IDC_BUTTON_GETMOUSEPOS,61,221,51,59
@@ -97,13 +97,13 @@ BEGIN
     PUSHBUTTON      "分解",IDC_BUTTON_OPEN2,119,7,73,47
     PUSHBUTTON      "查找",IDC_BUTTON_KEYPRESS4,66,156,46,59
     PUSHBUTTON      "切换角色",IDC_BUTTON_KEYPRESS5,7,158,46,59
-    LTEXT           "20191029",IDC_STATIC,7,288,43,8
+    LTEXT           "20191109",IDC_STATIC,7,288,43,8
     LISTBOX         IDC_LIST1,119,196,190,22,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_EDIT4,119,223,74,14,ES_AUTOHSCROLL
     PUSHBUTTON      "进入",IDC_BUTTON_KEYPRESS6,7,94,46,59
     EDITTEXT        IDC_EDIT5,201,222,28,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT6,119,246,75,13,ES_AUTOHSCROLL
-    PUSHBUTTON      "11",IDC_BUTTON_MOVER2,275,244,27,27
+    PUSHBUTTON      "批修",IDC_BUTTON_MOVER2,275,244,27,27
     PUSHBUTTON      "移动",IDC_BUTTON_KEYPRESS7,66,92,46,59
     PUSHBUTTON      "关闭",IDC_BUTTON_KEYPRESS8,7,220,51,59
     LISTBOX         IDC_LIST2,119,86,192,53,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
@@ -205,8 +205,8 @@ END
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE 4, 2
-#include "res\VC_Demo.rc2"  // ·? Microsoft Visual C++ ±à?-μ?×ê?′
-#include "l.CHS\afxres.rc"      // ±ê×?×é?t
+#include "res\VC_Demo.rc2"  // 路? Microsoft Visual C++ 卤脿?-渭?脳锚?鈥?
+#include "l.CHS\afxres.rc"      // 卤锚脳?脳茅?t
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

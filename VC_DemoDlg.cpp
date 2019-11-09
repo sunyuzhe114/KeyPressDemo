@@ -1300,19 +1300,57 @@ DWORD WINAPI    cunqian(LPVOID pp)
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
 
-		//点击确认 这
-		for (int i = 0; i < 1; i++)
+		//点击确认 这个位置要计算一下
+		pDlg->saveScreen();
+		CPoint pt = findImage("d://savemoney.png", 150, 0, 750, 400);
+		if (pt.x != 0 && pt.y != 0)
 		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
-			RetSw = move_to_relativePos(msdk_handle, 350, 365);
-			RetSw = M_DelayRandom(500, 600);
+
+			CString str = "";
+			CTime t = CTime::GetCurrentTime();
+			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+			str.Format("%s==>%s (%ld,%ld)\n", tt, "发现  savemoney", pt.x, pt.y);
+			addLog(str);
 		}
-		addLog("按确定");
-		RetSw = my_hook_left_Click(msdk_handle, 1);
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
+		else
+		{
+
+			CString str = "";
+			CTime t = CTime::GetCurrentTime();
+			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+			str.Format("%s==>%s (%ld,%ld)\n", tt, "未现savemoney", pt.x, pt.y);
+			addLog(str);
+		}
+
+		CString infor;
+		infor.Format("查找确定按钮%d,%d", pt.x, pt.y);
+		addLog(infor);
+		if (pt.x == 0)
+		{
+			bStop = true;
+			addLog("查找 savemoney fail");
+		}
+		else
+		{
+			pt.x += 18;
+			pt.y += 12;
+			//确认分析装备
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				RetSw = M_DelayRandom(500, 800);
+				//这里使用的是绝对坐标
+				//RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+				//这里也可以写个定值
+				RetSw = move_to_relativePos(msdk_handle, pt.x - dleft, pt.y - dtop);
+				RetSw = M_DelayRandom(500, 600);
+				RetSw = M_DelayRandom(500, 600);
+			}
+			RetSw = my_hook_left_Click(msdk_handle, 1);
+
+
+		}
+		
 		if (bStop)break;
 		RetSw = M_DelayRandom(1000, 1100);
 		RetSw = my_hook_left_Click(msdk_handle, 1);
@@ -1499,6 +1537,7 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 		addLog(infor);
 		if (pt.x == 0)
 		{
+			bStop = true;
 			addLog("查找 yaluo fail");
 		}
 		else
@@ -1581,7 +1620,7 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 		if (bStop)break;
 	} while (0);
 
-	addLog("登录线程停止 exit");
+	addLog("xiuli_fenjieji exit");
 	return 0;
 }
 DWORD WINAPI    changeUser_cunqian(LPVOID pp)
@@ -2951,6 +2990,9 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 	if (pt.x == 0)
 	{
 		addLog("查找 yaluo fail");
+
+		bStop = true;
+		 
 	}
 	else
 	{
@@ -3002,61 +3044,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 		RetSw = my_hook_left_Click(msdk_handle, 1);
 	}
 	return;
-	pDlg->saveScreen();
-	pt = findImage("d://xiuli.png", 150, 100, 650, 400);
-	if (pt.x != 0 && pt.y != 0)
-	{
-
-		CString str = "";
-		CTime t = CTime::GetCurrentTime();
-		CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
-		str.Format("%s==>%s (%ld,%ld)\n", tt, "发现xiuli", pt.x, pt.y);
-
-		//str.Format("%s==>%s (%ld,%ld)\n", tt, "发现在在游戏中 0",cp.x,cp.y);
-		addLog(str);
-	}
-	else
-	{
-
-		CString str = "";
-		CTime t = CTime::GetCurrentTime();
-		CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
-
-		str.Format("%s==>%s (%ld,%ld)\n", tt, "未现xiuli", pt.x, pt.y);
-		addLog(str);
-	}
-
-	infor.Format("查找确定按钮%d,%d", pt.x, pt.y);
-	addLog(infor);
-	if (pt.x == 0)
-	{
-		addLog("查找 yaluo fail");
-	}
-	else
-	{
-		pt.x += 5;
-		pt.y += 5;
-		//确认分析装备
-		for (int i = 0; i < 1; i++)
-		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = M_DelayRandom(500, 800);
-			//这里使用的是绝对坐标
-			//RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
-			//这里也可以写个定值
-			RetSw = move_to_relativePos(msdk_handle, pt.x - dleft, pt.y - dtop);
-			RetSw = M_DelayRandom(500, 600);
-			RetSw = M_DelayRandom(500, 600);
-		}
-		RetSw = my_hook_left_Click(msdk_handle, 1);
-
-		infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
-		addLog(infor);
-
-		RetSw = M_DelayRandom(800, 1000);
-		 
-	}
-
+	 
 	//if (isDNFWindow() == TRUE)
 	//{
 	//	addLog("是DNF");

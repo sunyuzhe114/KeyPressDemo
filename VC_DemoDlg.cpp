@@ -1240,8 +1240,13 @@ DWORD WINAPI    changeUser(LPVOID pp)
 DWORD WINAPI    changeUser_fenjie(LPVOID pp)
 {
 	HANDLE msdk_handle = (HANDLE)pp;
-	unsigned int RetSw = 0;
+	unsigned int RetSw = 0; 
+	RetSw = M_DelayRandom(1800, 21000);
 	DWORD m_dTimeBeginPress_F10 = 0;
+	move_to_relativePos(msdk_handle, 50, 50);
+	RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_LeftClick(msdk_handle, 1);
+	 
 	for (int i = 0; i < 16; i++)
 	{
 		fenjie_zhuangbei(pp);
@@ -1542,7 +1547,7 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 		addLog(infor);
 		if (pt.x == 0)
 		{
-			bStop = true;
+			 
 			addLog("查找 yaluo fail");
 		}
 		else
@@ -1630,9 +1635,15 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 }
 DWORD WINAPI    changeUser_cunqian(LPVOID pp)
 {
-	HANDLE msdk_handle = (HANDLE)pp;
+	HANDLE msdk_handle = (HANDLE)pp; 
 	unsigned int RetSw = 0;
+	RetSw = M_DelayRandom(1800, 21000);
 	DWORD m_dTimeBeginPress_F10 = 0;
+	move_to_relativePos(msdk_handle, 50, 50);
+	RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_LeftClick(msdk_handle, 1);
+	 
+
 	for (int i = 0; i < 16; i++)
 	{
 		cunqian(pp);
@@ -1646,7 +1657,12 @@ DWORD WINAPI    changeUser_xiuli_fenjieji(LPVOID pp)
 {
 	HANDLE msdk_handle = (HANDLE)pp;
 	unsigned int RetSw = 0;
-	DWORD m_dTimeBeginPress_F10 = 0;
+	RetSw = M_DelayRandom(1800, 21000);
+	DWORD m_dTimeBeginPress_F10 = 0; 
+	move_to_relativePos(msdk_handle, 50, 50);
+	RetSw = M_DelayRandom(800, 1000); 
+	RetSw = M_LeftClick(msdk_handle, 1);
+
 	for (int i = 0; i < 16; i++)
 	{
 		xiuli_fenjieji(pp);

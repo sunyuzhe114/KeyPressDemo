@@ -57,6 +57,7 @@ bool b_NUM4_Dnf = false;
 DWORD WINAPI    changeUser_Thread(LPVOID pp);
 void addLog(CString infor);
 void addLog_important(CString infor);
+DWORD WINAPI    change_to_first_player(LPVOID pp);
 void addLog(CString infor)
 {
 	CTime time = CTime::GetCurrentTime();
@@ -1246,7 +1247,9 @@ DWORD WINAPI    changeUser_fenjie(LPVOID pp)
 	move_to_relativePos(msdk_handle, 50, 50);
 	RetSw = M_DelayRandom(800, 1000);
 	RetSw = M_LeftClick(msdk_handle, 1);
-	 
+	
+	change_to_first_player(pp);
+
 	for (int i = 0; i < 16; i++)
 	{
 		fenjie_zhuangbei(pp);
@@ -1633,16 +1636,84 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 	addLog("xiuli_fenjieji exit");
 	return 0;
 }
+DWORD WINAPI    change_to_first_player(LPVOID pp)
+{
+	HANDLE msdk_handle = (HANDLE)pp;
+	unsigned int RetSw = 0;
+	RetSw = M_DelayRandom(1800, 2100);
+	DWORD m_dTimeBeginPress_F10 = 0;
+
+
+	do {
+		move_to_relativePos(msdk_handle, 50, 50);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = M_LeftClick(msdk_handle, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+		RetSw = M_DelayRandom(2800, 4000);
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			//RetSw = my_new_MoveTo(msdk_handle, (int)((1517) / rate), (int)((454) / rate));
+			RetSw = move_to_relativePos(msdk_handle, 380, 460);
+			RetSw = M_DelayRandom(500, 600);
+		}
+		RetSw = my_hook_left_Click(msdk_handle, 1);
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		addLog("点击选定角色");
+		if (bStop)break;
+
+		for (int i = 0; i < 12; i++)
+		{
+			addLog("按下方向left键");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_LeftArrow, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+
+		}
+		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_KongGe, 1);
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+	} while (0);
+
+	
+}
 DWORD WINAPI    changeUser_cunqian(LPVOID pp)
 {
 	HANDLE msdk_handle = (HANDLE)pp; 
 	unsigned int RetSw = 0;
-	RetSw = M_DelayRandom(1800, 21000);
+	RetSw = M_DelayRandom(1800, 2100);
 	DWORD m_dTimeBeginPress_F10 = 0;
-	move_to_relativePos(msdk_handle, 50, 50);
-	RetSw = M_DelayRandom(800, 1000);
-	RetSw = M_LeftClick(msdk_handle, 1);
-	 
+
+
+	change_to_first_player(pp);
 
 	for (int i = 0; i < 16; i++)
 	{
@@ -1662,6 +1733,7 @@ DWORD WINAPI    changeUser_xiuli_fenjieji(LPVOID pp)
 	move_to_relativePos(msdk_handle, 50, 50);
 	RetSw = M_DelayRandom(800, 1000); 
 	RetSw = M_LeftClick(msdk_handle, 1);
+	change_to_first_player(pp);
 
 	for (int i = 0; i < 16; i++)
 	{
@@ -2579,7 +2651,7 @@ void CVC_DemoDlg::OnBnClickedButtonMover()
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
 		OnBnClickedButtonOpen();
 	}
-
+	minized_all_the_other_windows();
 	Sleep(3000);
 
 
@@ -2593,7 +2665,7 @@ void CVC_DemoDlg::OnBnClickedButtonMoveto()
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
 		OnBnClickedButtonOpen();
 	}
-
+	minized_all_the_other_windows();
 	Sleep(3000);
 
 
@@ -2838,7 +2910,7 @@ void CVC_DemoDlg::OnBnClickedButtonMover2()
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
 		OnBnClickedButtonOpen();
 	}
-
+	minized_all_the_other_windows();
 	Sleep(3000);
 
 

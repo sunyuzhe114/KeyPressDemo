@@ -312,8 +312,8 @@ CPoint findImage(string strPath_findImage, int left, int top, int right, int bot
 		/* long changeX = dleft - 1120;
 		long changeY = dtop - 0; */
 		//390,54 1030 54
-		infor.Format("X=%ld,Y=%ld,x=%ld,y=%ld,maxVal=%0.2lf,", changeX, changeY, matchLoc.x, matchLoc.y, maxVal);
-		addLog("game " + infor);
+		//infor.Format("X=%ld,Y=%ld,x=%ld,y=%ld,maxVal=%0.2lf,", changeX, changeY, matchLoc.x, matchLoc.y, maxVal);
+		//addLog("game " + infor);
 		//if ((matchLoc.x - changeX) > 1255 && (matchLoc.x - changeX) < 1615 && (matchLoc.y - changeY) >= 275 && (matchLoc.y - changeY) <=430 && maxVal > 0.5 )
 		if (changeX > left && changeX < right && changeY >= top && changeY <= bottom && maxVal > 0.5)
 		{
@@ -324,7 +324,7 @@ CPoint findImage(string strPath_findImage, int left, int top, int right, int bot
 		}
 		else
 		{
-			infor += "未检测到按钮 ";
+			infor = infor+"未检测到 " ;
 			addLog(infor);
 			bResult = -1; Game_state = -1;
 			pt.x = 0;
@@ -1752,350 +1752,429 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 	DWORD m_dTimeBeginPress_F10 = 0;
 
 	CString infor;
+	bool b_login_ok = false;
+	for (int test = 0; test < 20; test++)
+	{
+		b_login_ok = false;
+		do {
 
-	do {
-
-		/*for (int i = 0; i < 1; i++)
-		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = my_new_MoveTo(msdk_handle, 1200 / rate, 110 / rate);;
+			/*for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				RetSw = my_new_MoveTo(msdk_handle, 1200 / rate, 110 / rate);;
+				RetSw = M_DelayRandom(800, 1000);
+			}*/
+			move_to_relativePos(msdk_handle, 50, 50);
 			RetSw = M_DelayRandom(800, 1000);
-		}*/
-		move_to_relativePos(msdk_handle, 50, 50);
-		RetSw = M_DelayRandom(800, 1000);
-		 
-		RetSw = M_LeftClick(msdk_handle, 1);
-		/*RetSw = M_LeftDown(msdk_handle );
-		RetSw = M_DelayRandom(800, 1000);
-		RetSw = M_LeftUp(msdk_handle );*/
 
-		if (bStop)break;
-		RetSw = M_DelayRandom(800, 1000);
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
-		RetSw = M_DelayRandom(2800, 4000);
-		for (int i = 0; i < 1; i++)
-		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			//RetSw = my_new_MoveTo(msdk_handle, (int)((1517) / rate), (int)((454) / rate));
-			RetSw = move_to_relativePos(msdk_handle, 380, 460);
-			RetSw = M_DelayRandom(500, 600);
-		}
-		RetSw = my_hook_left_Click(msdk_handle, 1);
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100); 
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		addLog("点击选定角色");
-		if (bStop)break;
+			RetSw = M_LeftClick(msdk_handle, 1);
+			/*RetSw = M_LeftDown(msdk_handle );
+			RetSw = M_DelayRandom(800, 1000);
+			RetSw = M_LeftUp(msdk_handle );*/
 
-		if (bChangeUser == true)
-		{
-			addLog("按下方向右键");
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_RightArrow, 1);
-			RetSw = M_DelayRandom(2100, 2300);
-
-		}
-
-
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_KongGe, 1);
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break; 
-		RetSw = M_DelayRandom(1000, 1100); 
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-
-		//按5号键，
-		addLog("按5号键");
-		if (bStop)break;
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_5, 1);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		//这里检查一下,是否有5号键已经按下
-		CPoint pt = findImage("d://xuanzeditu.png", 330, 300, 360, 330);
-		if (pt.x != 0 && pt.y != 0)
-		{ 
-			addLog("faxian xuanzeditu");
-		}
-		else
-		{  
-			break;
-		}
-		//点击确认 这
-		for (int i = 0; i < 1; i++)
-		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
-			RetSw = move_to_relativePos(msdk_handle, 370, 325);
-			RetSw = M_DelayRandom(500, 600);
-		}
-		addLog("按确定");
-		RetSw = my_hook_left_Click(msdk_handle, 1);
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-
-		
-		if (bStop)break;
-		//滚动3次到了 
-		for (int i = 0; i < 3; i++)
-		{
-			RetSw = M_MouseWheel(msdk_handle, -1);
 			if (bStop)break;
-			RetSw = M_DelayRandom(1200, 1500);
-			if (bStop)break;
-			RetSw = M_DelayRandom(1200, 1500);
-			if (bStop)break;
-			RetSw = M_DelayRandom(1200, 1500);
-		}
-		if (bStop)break;
-
-		addLog("滚轮3次");
-		if (bStop)break;
-		RetSw = M_DelayRandom(800, 1000);
-		//走到地点
-		for (int i = 0; i < 1; i++)
-		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			//RetSw = my_new_MoveTo(msdk_handle, (int)((1510) / rate), (int)((277) / rate));
-			RetSw = move_to_relativePos(msdk_handle, 385, 272);
-			RetSw = M_DelayRandom(500, 600);
-		}
-		if (bStop)break;
-		RetSw = M_DelayRandom(800, 1000);
-		RetSw = my_hook_left_Click(msdk_handle, 1);
-
-
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break; 
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break; 
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break; 
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		addLog("选定坐标");
-		if (bStop)break;
-		//点击确认
-		for (int i = 0; i < 1; i++)
-		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
-			RetSw = move_to_relativePos(msdk_handle, 370, 323);
-			RetSw = M_DelayRandom(500, 600);
-		}
-		RetSw = my_hook_left_Click(msdk_handle, 1);
-		RetSw = M_DelayRandom(500, 1100);
-		//点击确认二次,保证点上
-		for (int i = 0; i < 1; i++)
-		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
-			RetSw = move_to_relativePos(msdk_handle, 370, 326);
-			RetSw = M_DelayRandom(500, 600);
-		}
-		RetSw = my_hook_left_Click(msdk_handle, 1);
-
-		addLog("点击确认");
-		if (bStop)break;
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		addLog("点击屏幕人物开始移动");
-
-		if(checkDNFWindow()==false)
-		{
-			addLog("未检测到窗口，停止。。。");
-			break;
-		}
-		if (bStop)break;
-		//走到地点
-		for (int j = 0; j < 2; j++)
-		{
+			RetSw = M_DelayRandom(800, 1000);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+			RetSw = M_DelayRandom(2800, 4000);
 			for (int i = 0; i < 1; i++)
 			{
 				RetSw = M_ResetMousePos(msdk_handle);
-				//RetSw = my_new_MoveTo(msdk_handle, (int)((1753) / rate), (int)((503) / rate));
-				RetSw = move_to_relativePos(msdk_handle, 700, 500);
+				//RetSw = my_new_MoveTo(msdk_handle, (int)((1517) / rate), (int)((454) / rate));
+				RetSw = move_to_relativePos(msdk_handle, 380, 460);
 				RetSw = M_DelayRandom(500, 600);
 			}
-			RetSw = my_hook_right_Click(msdk_handle, 1);
+			RetSw = my_hook_left_Click(msdk_handle, 1);
+			RetSw = M_DelayRandom(1000, 1100);
 			if (bStop)break;
-			RetSw = M_DelayRandom(1000, 1100); 
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			addLog("点击选定角色");
+			if (bStop)break;
 
-		}
-		addLog("右击走到地点");
-		for (int j = 0; j < 2; j++)
-		{
-			for (int i = 0; i < 1; i++)
+			if (bChangeUser == true)
 			{
-				RetSw = M_ResetMousePos(msdk_handle);
-				//RetSw = my_new_MoveTo(msdk_handle, (int)((1660) / rate), (int)((503) / rate));
-				RetSw = move_to_relativePos(msdk_handle, 577, 460);
-				RetSw = M_DelayRandom(500, 600);
+				addLog("按下方向右键");
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_RightArrow, 1);
+				RetSw = M_DelayRandom(2100, 2300);
+
 			}
-			RetSw = my_hook_right_Click(msdk_handle, 1);
-			RetSw = M_DelayRandom(800, 1000);
-
-		}
-		if (bStop)break;
-		addLog("右击走到地点");
-
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		addLog("键盘向左移动一步");
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 1);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		addLog("向左移动一步");
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 1);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		addLog("向左移动一步");
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 1);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		addLog("向右移动二步");
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
-		if (bStop)break;
-		RetSw = M_DelayRandom(500, 1000);
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
-		if (bStop)break;
-		RetSw = M_DelayRandom(1000, 1100);
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_JuHao, 1);
-		if (bStop)break;
-		RetSw = M_DelayRandom(500, 1000);
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_JuHao, 1);
-		if (bStop)break;
-		RetSw = M_DelayRandom(500, 1000);
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
-		if (bStop)break;
-		RetSw = M_DelayRandom(500, 1000);
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
-		if (bStop)break;
-		RetSw = M_DelayRandom(500, 1000);
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
-		if (bStop)break;
-		RetSw = M_DelayRandom(500, 1000);
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
-		if (bStop)break;
-		RetSw = M_DelayRandom(500, 1000);
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
-		if (bStop)break;
-		RetSw = M_DelayRandom(500, 1000);
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
 
 
-		if (bStop)break;
-		//点击 
-		for (int i = 0; i < 1; i++)
-		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			if (pDlg->bHuangLong == true)
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_KongGe, 1);
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+
+			//按5号键，
+			addLog("按5号键");
+			if (bStop)break;
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_5, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			//这里检查一下,是否有5号键已经按下
+			CPoint pt = findImage("d://xuanzeditu.png", 330, 300, 360, 330);
+			if (pt.x != 0 && pt.y != 0)
 			{
-				//RetSw = my_new_MoveTo(msdk_handle, (int)((1710) / rate), (int)((405) / rate));
-				RetSw = move_to_relativePos(msdk_handle, 570, 390);
-				addLog("移动到黄龙");
-				
+				addLog("faxian xuanzeditu");
 			}
 			else
 			{
-				//RetSw = my_new_MoveTo(msdk_handle, (int)((1324) / rate), (int)((441) / rate));
-				RetSw = move_to_relativePos(msdk_handle, 210, 440);
-				addLog("移动到青龙");
+				addLog("find  xuanzeditu error");
+				break;
 			}
-			RetSw = M_DelayRandom(500, 600);
-		}
-		RetSw = M_LeftDoubleClick(msdk_handle, 1);
-		if (bStop)break;
-		RetSw = M_DelayRandom(500, 1000);
-		RetSw = M_LeftDoubleClick(msdk_handle, 1);
-		if (bStop)break;
-		RetSw = M_DelayRandom(500, 1000);
+			//点击确认 这
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+				RetSw = move_to_relativePos(msdk_handle, 370, 325);
+				RetSw = M_DelayRandom(500, 600);
+			}
+			addLog("按确定");
+			RetSw = my_hook_left_Click(msdk_handle, 1);
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
 
-		if (bStop)break;
-		RetSw = M_DelayRandom(500, 1000);	
-		if (bStop)break;
-		RetSw = M_DelayRandom(500, 1000);	
-		if (bStop)break;
-		RetSw = M_DelayRandom(500, 1000);
-		if (bStop)break;
-		RetSw = M_DelayRandom(500, 1000);
-		if (bStop)break;
-		RetSw = M_DelayRandom(500, 1000);
+			pt = findImage("d://阿德大陆.png", 200, 20, 225, 40);
+			if (pt.x != 0 && pt.y != 0)
+			{
+				addLog("阿德大陆");
+			}
+			else
+			{
+				addLog("find  阿德大陆 error");
+				break;
+			}
+			if (bStop)break;
+			//滚动3次到了 
+			for (int i = 0; i < 3; i++)
+			{
+				RetSw = M_MouseWheel(msdk_handle, -1);
+				if (bStop)break;
+				RetSw = M_DelayRandom(1200, 1500);
+				if (bStop)break;
+				RetSw = M_DelayRandom(1200, 1500);
+				if (bStop)break;
+				RetSw = M_DelayRandom(1200, 1500);
+			}
+			if (bStop)break;
 
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_KongGe, 1);
-		addLog("按下空格准备游戏");
+			addLog("滚轮3次");
 
+			pt = findImage("d://素喃.png", 285, 20, 305, 40);
+			if (pt.x != 0 && pt.y != 0)
+			{
+				addLog("素喃");
+			}
+			else
+			{
+				addLog("find  素喃 error");
+				break;
+			}
+
+			if (bStop)break;
+			RetSw = M_DelayRandom(800, 1000);
+			//走到地点
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				//RetSw = my_new_MoveTo(msdk_handle, (int)((1510) / rate), (int)((277) / rate));
+				RetSw = move_to_relativePos(msdk_handle, 385, 272);
+				RetSw = M_DelayRandom(500, 600);
+			}
+			if (bStop)break;
+			RetSw = M_DelayRandom(800, 1000);
+			RetSw = my_hook_left_Click(msdk_handle, 1);
+
+
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			addLog("选定坐标");
+			if (bStop)break;
+
+			pt = findImage("d://传送.png", 340, 310, 365, 330);
+			if (pt.x != 0 && pt.y != 0)
+			{
+				addLog("传送");
+			}
+			else
+			{
+				addLog("find  传送 error");
+				break;
+			}
+			//点击确认
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+				RetSw = move_to_relativePos(msdk_handle, 370, 323);
+				RetSw = M_DelayRandom(500, 600);
+			}
+			RetSw = my_hook_left_Click(msdk_handle, 1);
+			RetSw = M_DelayRandom(500, 1100);
+			//点击确认二次,保证点上
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+				RetSw = move_to_relativePos(msdk_handle, 370, 326);
+				RetSw = M_DelayRandom(500, 600);
+			}
+			RetSw = my_hook_left_Click(msdk_handle, 1);
+
+			addLog("点击确认");
+			if (bStop)break;
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			addLog("点击屏幕人物开始移动");
+
+			if (checkDNFWindow() == false)
+			{
+				addLog("未检测到窗口，停止。。。");
+				break;
+			}
+			if (bStop)break;
+			//走到地点
+			for (int j = 0; j < 2; j++)
+			{
+				for (int i = 0; i < 1; i++)
+				{
+					RetSw = M_ResetMousePos(msdk_handle);
+					//RetSw = my_new_MoveTo(msdk_handle, (int)((1753) / rate), (int)((503) / rate));
+					RetSw = move_to_relativePos(msdk_handle, 700, 490);
+					RetSw = M_DelayRandom(500, 600);
+				}
+				RetSw = my_hook_right_Click(msdk_handle, 1);
+				if (bStop)break;
+				RetSw = M_DelayRandom(1000, 1100);
+
+			}
+			addLog("右击走到地点");
+			for (int j = 0; j < 2; j++)
+			{
+				for (int i = 0; i < 1; i++)
+				{
+					RetSw = M_ResetMousePos(msdk_handle);
+					//RetSw = my_new_MoveTo(msdk_handle, (int)((1660) / rate), (int)((503) / rate));
+					RetSw = move_to_relativePos(msdk_handle, 577, 460);
+					RetSw = M_DelayRandom(500, 600);
+				}
+				RetSw = my_hook_right_Click(msdk_handle, 1);
+				RetSw = M_DelayRandom(800, 1000);
+
+			}
+			if (bStop)break;
+			addLog("右击走到地点");
+
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			addLog("键盘向左移动一步");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			addLog("向左移动一步");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			addLog("向左移动一步");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			addLog("向右移动二步");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_JuHao, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_JuHao, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 1);
+
+
+			if (bStop)break;
+			//点击 
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				if (pDlg->bHuangLong == true)
+				{
+					//RetSw = my_new_MoveTo(msdk_handle, (int)((1710) / rate), (int)((405) / rate));
+					RetSw = move_to_relativePos(msdk_handle, 570, 390);
+					addLog("移动到黄龙");
+
+				}
+				else
+				{
+					//RetSw = my_new_MoveTo(msdk_handle, (int)((1324) / rate), (int)((441) / rate));
+					RetSw = move_to_relativePos(msdk_handle, 210, 440);
+					addLog("移动到青龙");
+				}
+				RetSw = M_DelayRandom(500, 600);
+			}
+			pt = findImage("d://选择地下城.png", 220, 570, 250, 590);
+			if (pt.x != 0 && pt.y != 0)
+			{
+				b_login_ok = true;
+				addLog("选择地下城");
+			}
+			else
+			{
+				addLog("find  选择地下城 error");
+				break;
+			}
+			
+			RetSw = M_LeftDoubleClick(msdk_handle, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+			RetSw = M_LeftDoubleClick(msdk_handle, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_KongGe, 1);
+			addLog("按下空格准备游戏");
+
+			//pDlg->begin_check_game();
+			if (bStop)break;
+		} while (0);
+		if (b_login_ok == true)break;
+		if (bFullStop)break;
+	}
+	if (b_login_ok == true)
+	{
 		pDlg->begin_check_game();
-		if (bStop)break;
-	} while (0);
+	}
+	else 
+	{
 
+		CPoint pt = findImage("d://关闭按钮.png", 780, 0, 800, 30);
+		if (pt.x != 0 && pt.y != 0)
+		{
+			 
+			addLog("关闭按钮"); 
+			do {
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+				if (bStop)break;
+				RetSw = M_DelayRandom(500, 1000);
+				if (bStop)break;
+				RetSw = M_DelayRandom(500, 1000);
+				if (bStop)break;
+				RetSw = M_DelayRandom(500, 1000);
+				if (bStop)break;
+
+			} while (0);
+		}
+		else
+		{ 
+			
+		}
+	}
 	addLog("登录线程停止 exit");
 	return 0;
 }

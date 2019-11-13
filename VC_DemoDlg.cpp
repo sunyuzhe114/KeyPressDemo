@@ -1859,25 +1859,12 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		//这里检查一下,是否有5号键已经按下
 		CPoint pt = findImage("d://xuanzeditu.png", 330, 300, 360, 330);
 		if (pt.x != 0 && pt.y != 0)
-		{
-
-			CString str = "";
-			CTime t = CTime::GetCurrentTime();
-			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
-			str.Format("%s==>%s (%ld,%ld)\n", tt, "发现广告关闭 ", pt.x, pt.y);
-
-			//str.Format("%s==>%s (%ld,%ld)\n", tt, "发现在在游戏中 0",cp.x,cp.y);
-			addLog(str);
+		{ 
+			addLog("faxian xuanzeditu");
 		}
 		else
-		{
-
-			CString str = "";
-			CTime t = CTime::GetCurrentTime();
-			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
-
-			str.Format("%s==>%s (%ld,%ld)\n", tt, "未现广告 0", pt.x, pt.y);
-			addLog(str);
+		{  
+			break;
 		}
 		//点击确认 这
 		for (int i = 0; i < 1; i++)

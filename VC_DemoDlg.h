@@ -92,4 +92,5 @@ public:
 	BOOL m_bUseing_Num4;
 	afx_msg void OnBnClickedButtonOpen4();
 	afx_msg LRESULT OnHotKey(WPARAM wParam, LPARAM lParam);
+	afx_msg void OnLbnSelchangeList3();
 };

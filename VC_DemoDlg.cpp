@@ -236,7 +236,7 @@ CPoint findImage(string strPath_findImage, int left, int top, int right, int bot
 {
 	CPoint pt(0, 0);
 	try {
-		//pDlg->saveScreen();
+		pDlg->saveScreen();
 
 		img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
 		templ = cv::imread(strPath_findImage, IMREAD_COLOR);
@@ -749,7 +749,7 @@ DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 {
 	HANDLE msdk_handle = (HANDLE)pp;
  
-	pDlg->saveScreen();
+	 
 
 	int RetSw = M_DelayRandom(2800, 3000);
 	CPoint pt = findImage("d://close.png", 380, 440, 390, 460);
@@ -982,6 +982,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_CHECK4, &CVC_DemoDlg::OnBnClickedCheck4)
 	ON_BN_CLICKED(IDC_BUTTON_OPEN4, &CVC_DemoDlg::OnBnClickedButtonOpen4)
 	ON_MESSAGE(WM_HOTKEY, OnHotKey)
+	ON_LBN_SELCHANGE(IDC_LIST3, &CVC_DemoDlg::OnLbnSelchangeList3)
 END_MESSAGE_MAP()
 
 
@@ -1314,7 +1315,7 @@ DWORD WINAPI    cunqian(LPVOID pp)
 		if (bStop)break;
 
 		//点击确认 这个位置要计算一下
-		pDlg->saveScreen();
+		 
 		CPoint pt = findImage("d://savemoney.png", 150, 0, 750, 400);
 		if (pt.x != 0 && pt.y != 0)
 		{
@@ -1523,8 +1524,7 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 		if (bStop)break;
 		RetSw = M_DelayRandom(1000, 1100);
 
-
-		pDlg->saveScreen();
+		 
 		CPoint pt = findImage("d://yaluo.png", 150, 0, 750, 400);
 		if (pt.x != 0 && pt.y != 0)
 		{
@@ -1856,7 +1856,29 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		if (bStop)break;
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
-		
+		//这里检查一下,是否有5号键已经按下
+		CPoint pt = findImage("d://xuanzeditu.png", 330, 300, 360, 330);
+		if (pt.x != 0 && pt.y != 0)
+		{
+
+			CString str = "";
+			CTime t = CTime::GetCurrentTime();
+			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+			str.Format("%s==>%s (%ld,%ld)\n", tt, "发现广告关闭 ", pt.x, pt.y);
+
+			//str.Format("%s==>%s (%ld,%ld)\n", tt, "发现在在游戏中 0",cp.x,cp.y);
+			addLog(str);
+		}
+		else
+		{
+
+			CString str = "";
+			CTime t = CTime::GetCurrentTime();
+			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+
+			str.Format("%s==>%s (%ld,%ld)\n", tt, "未现广告 0", pt.x, pt.y);
+			addLog(str);
+		}
 		//点击确认 这
 		for (int i = 0; i < 1; i++)
 		{
@@ -2691,6 +2713,7 @@ void CVC_DemoDlg::OnBnClickedButtonGetmousepos()
 	else {
 		SetTimer(0, TIMER_LENGTH, NULL);
 		m_listLog.ResetContent();
+		m_list_time_log.ResetContent();
 		m_editLogInfor.SetWindowTextA("reset");
 		CString infor;
 		infor.Format("full stop  time remains %ld \r\n", pDlg->m_checkTimes - Global_checkTime);
@@ -3420,4 +3443,9 @@ LRESULT CVC_DemoDlg::OnHotKey(WPARAM wParam, LPARAM lParam)
 	}
 	 
 		return 0;
+}
+
+void CVC_DemoDlg::OnLbnSelchangeList3()
+{
+	// TODO: 在此添加控件通知处理程序代码
 }

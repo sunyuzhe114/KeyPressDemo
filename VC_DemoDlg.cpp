@@ -1,7 +1,5 @@
 ﻿
 // VC_DemoDlg.cpp : 实现文件
-//
-
 #include "stdafx.h"
 #include "VC_Demo.h"
 #include "VC_DemoDlg.h"
@@ -1753,7 +1751,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 
 	CString infor;
 	bool b_login_ok = false;
-	for (int test = 0; test < 20; test++)
+	for (int test = 0; test < 10; test++)
 	{
 		b_login_ok = false;
 		do {
@@ -1765,21 +1763,16 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 				RetSw = M_DelayRandom(800, 1000);
 			}*/
 			move_to_relativePos(msdk_handle, 50, 50);
-			RetSw = M_DelayRandom(800, 1000);
-
+			RetSw = M_DelayRandom(800, 1000); 
 			RetSw = M_LeftClick(msdk_handle, 1);
-			/*RetSw = M_LeftDown(msdk_handle );
-			RetSw = M_DelayRandom(800, 1000);
-			RetSw = M_LeftUp(msdk_handle );*/
-
+			 
 			if (bStop)break;
 			RetSw = M_DelayRandom(800, 1000);
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
 			RetSw = M_DelayRandom(2800, 4000);
 			for (int i = 0; i < 1; i++)
 			{
-				RetSw = M_ResetMousePos(msdk_handle);
-				//RetSw = my_new_MoveTo(msdk_handle, (int)((1517) / rate), (int)((454) / rate));
+				RetSw = M_ResetMousePos(msdk_handle); 
 				RetSw = move_to_relativePos(msdk_handle, 380, 460);
 				RetSw = M_DelayRandom(500, 600);
 			}
@@ -2565,7 +2558,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 			str.Format(" %s (%ld,%ld)\n", "未在游戏中 0", cp.x, cp.y);
 			addLog(str);
 			not_in_game_time++;
-			if (not_in_game_time >= 3)
+			if (not_in_game_time >= 5)
 			{
 				not_in_game_time = 0;
 				Game_state = 300;

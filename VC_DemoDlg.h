@@ -89,7 +89,7 @@ public:
 	BOOL bOnlyDNF;
 	afx_msg void OnBnClickedCheck3();
 	afx_msg void OnBnClickedCheck4();
-	BOOL m_bUseing_Num4;
+	BOOL m_bSiwanTa;
 	afx_msg void OnBnClickedButtonOpen4();
 	afx_msg LRESULT OnHotKey(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnLbnSelchangeList3();

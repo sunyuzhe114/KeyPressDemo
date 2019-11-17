@@ -51,7 +51,7 @@ float dbZoomScale = 1.0;
 /// Function Headers
 int checkGame_state();
 bool bGonlyDnf = false;
-bool b_NUM4_Dnf = false;
+bool b_SiWangTa_Dnf = false;
 DWORD WINAPI    changeUser_Thread(LPVOID pp);
 void addLog(CString infor);
 void addLog_important(CString infor);
@@ -827,12 +827,7 @@ DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 
 	RetSw = M_DelayRandom(1800, 2000);
 	//这里加入分解动作，按I键 ，开分解
-	if (b_NUM4_Dnf)
-	{
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_4, 1);
-	}
-	else
-	{
+ 
 		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_DanYinHao, 1);
 		RetSw = M_DelayRandom(2200, 3000);
 		//分解装备
@@ -846,7 +841,7 @@ DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 		}
 		RetSw = my_hook_left_Click(msdk_handle, 1);
 		RetSw = M_DelayRandom(800, 1000);
-	}
+	 
 	
 	
 
@@ -914,7 +909,7 @@ CVC_DemoDlg::CVC_DemoDlg(CWnd* pParent /*=NULL*/)
 	, bOnlyForTest(FALSE)
 	, m_matchinename(_T(""))
 	, bOnlyDNF(FALSE)
-	, m_bUseing_Num4(FALSE)
+	, m_bSiwanTa(FALSE)
 {
 	m_rate = 2.5;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -939,7 +934,7 @@ void CVC_DemoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK2, bOnlyForTest);
 	DDX_Text(pDX, IDC_EDIT8, m_matchinename);
 	DDX_Check(pDX, IDC_CHECK3, bOnlyDNF);
-	DDX_Check(pDX, IDC_CHECK4, m_bUseing_Num4);
+	DDX_Check(pDX, IDC_CHECK4, m_bSiwanTa);
 }
 
 BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
@@ -1043,16 +1038,16 @@ BOOL CVC_DemoDlg::OnInitDialog()
 	if (bGonlyDnf == true)
 		((CButton*)(GetDlgItem(IDC_CHECK3)))->SetCheck(1);
 
-	::GetPrivateProfileString(APP_NAME, "b_NUM4_Dnf", "", infor.GetBufferSetLength(256), 256, "d://keypressDemo.ini");
+	::GetPrivateProfileString(APP_NAME, "b_SiWangTa_Dnf", "", infor.GetBufferSetLength(256), 256, "d://keypressDemo.ini");
 	if (infor != "")
 	{
 		//SetDlgItemText(IDC_EDIT7, infor);
-		b_NUM4_Dnf = atol(infor);
-		if (b_NUM4_Dnf == 1)
+		b_SiWangTa_Dnf = atol(infor);
+		if (b_SiWangTa_Dnf == 1)
 			((CButton*)(GetDlgItem(IDC_CHECK4)))->SetCheck(1);
 
 	}
-	if (b_NUM4_Dnf == true)
+	if (b_SiWangTa_Dnf == true)
 		((CButton*)(GetDlgItem(IDC_CHECK4)))->SetCheck(1);
 	::GetPrivateProfileString(APP_NAME, "m_matchname", "", infor.GetBufferSetLength(256), 256, "d://keypressDemo.ini");
 	if (infor != "")
@@ -2255,6 +2250,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 	}
 	else 
 	{
+		//如果登录失败则出现异常,则程序停止,这里要检测一下.
 
 		CPoint pt = findImage("d://关闭按钮.png", 780, 0, 800, 30);
 		if (pt.x != 0 && pt.y != 0)
@@ -2275,6 +2271,8 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		}
 		else
 		{ 
+			//如果登录失败则出现异常,则程序停止,这里要检测一下.
+			pDlg->OnBnClickedButtonKeypress5();
 			
 		}
 	}
@@ -2710,8 +2708,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 
 	RetSw = M_DelayRandom(10000, 15000);
 	if (Game_state == 300)
-	{
-
+	{ 
 		pDlg->playerlogin();
 	}
 	else if (Global_checkTime <= pDlg->m_checkTimes && bFullStop == false && Game_state <= 200)
@@ -3568,12 +3565,12 @@ void CVC_DemoDlg::OnBnClickedCheck3()
 
 void CVC_DemoDlg::OnBnClickedCheck4()
 {UpdateData();
-	b_NUM4_Dnf= m_bUseing_Num4;
+	b_SiWangTa_Dnf= m_bSiwanTa;
 	CString strInfor;
 	UpdateData();
 	CString rr;
-	rr.Format("%d", b_NUM4_Dnf);
-	::WritePrivateProfileString(APP_NAME, "b_NUM4_Dnf", rr, "d://keypressDemo.ini");
+	rr.Format("%d", b_SiWangTa_Dnf);
+	::WritePrivateProfileString(APP_NAME, "b_SiWangTa_Dnf", rr, "d://keypressDemo.ini");
 	// TODO: 在此添加控件通知处理程序代码
 }
 

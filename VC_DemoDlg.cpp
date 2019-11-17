@@ -2272,7 +2272,14 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		else
 		{ 
 			//如果登录失败则出现异常,则程序停止,这里要检测一下.
-		//	pDlg->OnBnClickedButtonKeypress5();
+			if (bFullStop)
+			{
+			}
+			else
+			{
+				pDlg->OnBnClickedButtonKeypress5();
+			}
+		 	
 			
 		}
 	}

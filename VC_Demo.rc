@@ -54,8 +54,8 @@ BEGIN
     "\r\n"
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
     "LANGUAGE 4, 2\r\n"
-    "#include ""res\\VC_Demo.rc2""  // 路? Microsoft Visual C++ 卤脿?-渭?脳锚?鈥?\n"
-    "#include ""l.CHS\\afxres.rc""      // 卤锚脳?脳茅?t\r\n"
+    "#include ""res\\VC_Demo.rc2""  // 璺? Microsoft Visual C++ 鍗よ効?-娓?鑴抽敋?閳?\n"
+    "#include ""l.CHS\\afxres.rc""      // 鍗ら敋鑴?鑴宠寘?t\r\n"
     "#endif\r\n"
     "\0"
 END
@@ -97,7 +97,7 @@ BEGIN
     PUSHBUTTON      "分解",IDC_BUTTON_OPEN2,119,7,73,47
     PUSHBUTTON      "查找",IDC_BUTTON_KEYPRESS4,66,156,46,59
     PUSHBUTTON      "切换角色",IDC_BUTTON_KEYPRESS5,7,158,46,59
-    LTEXT           "20191118",IDC_STATIC,7,288,43,8
+    LTEXT           "20191118_1",IDC_STATIC,7,288,43,8
     LISTBOX         IDC_LIST1,119,196,190,22,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_EDIT4,119,223,74,14,ES_AUTOHSCROLL
     PUSHBUTTON      "进入",IDC_BUTTON_KEYPRESS6,7,94,46,59
@@ -205,8 +205,8 @@ END
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE 4, 2
-#include "res\VC_Demo.rc2"  // 路? Microsoft Visual C++ 卤脿?-渭?脳锚?鈥?
-#include "l.CHS\afxres.rc"      // 卤锚脳?脳茅?t
+#include "res\VC_Demo.rc2"  // 璺? Microsoft Visual C++ 鍗よ効?-娓?鑴抽敋?閳?
+#include "l.CHS\afxres.rc"      // 鍗ら敋鑴?鑴宠寘?t
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

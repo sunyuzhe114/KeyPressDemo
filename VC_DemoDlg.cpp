@@ -1578,9 +1578,7 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 
 			pt.x += 18;
 			pt.y += 92;
-			//当点击test时,使用升级分解机
-			if (pDlg->bOnlyForTest)
-				pt.y += 20;
+		 
 			//确认分析装备
 			for (int i = 0; i < 1; i++)
 			{
@@ -1626,6 +1624,117 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 			RetSw = M_DelayRandom(1000, 1100);
 			if (bStop)break;
 			RetSw = M_DelayRandom(1000, 1100);
+
+
+
+
+
+		}
+
+		pt = findImage("d://yaluo.png", 150, 0, 750, 400);
+		if (pt.x != 0 && pt.y != 0)
+		{
+
+			CString str = "";
+			CTime t = CTime::GetCurrentTime();
+			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+			str.Format("%s==>%s (%ld,%ld)\n", tt, "发现  yaluo", pt.x, pt.y);
+			addLog(str);
+		}
+		else
+		{
+
+			CString str = "";
+			CTime t = CTime::GetCurrentTime();
+			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+			str.Format("%s==>%s (%ld,%ld)\n", tt, "未现yaluo", pt.x, pt.y);
+			addLog(str);
+		}
+		 
+		infor.Format("查找yaluo%d,%d", pt.x, pt.y);
+		addLog(infor);
+		if (pt.x == 0)
+		{
+
+			addLog("查找 yaluo fail");
+		}
+		else
+		{
+			pt.x += 18;
+			pt.y += 20;
+			//确认分析装备
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				RetSw = M_DelayRandom(500, 800);
+				//这里使用的是绝对坐标
+				//RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+				//这里也可以写个定值
+				RetSw = move_to_relativePos(msdk_handle, pt.x - dleft, pt.y - dtop);
+				RetSw = M_DelayRandom(500, 600);
+				RetSw = M_DelayRandom(500, 600);
+			}
+			RetSw = my_hook_left_Click(msdk_handle, 1);
+
+			infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
+			addLog(infor);
+
+			RetSw = M_DelayRandom(800, 1000);
+
+			RetSw = M_DelayRandom(800, 1000);
+
+			pt.x += 18;
+			pt.y += 112;
+			 
+			//确认分析装备
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				RetSw = M_DelayRandom(500, 800);
+				//这里使用的是绝对坐标
+				//RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+				//这里也可以写个定值
+				RetSw = move_to_relativePos(msdk_handle, pt.x - dleft, pt.y - dtop);
+				RetSw = M_DelayRandom(500, 600);
+				RetSw = M_DelayRandom(500, 600);
+			}
+			RetSw = my_hook_left_Click(msdk_handle, 1);
+
+			infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
+			addLog(infor);
+
+			RetSw = M_DelayRandom(800, 1000);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = my_hook_left_Click(msdk_handle, 1);
+
+			RetSw = M_DelayRandom(1000, 1100);
+
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+
+
+
+
 
 		}
 		if (bStop)break;
@@ -1677,7 +1786,7 @@ DWORD WINAPI    change_to_first_player(LPVOID pp)
 		addLog("点击选定角色");
 		if (bStop)break;
 
-		for (int i = 0; i < 12; i++)
+	/*	for (int i = 0; i < 12; i++)
 		{
 			addLog("按下方向left键");
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_LeftArrow, 1);
@@ -1685,6 +1794,7 @@ DWORD WINAPI    change_to_first_player(LPVOID pp)
 			RetSw = M_DelayRandom(1000, 1100);
 
 		}
+	*/	
 		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_KongGe, 1);
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;

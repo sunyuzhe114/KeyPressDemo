@@ -322,8 +322,8 @@ CPoint findImage(string strPath_findImage, int left, int top, int right, int bot
 		}
 		else
 		{
-			infor = infor+"未检测到 " ;
-			addLog(infor);
+			/*infor = infor+"未检测到 " ;
+			addLog(infor);*/
 			bResult = -1; Game_state = -1;
 			pt.x = 0;
 			pt.y = 0;
@@ -2657,7 +2657,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 				continue;
 			}
 		}
-		CPoint cp = findImage("d://ingamenew.png", 340, 40, 400, 60);
+		CPoint cp = findImage("d://ingamenew.png", 340, 40, 400, 80);
 		if (cp.x != 0 && cp.y != 0)
 		{ 
 
@@ -3271,7 +3271,23 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 		addLog(str);
 		 
 	}
+	 cp = findImage("d://ingame.png", 0, 0, 100, 100);
+	if (cp.x != 0 && cp.y != 0)
+	{
 
+		CString str;
+		str.Format("%s (%ld,%ld)\n", "ingame 未在游戏中 0", cp.x, cp.y);
+		addLog(str);
+
+	}
+	else
+	{
+
+		CString str;
+		str.Format(" %s (%ld,%ld)\n", "在游戏中 0", cp.x, cp.y);
+		addLog(str);
+
+	}
 	 
 	return;
 	 

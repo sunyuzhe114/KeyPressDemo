@@ -976,6 +976,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_OPEN4, &CVC_DemoDlg::OnBnClickedButtonOpen4)
 	ON_MESSAGE(WM_HOTKEY, OnHotKey)
 	ON_LBN_SELCHANGE(IDC_LIST3, &CVC_DemoDlg::OnLbnSelchangeList3)
+	ON_BN_CLICKED(IDC_BUTTON_MOVER3, &CVC_DemoDlg::OnBnClickedButtonMover3)
 END_MESSAGE_MAP()
 
 
@@ -2660,10 +2661,10 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		if (cp.x != 0 && cp.y != 0)
 		{ 
 
-			CString str;
+			/*CString str;
 
 			str.Format("%s (%ld,%ld)\n", "发现在游戏中 0", cp.x, cp.y);
-			addLog(str);
+			addLog(str);*/
 			not_in_game_time = 0;
 		}
 		else
@@ -3621,4 +3622,25 @@ LRESULT CVC_DemoDlg::OnHotKey(WPARAM wParam, LPARAM lParam)
 void CVC_DemoDlg::OnLbnSelchangeList3()
 {
 	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CVC_DemoDlg::OnBnClickedButtonMover3()
+{
+	CString str;
+	 
+	for (int i = m_listLog.GetCount()-1; i >0 ; i--)
+	{
+		CString strlog;
+		 m_listLog.GetText(i, strlog);
+		 str = str + strlog + "\r\n";
+	} 
+	CStdioFile file;
+	if (file.Open(_T("d:\\logView.txt"), CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate, NULL))
+	{
+		 
+		file.WriteString(str);
+		file.Close();
+	}
+	 
 }

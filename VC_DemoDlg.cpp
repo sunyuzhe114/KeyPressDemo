@@ -3253,86 +3253,26 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 { 
 	unsigned int RetSw = 0;
 
-	pDlg->saveScreen();
-	CPoint pt = findImage("d://yaluo.png", 150, 0, 750, 400);
-	if (pt.x != 0 && pt.y != 0)
-	{
-
-		CString str = "";
-		CTime t = CTime::GetCurrentTime();
-		CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
-		str.Format("%s==>%s (%ld,%ld)\n", tt, "发现  yaluo", pt.x, pt.y); 
-		addLog(str);
-	}
-	else
-	{
-
-		CString str = "";
-		CTime t = CTime::GetCurrentTime();
-		CString tt = t.Format("%Y-%m-%d_%H-%M-%S"); 
-		str.Format("%s==>%s (%ld,%ld)\n", tt, "未现yaluo", pt.x, pt.y);
-		addLog(str);
-	}
-
-	CString infor;
-	infor.Format("查找确定按钮%d,%d", pt.x, pt.y);
-	addLog(infor);
-	if (pt.x == 0)
-	{
-		addLog("查找 yaluo fail");
-
-		bStop = true;
-		 
-	}
-	else
-	{
-		pt.x += 18;
-		pt.y += 20;
-		//确认分析装备
-		for (int i = 0; i < 1; i++)
-		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = M_DelayRandom(500, 800);
-			//这里使用的是绝对坐标
-			//RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
-			//这里也可以写个定值
-			RetSw = move_to_relativePos(msdk_handle, pt.x - dleft, pt.y - dtop);
-			RetSw = M_DelayRandom(500, 600);
-			RetSw = M_DelayRandom(500, 600);
-		}
-		RetSw = my_hook_left_Click(msdk_handle, 1);
-
-		infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
-		addLog(infor);
-
-		RetSw = M_DelayRandom(800, 1000); 
-		 
-		RetSw = M_DelayRandom(800, 1000);
-
-		pt.x += 18;
-		pt.y += 92;
-		//确认分析装备
-		for (int i = 0; i < 1; i++)
-		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = M_DelayRandom(500, 800);
-			//这里使用的是绝对坐标
-			//RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
-			//这里也可以写个定值
-			RetSw = move_to_relativePos(msdk_handle, pt.x - dleft, pt.y - dtop);
-			RetSw = M_DelayRandom(500, 600);
-			RetSw = M_DelayRandom(500, 600);
-		}
-		RetSw = my_hook_left_Click(msdk_handle, 1);
-
-		infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
-		addLog(infor);
-
-		RetSw = M_DelayRandom(800, 1000);
 	 
-		RetSw = M_DelayRandom(2800, 3000);
-		RetSw = my_hook_left_Click(msdk_handle, 1);
+	CPoint cp = findImage("d://ingamenew.png", 300, 40, 400, 80);
+	if (cp.x != 0 && cp.y != 0)
+	{
+
+		 CString str; 
+		str.Format("%s (%ld,%ld)\n", "发现在游戏中 0", cp.x, cp.y);
+		addLog(str); 
+		 
 	}
+	else
+	{
+
+		CString str;
+		str.Format(" %s (%ld,%ld)\n", "未在游戏中 0", cp.x, cp.y);
+		addLog(str);
+		 
+	}
+
+	 
 	return;
 	 
 	//if (isDNFWindow() == TRUE)

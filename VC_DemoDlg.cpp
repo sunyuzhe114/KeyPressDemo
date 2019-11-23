@@ -2284,7 +2284,11 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			
 		}
 	}
+
+	 pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
+	 pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(true);
 	addLog("登录线程停止 exit");
+
 	return 0;
 }
 DWORD WINAPI    testThread_Game(LPVOID pp)
@@ -2713,6 +2717,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 
 	RetSw = M_ReleaseAllKey(msdk_handle);
 	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
+	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(true);
 
 	RetSw = M_DelayRandom(10000, 15000);
 	if (Game_state == 300)
@@ -2829,6 +2834,7 @@ void CVC_DemoDlg::begin_check_game()
 		HANDLE hThread = CreateThread(NULL, 0, checkThread_Game, (LPVOID)msdk_handle, 0, NULL);
 		
 		GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(false);
+		GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(false);
 	}
 }
 void CVC_DemoDlg::OnBnClickedButtonKeypress()
@@ -2901,6 +2907,9 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress3()
 {
 	bStop = true;
 	bFullStop = true;
+	//pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
+	//pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(true);
+
 }
 
 
@@ -3077,6 +3086,8 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress6()
 	OnBnClickedButtonKeypress4();
 	if (msdk_handle != INVALID_HANDLE_VALUE)
 	{
+		GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(false);
+		GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(false);
 		playerlogin();
 	}
 }

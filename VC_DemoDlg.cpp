@@ -2251,6 +2251,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 	}
 	else 
 	{
+	
 		//如果登录失败则出现异常,则程序停止,这里要检测一下.
 
 		CPoint pt = findImage("d://关闭按钮.png", 780, 0, 800, 30);
@@ -2275,6 +2276,8 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			//如果登录失败则出现异常,则程序停止,这里要检测一下.
 			if (bFullStop)
 			{
+				pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
+				pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(true);
 			}
 			else
 			{
@@ -2285,8 +2288,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		}
 	}
 
-	 pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
-	 pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(true);
+
 	addLog("登录线程停止 exit");
 
 	return 0;

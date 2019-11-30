@@ -94,4 +94,5 @@ public:
 	afx_msg LRESULT OnHotKey(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnLbnSelchangeList3();
 	afx_msg void OnBnClickedButtonMover3();
+	afx_msg void OnBnClickedButtonMover4();
 };

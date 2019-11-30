@@ -977,6 +977,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_MESSAGE(WM_HOTKEY, OnHotKey)
 	ON_LBN_SELCHANGE(IDC_LIST3, &CVC_DemoDlg::OnLbnSelchangeList3)
 	ON_BN_CLICKED(IDC_BUTTON_MOVER3, &CVC_DemoDlg::OnBnClickedButtonMover3)
+	ON_BN_CLICKED(IDC_BUTTON_MOVER4, &CVC_DemoDlg::OnBnClickedButtonMover4)
 END_MESSAGE_MAP()
 
 
@@ -2713,7 +2714,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_F12, 1);
 	RetSw = M_DelayRandom(600, 1000);
 
-	pDlg->m_editLogInfor.SetWindowTextA("exit checkThread_Game \r\n");
+	addLog("exit checkThread_Game \r\n");
 
 
 
@@ -3411,7 +3412,7 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 	CTime time = CTime::GetCurrentTime();
 	if (time.GetHour() == 6 && time.GetMinute() < 10)
 	{
-
+		GetDlgItem(IDC_BUTTON_MOVER4)->EnableWindow(true);
 		CWnd* pMainWnd = AfxGetMainWnd()->GetForegroundWindow();
 		Global_checkTime = 0;
 		CString strClassName;
@@ -3612,4 +3613,17 @@ void CVC_DemoDlg::OnBnClickedButtonMover3()
 		file.Close();
 	}
 	 
+}
+
+
+void CVC_DemoDlg::OnBnClickedButtonMover4()
+{
+	GetDlgItem(IDC_BUTTON_MOVER4)->EnableWindow(false);
+	SetTimer(0, TIMER_LENGTH, NULL);
+	 
+	m_editLogInfor.SetWindowTextA("reset");
+	CString infor;
+	infor.Format("full stop  time remains %ld \r\n", pDlg->m_checkTimes - Global_checkTime);
+
+	pDlg->m_editLogInfor.SetWindowTextA(infor);
 }

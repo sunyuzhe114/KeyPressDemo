@@ -2245,6 +2245,9 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		} while (0);
 		if (b_login_ok == true)break;
 		if (bFullStop)break;
+		CString strLog;
+		strLog.Format("登录尝试%ld次", test);
+		addLog(strLog);
 	}
 	if (b_login_ok == true)
 	{
@@ -2282,6 +2285,9 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			}
 			else
 			{
+				CString strLog;
+				strLog.Format("重新登录尝试 ");
+				addLog(strLog);
 				pDlg->OnBnClickedButtonKeypress5();
 			}
 		 	
@@ -2971,7 +2977,8 @@ void CVC_DemoDlg::playerlogin()
 	m_dTimeBegin = GetTickCount();
 	//UpdateData();
 	m_timeLimit = m_intMinute;//分钟
-	bStop = false;
+	bStop = false; 
+	bFullStop = false;
 	bChangeUser = false;
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
 		OnBnClickedButtonOpen();
@@ -3091,6 +3098,7 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress6()
 	{
 		GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(false);
 		GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(false);
+		
 		playerlogin();
 	}
 }

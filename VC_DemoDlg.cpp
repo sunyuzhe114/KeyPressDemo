@@ -136,10 +136,10 @@ int my_hook_KeyPress(HANDLE m_hdl, int HidKeyCode, int Nbr)
 {
 	if (isDNFWindow())
 	{
-		 M_KeyDown(m_hdl, HidKeyCode);
-		 M_DelayRandom(300, 400);
-		return M_KeyUp(m_hdl, HidKeyCode);
-			//return M_KeyPress(m_hdl, HidKeyCode, Nbr);
+		  M_KeyDown(m_hdl, HidKeyCode);
+		 M_DelayRandom(500, 600);
+		return M_KeyUp(m_hdl, HidKeyCode); 
+		//return M_KeyPress(m_hdl, HidKeyCode, Nbr);
 	}
 	else
 	{
@@ -1808,7 +1808,7 @@ DWORD WINAPI    change_to_first_player(LPVOID pp)
 		RetSw = M_DelayRandom(1000, 1100);
 	} while (0);
 
-	
+	return 0;
 }
 DWORD WINAPI    changeUser_cunqian(LPVOID pp)
 {
@@ -1849,7 +1849,54 @@ DWORD WINAPI    changeUser_xiuli_fenjieji(LPVOID pp)
 	addLog("changeUser_fenjie exit");
 	return 0;
 }
- 
+DWORD WINAPI    fighting_Thread(LPVOID pp)
+{
+	HANDLE msdk_handle = (HANDLE)pp;
+	unsigned int RetSw = 0;
+	DWORD m_dTimeBeginPress_F10 = 0;
+
+	CString infor; 
+		do {
+
+		 
+			move_to_relativePos(msdk_handle, 50, 50);
+			RetSw = M_DelayRandom(800, 1000);
+			RetSw = M_LeftClick(msdk_handle, 1);
+
+			RetSw = M_DelayRandom(900, 1000);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_h, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(299, 300);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_z, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(490, 500);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_f, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(290, 300);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_y, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(490, 500);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_e, 2);
+			if (bStop)break;
+			RetSw = M_DelayRandom(290, 300);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_q, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1400, 1500);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_f, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(490, 500);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_r, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(490, 500);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_t, 1);
+			if (bStop)break;
+
+
+		} while (0);
+
+		addLog("test fight ");
+		return 0;
+}
 DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 {
 	HANDLE msdk_handle = (HANDLE)pp;
@@ -3275,6 +3322,21 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 { 
 	unsigned int RetSw = 0;
 
+	bStop = false;
+	bFullStop = false;
+	bChangeUser = false;
+	if (msdk_handle == INVALID_HANDLE_VALUE) {
+		OnBnClickedButtonOpen();
+	}
+
+ 
+
+
+	HANDLE hThread = CreateThread(NULL, 0, fighting_Thread, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
+
+
+
+	return;
 	 
 	CPoint cp = findImage("d://ingamenew.png", 300, 40, 400, 80);
 	if (cp.x != 0 && cp.y != 0)

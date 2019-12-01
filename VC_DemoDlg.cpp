@@ -186,7 +186,12 @@ int my_hook_left_Click(HANDLE m_hdl, int times)
 	addLog(strinfor);
 	 
 	if (isDNFWindow())
-	return M_LeftClick(m_hdl, times);
+	{
+		/*M_LeftDown(m_hdl);
+		M_DelayRandom(500, 600);
+		M_LeftUp(m_hdl);*/
+		return M_LeftClick(m_hdl, times);
+	}
 	 
 	return 0;
 }
@@ -1854,7 +1859,7 @@ DWORD WINAPI    fighting_Thread(LPVOID pp)
 	HANDLE msdk_handle = (HANDLE)pp;
 	unsigned int RetSw = 0;
 	DWORD m_dTimeBeginPress_F10 = 0;
-
+	int workKind = 1;
 	CString infor; 
 		do {
 
@@ -1863,33 +1868,39 @@ DWORD WINAPI    fighting_Thread(LPVOID pp)
 			RetSw = M_DelayRandom(800, 1000);
 			RetSw = M_LeftClick(msdk_handle, 1);
 
-			RetSw = M_DelayRandom(900, 1000);
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_h, 1);
-			if (bStop)break;
-			RetSw = M_DelayRandom(299, 300);
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_z, 1);
-			if (bStop)break;
-			RetSw = M_DelayRandom(490, 500);
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_f, 1);
-			if (bStop)break;
-			RetSw = M_DelayRandom(290, 300);
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_y, 1);
-			if (bStop)break;
-			RetSw = M_DelayRandom(490, 500);
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_e, 2);
-			if (bStop)break;
-			RetSw = M_DelayRandom(290, 300);
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_q, 1);
-			if (bStop)break;
-			RetSw = M_DelayRandom(1400, 1500);
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_f, 1);
-			if (bStop)break;
-			RetSw = M_DelayRandom(490, 500);
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_r, 1);
-			if (bStop)break;
-			RetSw = M_DelayRandom(490, 500);
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_t, 1);
-			if (bStop)break;
+			if (workKind == 1)
+			{
+				RetSw = M_DelayRandom(900, 1000);
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_h, 1);
+				if (bStop)break;
+				RetSw = M_DelayRandom(299, 300);
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_z, 1);
+				if (bStop)break;
+				RetSw = M_DelayRandom(490, 500);
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_f, 1);
+				if (bStop)break;
+				RetSw = M_DelayRandom(290, 300);
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_y, 1);
+				if (bStop)break;
+				RetSw = M_DelayRandom(490, 500);
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_e, 2);
+				if (bStop)break;
+				RetSw = M_DelayRandom(290, 300);
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_q, 1);
+				if (bStop)break;
+				RetSw = M_DelayRandom(1400, 1500);
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_f, 1);
+				if (bStop)break;
+				RetSw = M_DelayRandom(490, 500);
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_r, 1);
+				if (bStop)break;
+				RetSw = M_DelayRandom(490, 500);
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_t, 1);
+				if (bStop)break;
+
+
+			}
+			
 
 
 		} while (0);
@@ -1956,7 +1967,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 				addLog("按下方向右键");
 				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_RightArrow, 1);
 				RetSw = M_DelayRandom(2100, 2300);
-
+				//bChangeUser =false;//下次不切了?
 			}
 
 

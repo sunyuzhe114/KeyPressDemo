@@ -139,7 +139,7 @@ int my_hook_KeyPress(HANDLE m_hdl, int HidKeyCode, int Nbr)
 		//  M_KeyDown(m_hdl, HidKeyCode);
 		// M_DelayRandom(500, 600);
 		//return M_KeyUp(m_hdl, HidKeyCode); 
-		return M_KeyPress2(m_hdl, HidKeyCode, Nbr);
+		return M_KeyPress(m_hdl, HidKeyCode, Nbr);
 	}
 	else
 	{

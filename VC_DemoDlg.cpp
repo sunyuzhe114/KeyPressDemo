@@ -954,7 +954,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_GETMOUSEPOS, &CVC_DemoDlg::OnBnClickedButtonGetmousepos)
 	ON_BN_CLICKED(IDC_BUTTON_KEYPRESS3, &CVC_DemoDlg::OnBnClickedButtonKeypress3)
 	ON_BN_CLICKED(IDC_BUTTON_OPEN2, &CVC_DemoDlg::OnBnClickedButtonOpen2)
-	ON_BN_CLICKED(IDC_BUTTON_KEYPRESS5, &CVC_DemoDlg::OnBnClickedButtonKeypress5)
+	ON_BN_CLICKED(IDC_BUTTON_KEYPRESS5, &CVC_DemoDlg::OnBnClickedButtonKeyChangeUser)
 	ON_BN_CLICKED(IDC_BUTTON_KEYPRESS4, &CVC_DemoDlg::OnBnClickedButtonKeypress4)
 	ON_EN_CHANGE(IDC_EDIT2, &CVC_DemoDlg::OnEnChangeEdit2)
 	ON_BN_CLICKED(IDC_BUTTON_KEYPRESS6, &CVC_DemoDlg::OnBnClickedButtonKeypress6)
@@ -1920,7 +1920,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 	{
 		b_login_ok = false;
 		do {
-
+			RetSw = M_ReleaseAllKey(msdk_handle);
 			/*for (int i = 0; i < 1; i++)
 			{
 				RetSw = M_ResetMousePos(msdk_handle);
@@ -2348,7 +2348,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 				CString strLog;
 				strLog.Format("重新登录尝试 ");
 				addLog(strLog);
-				pDlg->OnBnClickedButtonKeypress5();
+				pDlg->OnBnClickedButtonKeyChangeUser();
 			}
 		 	
 			
@@ -2803,7 +2803,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		int RetSw = M_DelayRandom(4800, 6000);
 		fenjie_zhuangbei(msdk_handle);
 
-		pDlg->OnBnClickedButtonKeypress5();
+		pDlg->OnBnClickedButtonKeyChangeUser();
 	}
 	else
 	{
@@ -2996,7 +2996,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen2()
 }
 
 
-void CVC_DemoDlg::OnBnClickedButtonKeypress5()
+void CVC_DemoDlg::OnBnClickedButtonKeyChangeUser()
 {
 	m_dTimeBegin = GetTickCount();
 	//UpdateData();

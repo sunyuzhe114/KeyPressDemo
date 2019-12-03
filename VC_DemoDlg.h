@@ -45,7 +45,7 @@ public:
 	CEdit m_editLog;
 	afx_msg void OnBnClickedButtonOpen2();
 	CEdit m_editLogInfor;
-	afx_msg void OnBnClickedButtonKeypress5();
+	afx_msg void OnBnClickedButtonKeyChangeUser();
 	afx_msg void OnBnClickedButtonKeypress4();
 	afx_msg void OnEnChangeEdit2();
 	CListBox m_listWindow;

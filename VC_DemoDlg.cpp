@@ -188,10 +188,10 @@ int my_hook_left_Click(HANDLE m_hdl, int times)
 	 
 	if (isDNFWindow())
 	{
-		M_LeftDown(m_hdl);
-		M_DelayRandom(500, 600);
-		M_LeftUp(m_hdl); 
-		//return M_LeftClick(m_hdl, times);
+		//M_LeftDown(m_hdl);
+		//M_DelayRandom(500, 600);
+		//M_LeftUp(m_hdl); 
+		return M_LeftClick(m_hdl, times);
 	}
 	 
 	return 0;
@@ -1941,7 +1941,9 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			 
 			if (bStop)break;
 			RetSw = M_DelayRandom(800, 1000);
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+			//RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+			addLog("ESC Press");
+			RetSw = M_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
 			RetSw = M_DelayRandom(2800, 4000);
 
 

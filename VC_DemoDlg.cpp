@@ -136,16 +136,17 @@ int my_hook_KeyPress(HANDLE m_hdl, int HidKeyCode, int Nbr)
 {
 	if (isDNFWindow())
 	{
-		//  M_KeyDown(m_hdl, HidKeyCode);
-		// M_DelayRandom(500, 600);
-		//return M_KeyUp(m_hdl, HidKeyCode); 
-		return M_KeyPress(m_hdl, HidKeyCode, Nbr);
+		M_KeyDown(m_hdl, HidKeyCode);
+		M_DelayRandom(500, 600);
+		return M_KeyUp(m_hdl, HidKeyCode);
+		//return M_KeyPress(m_hdl, HidKeyCode, Nbr);
 	}
 	else
 	{
 		addLog("当前窗口非dnf");
-		return 0;
+		
 	}
+	return 0;
 }
 int my_hook_right_Click(HANDLE m_hdl, int times)
 {
@@ -187,10 +188,10 @@ int my_hook_left_Click(HANDLE m_hdl, int times)
 	 
 	if (isDNFWindow())
 	{
-		/*M_LeftDown(m_hdl);
+		M_LeftDown(m_hdl);
 		M_DelayRandom(500, 600);
-		M_LeftUp(m_hdl);*/
-		return M_LeftClick(m_hdl, times);
+		M_LeftUp(m_hdl); 
+		//return M_LeftClick(m_hdl, times);
 	}
 	 
 	return 0;
@@ -1466,7 +1467,7 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
 			//RetSw = my_new_MoveTo(msdk_handle, (int)((1510) / rate), (int)((277) / rate));
-			RetSw = move_to_relativePos(msdk_handle, 603, 282);
+			RetSw = move_to_relativePos(msdk_handle, 608, 282);
 			RetSw = M_DelayRandom(500, 600);
 		}
 		if (bStop)break;
@@ -1972,7 +1973,8 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 				//bChangeUser =false;//下次不切了?
 			}
 
-
+			RetSw = M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
+			RetSw = M_DelayRandom(1000, 1100);
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_KongGe, 1);
 			RetSw = M_DelayRandom(1000, 1100);
 			if (bStop)break;

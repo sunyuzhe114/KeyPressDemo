@@ -1797,7 +1797,9 @@ DWORD WINAPI    change_to_first_player(LPVOID pp)
 			RetSw = M_DelayRandom(1000, 1100);
 
 		}
-	*/	
+	*/
+		RetSw = M_KeyPress (msdk_handle, Keyboard_KongGe, 1);
+		RetSw = M_DelayRandom(400, 600);
 		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_KongGe, 1);
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
@@ -1849,7 +1851,11 @@ DWORD WINAPI    changeUser_xiuli_fenjieji(LPVOID pp)
 	for (int i = 0; i < 16; i++)
 	{
 		fenjie_zhuangbei(pp);
+		if (bStop)break;
+		RetSw = M_DelayRandom(800, 1000);
 		xiuli_fenjieji(pp);
+		if (bStop)break;
+		RetSw = M_DelayRandom(800, 1000);
 		changeUser(pp);
 		if (bStop)break;
 	}

@@ -1848,6 +1848,7 @@ DWORD WINAPI    changeUser_xiuli_fenjieji(LPVOID pp)
 
 	for (int i = 0; i < 16; i++)
 	{
+		fenjie_zhuangbei(pp);
 		xiuli_fenjieji(pp);
 		changeUser(pp);
 		if (bStop)break;

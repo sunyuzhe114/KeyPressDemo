@@ -136,10 +136,13 @@ int my_hook_KeyPress(HANDLE m_hdl, int HidKeyCode, int Nbr)
 {
 	if (isDNFWindow())
 	{
-		M_KeyDown(m_hdl, HidKeyCode);
-		M_DelayRandom(500, 600);
-		return M_KeyUp(m_hdl, HidKeyCode);
-		//return M_KeyPress(m_hdl, HidKeyCode, Nbr);
+		if(Nbr==1)return M_KeyPress(m_hdl, HidKeyCode, Nbr);
+		else
+		{
+			M_KeyDown(m_hdl, HidKeyCode);
+			M_DelayRandom(300, 400);
+			return M_KeyUp(m_hdl, HidKeyCode);
+		}
 	}
 	else
 	{
@@ -197,9 +200,7 @@ int my_hook_left_Click(HANDLE m_hdl, int times)
 	return 0;
 }
 int my_hook_MoveTo(HANDLE m_hdl, int x, int y)
-{
-	 
-
+{ 
 	 
 	CString infor;
 	
@@ -222,9 +223,7 @@ int my_new_MoveTo(HANDLE m_hdl, int x, int y)
 	int SCREEN_CX = pDlg->m_screenWidth;//#1920  
 	long changeX = (dleft - (SCREEN_CX - 800)) / rate;
 	long changeY = dtop / rate;
-
-
-
+	  
 	//long changeX = (dleft - 1120)/rate;
 	//long changeY = dtop/rate ;
 	CString infor;

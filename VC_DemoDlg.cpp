@@ -29,6 +29,7 @@ CVC_DemoDlg* pDlg;
 bool bStop = false;
 bool bFullStop = false;
 bool bChangeUser = true;
+bool bChangetofirstUser = false;
 DWORD m_dTimeBegin = 0;
 DWORD m_timeLimit = 0;
 const UINT TIMER_LENGTH = 600000;
@@ -1758,7 +1759,7 @@ DWORD WINAPI    change_to_first_player(LPVOID pp)
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_LeftClick(msdk_handle, 1);
 		RetSw = M_DelayRandom(800, 1000);
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+		RetSw = M_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
 		RetSw = M_DelayRandom(2800, 4000);
 		for (int i = 0; i < 1; i++)
 		{
@@ -1788,15 +1789,15 @@ DWORD WINAPI    change_to_first_player(LPVOID pp)
 		addLog("点击选定角色");
 		if (bStop)break;
 
-	/*	for (int i = 0; i < 12; i++)
-		{
-			addLog("按下方向left键");
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_LeftArrow, 1);
-			if (bStop)break;
-			RetSw = M_DelayRandom(1000, 1100);
+	 //	for (int i = 0; i < 12; i++)
+		//{
+		//	addLog("按下方向left键");
+		//	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_LeftArrow, 1);
+		//	if (bStop)break;
+		//	RetSw = M_DelayRandom(1000, 1100);
 
-		}
-	*/
+		//}
+	 
 		RetSw = M_KeyPress (msdk_handle, Keyboard_KongGe, 1);
 		RetSw = M_DelayRandom(400, 600);
 		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_KongGe, 1);
@@ -1980,6 +1981,19 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 				RetSw = M_DelayRandom(2100, 2300);
 				//bChangeUser =false;//下次不切了?
 			}
+		    if (bChangetofirstUser == true)
+			{
+				bChangetofirstUser = false;
+				for (int i = 0; i < 12; i++)
+				{
+					addLog("按下方向left键");
+					RetSw = my_hook_KeyPress(msdk_handle, Keyboard_LeftArrow, 1);
+					if (bStop)break;
+					RetSw = M_DelayRandom(1000, 1100);
+
+				}
+			}
+
 
 			RetSw = M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
 			RetSw = M_DelayRandom(1000, 1100);
@@ -3168,7 +3182,7 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress6()
 	{
 		GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(false);
 		GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(false);
-		
+		 
 		playerlogin();
 	}
 }
@@ -3503,7 +3517,8 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 {
 
 	CTime time = CTime::GetCurrentTime();
-	if (time.GetHour() == 6 && time.GetMinute() < 10)
+	if (nIDEvent==0&&time.GetHour() == 6 && time.GetMinute() < 10)
+	//if (nIDEvent == 0 && time.GetHour() == 21 && time.GetMinute() < 60)
 	{
 		GetDlgItem(IDC_BUTTON_MOVER4)->EnableWindow(true);
 		CWnd* pMainWnd = AfxGetMainWnd()->GetForegroundWindow();
@@ -3515,10 +3530,15 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 		::GetWindowText(pMainWnd->m_hWnd, text.GetBufferSetLength(256), 256);
 		if (text.Find(m_edit_keyword) != -1)
 		{ 
+			bStop = true;
+			bFullStop = true;
 			Global_checkTime = 0; 
 			addLog("早起动");
 			KillTimer(0);
-			playerlogin();
+			
+
+			SetTimer(1, 60000, NULL);
+			
 		}
 		else
 		{
@@ -3533,7 +3553,7 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 
 
 	}
-	else
+	else if(nIDEvent == 0 )
 	{
 		/*	CWnd* pMainWnd = AfxGetMainWnd()->GetForegroundWindow();
 
@@ -3556,6 +3576,13 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 			}*/
 
 		addLog("ontimer check ");
+	}
+	if (nIDEvent == 1)
+	{
+		KillTimer(1);
+		bChangetofirstUser = true;
+		playerlogin();
+
 	}
 	CDialogEx::OnTimer(nIDEvent);
 }

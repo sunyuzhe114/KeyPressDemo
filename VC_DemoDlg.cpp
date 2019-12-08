@@ -1252,7 +1252,7 @@ DWORD WINAPI    changeUser(LPVOID pp)
 
 	} while (0);
 	
-	addLog("登录线程停止 exit");
+	addLog("changeUser exit");
 	return 0;
 }
 DWORD WINAPI    changeUser_fenjie(LPVOID pp)
@@ -1402,7 +1402,7 @@ DWORD WINAPI    cunqian(LPVOID pp)
 		if (bStop)break;
 	} while (0);
 
-	addLog("登录线程停止 exit");
+	addLog("存钱 exit");
 	return 0;
 }
 DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
@@ -1949,7 +1949,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 
 	CString infor;
 	bool b_login_ok = false;
-	for (int test = 0; test < 10; test++)
+	for (int test = 0; test < 2; test++)
 	{
 		b_login_ok = false;
 		do {
@@ -2358,6 +2358,8 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		strLog.Format("登录尝试%ld次", test);
 		addLog(strLog);
 	}
+
+
 	if (b_login_ok == true)
 	{
 		pDlg->begin_check_game();
@@ -2397,7 +2399,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			else
 			{
 				CString strLog;
-				strLog.Format("重新登录尝试 ");
+				strLog.Format("重新登录尝试 test");
 				addLog(strLog);
 				pDlg->OnBnClickedButtonKeyChangeUser();
 			}
@@ -3035,8 +3037,7 @@ void CVC_DemoDlg::OnBnClickedButtonKeyChangeUser()
 	Sleep(3000);
 
 	GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(false);
-	GetDlgItem(IDC_BUTTON_KEYPRESS5)->EnableWindow(false);
-
+	GetDlgItem(IDC_BUTTON_KEYPRESS5)->EnableWindow(false); 
 	GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(false);
 
 	HANDLE hThread = CreateThread(NULL, 0, changeUser_And_Login_Thread, (LPVOID)msdk_handle, 0, NULL);

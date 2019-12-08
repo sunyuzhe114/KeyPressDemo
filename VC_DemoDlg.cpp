@@ -1949,6 +1949,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 
 	CString infor;
 	bool b_login_ok = false;
+	 
 	for (int test = 0; test < 2; test++)
 	{
 		b_login_ok = false;
@@ -2215,7 +2216,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 				{
 					RetSw = M_ResetMousePos(msdk_handle);
 					//RetSw = my_new_MoveTo(msdk_handle, (int)((1753) / rate), (int)((503) / rate));
-					RetSw = move_to_relativePos(msdk_handle, 700, 490);
+					RetSw = move_to_relativePos(msdk_handle, 700, 485);
 					RetSw = M_DelayRandom(500, 600);
 				}
 				RetSw = my_hook_right_Click(msdk_handle, 1);
@@ -2362,6 +2363,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 
 	if (b_login_ok == true)
 	{
+
 		pDlg->begin_check_game();
 	}
 	else 
@@ -2409,7 +2411,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 	}
 
 
-	addLog("登录线程停止 exit");
+	addLog("changeUser_And_Login_Thread 登录线程停止 exit");
 
 	return 0;
 }

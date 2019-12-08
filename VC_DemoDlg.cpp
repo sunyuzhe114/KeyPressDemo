@@ -1949,8 +1949,12 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 
 	CString infor;
 	bool b_login_ok = false;
-	 
-	for (int test = 0; test < 2; test++)
+	int CHECK_LOGIN_TIME = 10;
+	if (pDlg->bOnlyForTest == true)
+	{
+		CHECK_LOGIN_TIME = 2;
+	}
+	for (int test = 0; test < CHECK_LOGIN_TIME; test++)
 	{
 		b_login_ok = false;
 		do {
@@ -2388,26 +2392,27 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 				if (bStop)break;
 
 			} while (0);
+
+
+
+		}
+		 
+		//如果登录失败则出现异常,则程序停止,这里要检测一下.
+		if (bFullStop)
+		{
+			pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
+			pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(true);
+			pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS5)->EnableWindow(true);
 		}
 		else
-		{ 
-			//如果登录失败则出现异常,则程序停止,这里要检测一下.
-			if (bFullStop)
-			{
-				pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
-				pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(true);
-				pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS5)->EnableWindow(true);
-			}
-			else
-			{
-				CString strLog;
-				strLog.Format("重新登录尝试 test");
-				addLog(strLog);
-				pDlg->OnBnClickedButtonKeyChangeUser();
-			}
-		 	
-			
+		{
+			CString strLog;
+			strLog.Format("重新登录尝试 test");
+			addLog(strLog);
+			pDlg->OnBnClickedButtonKeyChangeUser();
 		}
+		 	
+			 
 	}
 
 
@@ -2798,9 +2803,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_s, 1);
 		RetSw = M_DelayRandom(600, 1000);
 		if (bStop)break;
-
-
-
+		 
 
 		RetSw = M_ReleaseAllKey(msdk_handle);
 	}

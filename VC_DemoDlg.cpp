@@ -132,16 +132,27 @@ bool isDNFWindow()
 		return FALSE;
 	}
 }
-//int my_hook_KeyPress(HANDLE msdk_handle, Keyboard_KongGe, 1);
+//int my_hook_KeyPress(HANDLE msdk_handle, Keybfoard_KongGe, 1);
 int my_hook_KeyPress(HANDLE m_hdl, int HidKeyCode, int Nbr)
 {
 	if (isDNFWindow())
 	{
-		if(Nbr==1)return M_KeyPress(m_hdl, HidKeyCode, Nbr);
-		else
+		if (Nbr == 1)
+		{
+			return M_KeyPress(m_hdl, HidKeyCode, Nbr);
+		}
+		else if(Nbr == 2)
 		{
 			M_KeyDown(m_hdl, HidKeyCode);
-			M_DelayRandom(300, 400);
+			M_DelayRandom(400, 410);
+			return M_KeyUp(m_hdl, HidKeyCode);
+		}
+		else if (Nbr == 3)
+		{
+			//M_KeyPress(m_hdl, HidKeyCode, Nbr);
+
+			M_KeyDown(m_hdl, HidKeyCode);
+			M_DelayRandom(400, 500);
 			return M_KeyUp(m_hdl, HidKeyCode);
 		}
 	}
@@ -834,7 +845,10 @@ DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 	RetSw = M_DelayRandom(1800, 2000);
 	//这里加入分解动作，按I键 ，开分解
  
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_DanYinHao, 1);
+		addLog("按下Keyboard_DanYinHao键");
+		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_DanYinHao, 2);
+		//RetSw = M_KeyPress(msdk_handle, Keyboard_DanYinHao, 1);
+		 
 		RetSw = M_DelayRandom(2200, 3000);
 		//分解装备
 		for (int i = 0; i < 1; i++)
@@ -898,7 +912,8 @@ DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 
 		RetSw = M_DelayRandom(6200, 9000);
 	}
-	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+	addLog("按下Keyboard_ESCAPE键");
+	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
 	RetSw = M_DelayRandom(2200, 3000);
 
 
@@ -983,7 +998,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_MESSAGE(WM_HOTKEY, OnHotKey)
 	ON_LBN_SELCHANGE(IDC_LIST3, &CVC_DemoDlg::OnLbnSelchangeList3)
 	ON_BN_CLICKED(IDC_BUTTON_MOVER3, &CVC_DemoDlg::OnBnClickedButtonMover3)
-	ON_BN_CLICKED(IDC_BUTTON_MOVER4, &CVC_DemoDlg::OnBnClickedButtonMover4)
+	ON_BN_CLICKED(IDC_BUTTON_MOVER4, &CVC_DemoDlg::OnBnClickedButtonMover4) 
 END_MESSAGE_MAP()
 
 
@@ -1165,12 +1180,12 @@ DWORD WINAPI    changeUser(LPVOID pp)
 
 		if (bStop)break;
 		RetSw = M_DelayRandom(800, 1000);
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+		addLog("按下Keyboard_ESCAPE键");
+		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
 		RetSw = M_DelayRandom(2800, 4000);
 		for (int i = 0; i < 1; i++)
 		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			//RetSw = my_new_MoveTo(msdk_handle, (int)((1517) / rate), (int)((454) / rate));
+			RetSw = M_ResetMousePos(msdk_handle); 
 			RetSw = move_to_relativePos(msdk_handle, 380, 460);
 			RetSw = M_DelayRandom(500, 600);
 		}
@@ -1198,13 +1213,13 @@ DWORD WINAPI    changeUser(LPVOID pp)
 		if (bChangeUser == true)
 		{
 			addLog("按下方向右键");
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_RightArrow, 1);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_RightArrow, 2);
 			RetSw = M_DelayRandom(2100, 2300);
 
 		}
 
 
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_KongGe, 1);
+		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_KongGe, 3);
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
 		RetSw = M_DelayRandom(1000, 1100);
@@ -1255,6 +1270,7 @@ DWORD WINAPI    changeUser_fenjie(LPVOID pp)
 	for (int i = 0; i < 16; i++)
 	{
 		fenjie_zhuangbei(pp);
+		if (bStop)break;
 		changeUser(pp);
 		if (bStop)break;
 	}
@@ -1375,8 +1391,8 @@ DWORD WINAPI    cunqian(LPVOID pp)
 		if (bStop)break;
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break; 
-
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+		addLog("按下Keyboard_ESCAPE键");
+		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
 
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
@@ -1428,8 +1444,7 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 		//点击确认 这
 		for (int i = 0; i < 1; i++)
 		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+			RetSw = M_ResetMousePos(msdk_handle); 
 			RetSw = move_to_relativePos(msdk_handle, 370, 325);
 			RetSw = M_DelayRandom(500, 600);
 		}
@@ -1446,7 +1461,7 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 
 
 		if (bStop)break;
-		//滚动3次到了 
+		//滚动1次到了 
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_MouseWheel(msdk_handle, -1);
@@ -1465,10 +1480,14 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 		//走到地点
 		for (int i = 0; i < 1; i++)
 		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			//RetSw = my_new_MoveTo(msdk_handle, (int)((1510) / rate), (int)((277) / rate));
+			RetSw = M_ResetMousePos(msdk_handle); 
 			RetSw = move_to_relativePos(msdk_handle, 608, 282);
 			RetSw = M_DelayRandom(500, 600);
+			int x_pos, y_pos;
+			RetSw = M_GetCurrMousePos(msdk_handle, &x_pos, &y_pos);
+			CString strpos;
+			strpos.Format("鼠标坐标%ld,%ld", x_pos, y_pos);
+			addLog(strpos);
 		}
 		if (bStop)break;
 		RetSw = M_DelayRandom(800, 1000);
@@ -1491,9 +1510,9 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 		//点击确认
 		for (int i = 0; i < 1; i++)
 		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+			RetSw = M_ResetMousePos(msdk_handle); 
 			RetSw = move_to_relativePos(msdk_handle, 370, 323);
+
 			RetSw = M_DelayRandom(500, 600);
 		}
 		RetSw = my_hook_left_Click(msdk_handle, 1);
@@ -1617,8 +1636,8 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 			if (bStop)break;
 			RetSw = M_DelayRandom(1000, 1100);
 			if (bStop)break;
-
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+			addLog("按下Keyboard_ESCAPE键");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
 
 			RetSw = M_DelayRandom(1000, 1100);
 			if (bStop)break;
@@ -1683,7 +1702,7 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 			addLog(infor);
 
 			RetSw = M_DelayRandom(800, 1000);
-
+			if (bStop)break;
 			RetSw = M_DelayRandom(800, 1000);
 
 			pt.x += 18;
@@ -1724,8 +1743,8 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 			if (bStop)break;
 			RetSw = M_DelayRandom(1000, 1100);
 			if (bStop)break;
-
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+			addLog("按下Keyboard_ESCAPE键");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
 
 			RetSw = M_DelayRandom(1000, 1100);
 			if (bStop)break;
@@ -1736,7 +1755,7 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 			RetSw = M_DelayRandom(1000, 1100);
 
 
-
+			if (bStop)break;
 
 
 		}
@@ -1759,7 +1778,8 @@ DWORD WINAPI    change_to_first_player(LPVOID pp)
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_LeftClick(msdk_handle, 1);
 		RetSw = M_DelayRandom(800, 1000);
-		RetSw = M_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+		addLog("按下Keyboard_ESCAPE键");
+		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
 		RetSw = M_DelayRandom(2800, 4000);
 		for (int i = 0; i < 1; i++)
 		{
@@ -1846,19 +1866,24 @@ DWORD WINAPI    changeUser_xiuli_fenjieji(LPVOID pp)
 	move_to_relativePos(msdk_handle, 50, 50);
 	RetSw = M_DelayRandom(800, 1000); 
 	RetSw = M_LeftClick(msdk_handle, 1);
-	change_to_first_player(pp);
+
+
+	//change_to_first_player(pp);
 
 	for (int i = 0; i < 16; i++)
 	{
 		fenjie_zhuangbei(pp);
 		if (bStop)break;
 		RetSw = M_DelayRandom(800, 1000);
+		if (bStop)break;
 		xiuli_fenjieji(pp);
 		if (bStop)break;
 		RetSw = M_DelayRandom(800, 1000);
+		if (bStop)break;
 		changeUser(pp);
 		if (bStop)break;
 	}
+	pDlg->GetDlgItem(IDC_BUTTON_MOVER2)->EnableWindow(true);
 	addLog("changeUser_fenjie exit");
 	return 0;
 }
@@ -1942,8 +1967,8 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			if (bStop)break;
 			RetSw = M_DelayRandom(800, 1000);
 			//RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
-			addLog("ESC Press");
-			RetSw = M_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+			addLog("按下Keyboard_ESCAPE键");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
 			RetSw = M_DelayRandom(2800, 4000);
 
 
@@ -1977,7 +2002,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			if (bChangeUser == true)
 			{
 				addLog("按下方向右键");
-				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_RightArrow, 1);
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_RightArrow,2);
 				RetSw = M_DelayRandom(2100, 2300);
 				//bChangeUser =false;//下次不切了?
 			}
@@ -2348,7 +2373,8 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			 
 			addLog("关闭按钮"); 
 			do {
-				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+				addLog("按下Keyboard_ESCAPE键");
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
 				if (bStop)break;
 				RetSw = M_DelayRandom(500, 1000);
 				if (bStop)break;
@@ -2366,6 +2392,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			{
 				pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
 				pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(true);
+				pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS5)->EnableWindow(true);
 			}
 			else
 			{
@@ -2397,35 +2424,7 @@ DWORD WINAPI    testThread_Game(LPVOID pp)
 	strcpy(inputText, text);
 	RetSw = M_KeyInputString(msdk_handle, inputText, strlen(inputText));
 	// RetSw = M_KeyInputString(msdk_handle, text.GetBuffer(0, strlen(inputText));
-	/*RetSw = M_DelayRandom(3000, 4000);
-	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_s, 1);
-	RetSw = M_DelayRandom(300, 1000);
-	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_u, 1);
-	RetSw = M_DelayRandom(400, 600);
-	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_n, 1);
-	RetSw = M_DelayRandom(400, 600);
-	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_8, 1);
-	RetSw = M_DelayRandom(300, 1000);
-	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_0, 1);
-	RetSw = M_DelayRandom(400, 600);
-	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_1, 1);
-	RetSw = M_DelayRandom(300, 1000);
-	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_0, 1);
-	RetSw = M_DelayRandom(400, 600);
-	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_3, 1);
-	RetSw = M_DelayRandom(300, 1000);
-	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_0, 1);
-	RetSw = M_DelayRandom(400, 600);
-	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_5, 1);
-	RetSw = M_DelayRandom(300, 1000);
-	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_6, 1);
-	RetSw = M_DelayRandom(400, 600);
-	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_5, 1);
-	RetSw = M_DelayRandom(300, 1000);
-	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_2, 1);
-	RetSw = M_DelayRandom(400, 600);
-	 */
-
+ 
 	return 0;
 
 
@@ -2811,6 +2810,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 	RetSw = M_ReleaseAllKey(msdk_handle);
 	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
 	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(true);
+	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS5)->EnableWindow(true);
 
 	RetSw = M_DelayRandom(10000, 15000);
 	if (Game_state == 300)
@@ -2926,6 +2926,7 @@ void CVC_DemoDlg::begin_check_game()
 
 		HANDLE hThread = CreateThread(NULL, 0, checkThread_Game, (LPVOID)msdk_handle, 0, NULL);
 		
+		GetDlgItem(IDC_BUTTON_KEYPRESS5)->EnableWindow(false);
 		GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(false);
 		GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(false);
 	}
@@ -3033,6 +3034,10 @@ void CVC_DemoDlg::OnBnClickedButtonKeyChangeUser()
 
 	Sleep(3000);
 
+	GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(false);
+	GetDlgItem(IDC_BUTTON_KEYPRESS5)->EnableWindow(false);
+
+	GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(false);
 
 	HANDLE hThread = CreateThread(NULL, 0, changeUser_And_Login_Thread, (LPVOID)msdk_handle, 0, NULL);
 
@@ -3181,6 +3186,8 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress6()
 	if (msdk_handle != INVALID_HANDLE_VALUE)
 	{
 		GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(false);
+		GetDlgItem(IDC_BUTTON_KEYPRESS5)->EnableWindow(false);
+		
 		GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(false);
 		 
 		playerlogin();
@@ -3214,9 +3221,9 @@ void CVC_DemoDlg::OnBnClickedButtonMover2()
 		OnBnClickedButtonOpen();
 	}
 	minized_all_the_other_windows();
-	Sleep(3000);
+	//Sleep(3000);
 
-
+	GetDlgItem(IDC_BUTTON_MOVER2)->EnableWindow(false);
 	HANDLE hThread = CreateThread(NULL, 0, changeUser_xiuli_fenjieji, (LPVOID)msdk_handle, 0, NULL);
 }
 
@@ -3747,3 +3754,6 @@ void CVC_DemoDlg::OnBnClickedButtonMover4()
 
 	pDlg->m_editLogInfor.SetWindowTextA(infor);
 }
+
+
+ 

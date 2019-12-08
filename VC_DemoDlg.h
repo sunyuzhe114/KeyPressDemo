@@ -95,4 +95,5 @@ public:
 	afx_msg void OnLbnSelchangeList3();
 	afx_msg void OnBnClickedButtonMover3();
 	afx_msg void OnBnClickedButtonMover4();
+	 
 };

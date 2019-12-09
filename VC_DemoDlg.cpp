@@ -3000,6 +3000,11 @@ void CVC_DemoDlg::OnBnClickedButtonGetmousepos()
 		infor.Format("full stop  time remains %ld \r\n", pDlg->m_checkTimes - Global_checkTime);
 
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
+		bStop = true;
+		bFullStop = true;
+		pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
+		pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(true);
+		pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS5)->EnableWindow(true);
 	}
 }
 
@@ -3354,6 +3359,9 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress8()
 {
 	bStop = true;
 	bFullStop = true;
+	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
+	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(true);
+	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS5)->EnableWindow(true);
 	ShellExecute(this->m_hWnd, "open", "立即下线.bat", NULL, "D:\\", SW_SHOWMAXIMIZED);
 }
 

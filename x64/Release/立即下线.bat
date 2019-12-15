@@ -1,0 +1,7 @@
+cmd /c  taskkill /f /im  "DNF.exe"
+cmd /c  taskkill /f /im  "TenSafe_2.exe"
+cmd /c  taskkill /f /im  "Repair.exe"
+cmd /c  taskkill /f /im  "GameLoader.exe"
+cmd /c  taskkill /f /im  "TesService.exe"
+cmd /c  taskkill /f /im  "TXPlatform.exe"
+cmd /c  taskkill /f /im  "tphelper.exe"

@@ -253,7 +253,7 @@ CPoint findImage(string strPath_findImage, int left, int top, int right, int bot
 	try {
 		pDlg->saveScreen();
 
-		img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
+		img = cv::imread("s.bmp", IMREAD_COLOR);
 		templ = cv::imread(strPath_findImage, IMREAD_COLOR);
 		//! [copy_source]
 		/// Source image to display
@@ -367,8 +367,8 @@ CPoint findSureButton_state()
 
 
 
-		img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
-		templ = cv::imread("d:\\confirm.png", IMREAD_COLOR);
+		img = cv::imread("s.bmp", IMREAD_COLOR);
+		templ = cv::imread("confirm.png", IMREAD_COLOR);
 		//! [copy_source]
 		/// Source image to display
 		Mat img_display;
@@ -477,8 +477,8 @@ int checkGame_state()
 {
 	try
 	{
-		img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
-		templ = cv::imread("d:\\fightagain.png", IMREAD_COLOR);
+		img = cv::imread("s.bmp", IMREAD_COLOR);
+		templ = cv::imread("fightagain.png", IMREAD_COLOR);
 		//! [copy_source]
 		/// Source image to display
 		Mat img_display;
@@ -571,7 +571,7 @@ int checkGame_state()
 
 					str.Format("%s==>%s\r\n", tt, "帐号已经使用完成 0");
 					CStdioFile file;
-					if (file.Open(_T("d:\\log.txt"), CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate, NULL))
+					if (file.Open(_T("log.txt"), CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate, NULL))
 					{
 						file.SeekToEnd();
 						file.WriteString(str);
@@ -641,8 +641,8 @@ bool MatchingMethod()
 {
 	try
 	{
-		img = cv::imread("d:\\s.bmp", IMREAD_COLOR);
-		templ = cv::imread("d:\\f.bmp", IMREAD_COLOR);
+		img = cv::imread("s.bmp", IMREAD_COLOR);
+		templ = cv::imread("f.bmp", IMREAD_COLOR);
 		//! [copy_source]
 		/// Source image to display
 		Mat img_display;
@@ -767,7 +767,7 @@ DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 	 
 
 	int RetSw = M_DelayRandom(2800, 3000);
-	CPoint pt = findImage("d://close.png", 380, 440, 390, 460);
+	CPoint pt = findImage("close.png", 380, 440, 390, 460);
 	if (pt.x != 0 && pt.y != 0)
 	{
 
@@ -1035,21 +1035,21 @@ BOOL CVC_DemoDlg::OnInitDialog()
 	}
 	CString infor;
 
-	::GetPrivateProfileString(APP_NAME, "m_rate", "", infor.GetBufferSetLength(256), 256, "d://keypressDemo.ini");
+	::GetPrivateProfileString(APP_NAME, "m_rate", "", infor.GetBufferSetLength(256), 256, "keypressDemo.ini");
 	if (infor != "")
 	{
 		m_editRate.SetWindowTextA(infor);
 		rate = atof(infor);
 		m_rate = rate;
 	}
-	::GetPrivateProfileString(APP_NAME, "m_screenWidth", "", infor.GetBufferSetLength(256), 256, "d://keypressDemo.ini");
+	::GetPrivateProfileString(APP_NAME, "m_screenWidth", "", infor.GetBufferSetLength(256), 256, "keypressDemo.ini");
 	if (infor != "")
 	{
 		SetDlgItemText(IDC_EDIT7, infor);
 		m_screenWidth = atol(infor);
 
 	}
-	::GetPrivateProfileString(APP_NAME, "bHuangLong", "", infor.GetBufferSetLength(256), 256, "d://keypressDemo.ini");
+	::GetPrivateProfileString(APP_NAME, "bHuangLong", "", infor.GetBufferSetLength(256), 256, "keypressDemo.ini");
 	if (infor != "")
 	{
 		//SetDlgItemText(IDC_EDIT7, infor);
@@ -1061,7 +1061,7 @@ BOOL CVC_DemoDlg::OnInitDialog()
 	if (bGonlyDnf == true)
 		((CButton*)(GetDlgItem(IDC_CHECK3)))->SetCheck(1);
 
-	::GetPrivateProfileString(APP_NAME, "b_SiWangTa_Dnf", "", infor.GetBufferSetLength(256), 256, "d://keypressDemo.ini");
+	::GetPrivateProfileString(APP_NAME, "b_SiWangTa_Dnf", "", infor.GetBufferSetLength(256), 256, "keypressDemo.ini");
 	if (infor != "")
 	{
 		//SetDlgItemText(IDC_EDIT7, infor);
@@ -1072,7 +1072,7 @@ BOOL CVC_DemoDlg::OnInitDialog()
 	}
 	if (b_SiWangTa_Dnf == true)
 		((CButton*)(GetDlgItem(IDC_CHECK4)))->SetCheck(1);
-	::GetPrivateProfileString(APP_NAME, "m_matchname", "", infor.GetBufferSetLength(256), 256, "d://keypressDemo.ini");
+	::GetPrivateProfileString(APP_NAME, "m_matchname", "", infor.GetBufferSetLength(256), 256, "keypressDemo.ini");
 	if (infor != "")
 	{
 		SetDlgItemText(IDC_EDIT8, infor);
@@ -1333,7 +1333,7 @@ DWORD WINAPI    cunqian(LPVOID pp)
 
 		//点击确认 这个位置要计算一下
 		 
-		CPoint pt = findImage("d://savemoney.png", 150, 0, 750, 400);
+		CPoint pt = findImage("savemoney.png", 150, 0, 750, 400);
 		if (pt.x != 0 && pt.y != 0)
 		{
 
@@ -1545,7 +1545,7 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 		RetSw = M_DelayRandom(1000, 1100);
 
 		 
-		CPoint pt = findImage("d://yaluo.png", 150, 0, 750, 400);
+		CPoint pt = findImage("yaluo.png", 150, 0, 750, 400);
 		if (pt.x != 0 && pt.y != 0)
 		{
 
@@ -1653,7 +1653,7 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 
 		}
 
-		pt = findImage("d://yaluo.png", 150, 0, 750, 400);
+		pt = findImage("yaluo.png", 150, 0, 750, 400);
 		if (pt.x != 0 && pt.y != 0)
 		{
 
@@ -1941,6 +1941,403 @@ DWORD WINAPI    fighting_Thread(LPVOID pp)
 		addLog("test fight ");
 		return 0;
 }
+
+DWORD WINAPI    changeUser_And_Login_siwangTa_Thread(LPVOID pp)
+{
+	HANDLE msdk_handle = (HANDLE)pp;
+	unsigned int RetSw = 0;
+	DWORD m_dTimeBeginPress_F10 = 0;
+
+	CString infor;
+	bool b_login_ok = false;
+	int CHECK_LOGIN_TIME = 10;
+	if (pDlg->bOnlyForTest == true)
+	{
+		CHECK_LOGIN_TIME = 2;
+	}
+	for (int test = 0; test < CHECK_LOGIN_TIME; test++)
+	{
+		b_login_ok = false;
+		do {
+			RetSw = M_ReleaseAllKey(msdk_handle);
+			/*for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				RetSw = my_new_MoveTo(msdk_handle, 1200 / rate, 110 / rate);;
+				RetSw = M_DelayRandom(800, 1000);
+			}*/
+			move_to_relativePos(msdk_handle, 50, 50);
+			RetSw = M_DelayRandom(800, 1000);
+			RetSw = M_LeftClick(msdk_handle, 1);
+
+			if (bStop)break;
+			RetSw = M_DelayRandom(800, 1000);
+			//RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+			addLog("按下Keyboard_ESCAPE键");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
+			RetSw = M_DelayRandom(2800, 4000);
+
+
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				RetSw = move_to_relativePos(msdk_handle, 380, 460);
+				RetSw = M_DelayRandom(500, 600);
+			}
+			RetSw = my_hook_left_Click(msdk_handle, 1);
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			addLog("点击选定角色");
+			if (bStop)break;
+
+			if (bChangeUser == true)
+			{
+				addLog("按下方向右键");
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_RightArrow, 2);
+				RetSw = M_DelayRandom(2100, 2300);
+				//bChangeUser =false;//下次不切了?
+			}
+			if (bChangetofirstUser == true)
+			{
+				bChangetofirstUser = false;
+				for (int i = 0; i < 12; i++)
+				{
+					addLog("按下方向left键");
+					RetSw = my_hook_KeyPress(msdk_handle, Keyboard_LeftArrow, 1);
+					if (bStop)break;
+					RetSw = M_DelayRandom(1000, 1100);
+
+				}
+			}
+
+
+			RetSw = M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
+			RetSw = M_DelayRandom(1000, 1100);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_KongGe, 1);
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+
+			//按5号键，
+			addLog("按5号键");
+			if (bStop)break;
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_5, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			//这里检查一下,是否有5号键已经按下
+			CPoint pt = findImage("xuanzeditu.png", 330, 300, 360, 330);
+			if (pt.x != 0 && pt.y != 0)
+			{
+				addLog("faxian xuanzeditu");
+			}
+			else
+			{
+				addLog("find  xuanzeditu error");
+				break;
+			}
+			//点击确认 这
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+				RetSw = move_to_relativePos(msdk_handle, 370, 325);
+				RetSw = M_DelayRandom(500, 600);
+			}
+			addLog("按确定");
+			RetSw = my_hook_left_Click(msdk_handle, 1);
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+
+			pt = findImage("阿德大陆.png", 200, 20, 225, 40);
+			if (pt.x != 0 && pt.y != 0)
+			{
+				addLog("阿德大陆");
+			}
+			else
+			{
+				addLog("find  阿德大陆 error");
+				break;
+			}
+			if (bStop)break;
+			//滚动3次到了 
+			 
+			if (bStop)break;
+			RetSw = M_DelayRandom(800, 1000);
+			//走到地点
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				//RetSw = my_new_MoveTo(msdk_handle, (int)((1510) / rate), (int)((277) / rate));
+				RetSw = move_to_relativePos(msdk_handle, 400, 267);
+				RetSw = M_DelayRandom(500, 600);
+			}
+			if (bStop)break;
+			RetSw = M_DelayRandom(800, 1000);
+			RetSw = my_hook_left_Click(msdk_handle, 1);
+
+
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			addLog("选定坐标");
+			if (bStop)break;
+
+			pt = findImage("传送.png", 340, 310, 365, 330);
+			if (pt.x != 0 && pt.y != 0)
+			{
+				addLog("传送");
+			}
+			else
+			{
+				addLog("find  传送 error");
+				break;
+			}
+			//点击确认
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+				RetSw = move_to_relativePos(msdk_handle, 370, 323);
+				RetSw = M_DelayRandom(500, 600);
+			}
+			RetSw = my_hook_left_Click(msdk_handle, 1);
+			RetSw = M_DelayRandom(500, 1100);
+			//点击确认二次,保证点上
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+				RetSw = move_to_relativePos(msdk_handle, 370, 326);
+				RetSw = M_DelayRandom(500, 600);
+			}
+			RetSw = my_hook_left_Click(msdk_handle, 1);
+
+			addLog("点击确认");
+			if (bStop)break;
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			addLog("点击屏幕人物开始移动");
+
+			if (checkDNFWindow() == false)
+			{
+				addLog("未检测到窗口，停止。。。");
+				break;
+			}
+			if (bStop)break;
+			//走到地点
+			  
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			addLog("键盘向左移动一步");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			addLog("向左移动一步");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			addLog("向左移动一步");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			RetSw = M_DelayRandom(1000, 1100);
+			addLog("键盘向左移动一步");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			addLog("向左移动一步");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			addLog("向左移动一步");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			RetSw = M_DelayRandom(1000, 1100);
+			addLog("键盘向左移动一步");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			addLog("向左移动一步");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			addLog("向左移动一步");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			 
+
+
+			if (bStop)break;
+			//点击 
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				
+					//RetSw = my_new_MoveTo(msdk_handle, (int)((1324) / rate), (int)((441) / rate));
+					RetSw = move_to_relativePos(msdk_handle, 421, 140);
+					addLog("绝望之");
+				 
+				RetSw = M_DelayRandom(500, 600);
+			}
+			b_login_ok = true;
+
+			RetSw = M_LeftDoubleClick(msdk_handle, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+			RetSw = M_LeftDoubleClick(msdk_handle, 1);
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+			if (bStop)break;
+			RetSw = M_DelayRandom(500, 1000);
+
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_KongGe, 1);
+			addLog("按下空格准备游戏");
+
+			//pDlg->begin_check_game();
+			if (bStop)break;
+		} while (0);
+		if (b_login_ok == true)break;
+		if (bFullStop)break;
+		CString strLog;
+		strLog.Format("登录尝试%ld次", test);
+		addLog(strLog);
+	}
+
+
+	if (b_login_ok == true)
+	{
+
+		pDlg->begin_check_game();
+	}
+	else
+	{
+
+		//如果登录失败则出现异常,则程序停止,这里要检测一下.
+
+		CPoint pt = findImage("关闭按钮.png", 780, 0, 800, 30);
+		if (pt.x != 0 && pt.y != 0)
+		{
+
+			addLog("关闭按钮");
+			do {
+				addLog("按下Keyboard_ESCAPE键");
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
+				if (bStop)break;
+				RetSw = M_DelayRandom(500, 1000);
+				if (bStop)break;
+				RetSw = M_DelayRandom(500, 1000);
+				if (bStop)break;
+				RetSw = M_DelayRandom(500, 1000);
+				if (bStop)break;
+
+			} while (0);
+
+
+
+		}
+
+		//如果登录失败则出现异常,则程序停止,这里要检测一下.
+		if (bFullStop)
+		{
+			pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
+			pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(true);
+			pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS5)->EnableWindow(true);
+		}
+		else
+		{
+			CString strLog;
+			strLog.Format("重新登录尝试 test");
+			addLog(strLog);
+			pDlg->OnBnClickedButtonKeyChangeUser();
+		}
+
+
+	}
+
+
+	addLog("changeUser_And_Login_Thread 登录线程停止 exit");
+
+	return 0;
+}
+
 DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 {
 	HANDLE msdk_handle = (HANDLE)pp;
@@ -2074,7 +2471,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			RetSw = M_DelayRandom(1000, 1100);
 			if (bStop)break;
 			//这里检查一下,是否有5号键已经按下
-			CPoint pt = findImage("d://xuanzeditu.png", 330, 300, 360, 330);
+			CPoint pt = findImage("xuanzeditu.png", 330, 300, 360, 330);
 			if (pt.x != 0 && pt.y != 0)
 			{
 				addLog("faxian xuanzeditu");
@@ -2103,7 +2500,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			RetSw = M_DelayRandom(1000, 1100);
 			if (bStop)break;
 
-			pt = findImage("d://阿德大陆.png", 200, 20, 225, 40);
+			pt = findImage("阿德大陆.png", 200, 20, 225, 40);
 			if (pt.x != 0 && pt.y != 0)
 			{
 				addLog("阿德大陆");
@@ -2129,7 +2526,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 
 			addLog("滚轮3次");
 
-			pt = findImage("d://素喃.png", 285, 20, 305, 40);
+			pt = findImage("素喃.png", 285, 20, 305, 40);
 			if (pt.x != 0 && pt.y != 0)
 			{
 				addLog("素喃");
@@ -2169,7 +2566,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			addLog("选定坐标");
 			if (bStop)break;
 
-			pt = findImage("d://传送.png", 340, 310, 365, 330);
+			pt = findImage("传送.png", 340, 310, 365, 330);
 			if (pt.x != 0 && pt.y != 0)
 			{
 				addLog("传送");
@@ -2321,7 +2718,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 				}
 				RetSw = M_DelayRandom(500, 600);
 			}
-			pt = findImage("d://选择地下城.png", 220, 570, 250, 590);
+			pt = findImage("选择地下城.png", 220, 570, 250, 590);
 			if (pt.x != 0 && pt.y != 0)
 			{
 				b_login_ok = true;
@@ -2375,7 +2772,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 	
 		//如果登录失败则出现异常,则程序停止,这里要检测一下.
 
-		CPoint pt = findImage("d://关闭按钮.png", 780, 0, 800, 30);
+		CPoint pt = findImage("关闭按钮.png", 780, 0, 800, 30);
 		if (pt.x != 0 && pt.y != 0)
 		{
 			 
@@ -2426,12 +2823,40 @@ DWORD WINAPI    testThread_Game(LPVOID pp)
 	unsigned int RetSw = 0;
 	DWORD m_dTimeBeginPress_BIGSKILL = 0;
 	CString text;
-	pDlg->m_editLogInfor.GetWindowTextA(text);
-	//char* inputText = "sun8010305652";\USES_CONVERSION;
+	pDlg->m_editLogInfor.GetWindowTextA(text); 
 	USES_CONVERSION;
 	char* inputText = new char[256];
-	strcpy(inputText, text);
-	RetSw = M_KeyInputString(msdk_handle, inputText, strlen(inputText));
+	bool bOutputChinese = true;
+	if (text == "1")
+	{
+		strcpy(inputText, "红色小晶体");
+	}
+	else if (text == "2")
+	{
+		strcpy(inputText, "无尽的永恒");
+	}
+	else if (text == "3")
+	{
+		strcpy(inputText, "瞬间移动");
+	}
+	else if (text == "0")
+	{
+		strcpy(inputText, "立即删除");
+	}
+	else
+	{
+		bOutputChinese = false;
+		strcpy(inputText, text);
+	}
+	
+	if (bOutputChinese = false)
+	{
+		RetSw = M_KeyInputString(msdk_handle, inputText, strlen(inputText));
+	}
+	else
+	{
+		RetSw = M_KeyInputStringGBK(msdk_handle, inputText, strlen(inputText));
+	}
 	// RetSw = M_KeyInputString(msdk_handle, text.GetBuffer(0, strlen(inputText));
  
 	return 0;
@@ -2762,7 +3187,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 				continue;
 			}
 		}
-		CPoint cp = findImage("d://ingamenew.png", 340, 40, 400, 80);
+		CPoint cp = findImage("ingamenew.png", 340, 40, 400, 80);
 		if (cp.x != 0 && cp.y != 0)
 		{ 
 
@@ -2903,7 +3328,7 @@ void CVC_DemoDlg::saveScreen()
 	//CTime t = CTime::GetCurrentTime();
 	//CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
 	//strFileName += tt;
-	CString strFileName = _T("d:\\s.bmp");
+	CString strFileName = _T("s.bmp");
 	if (file.Open((LPCTSTR)strFileName, CFile::modeCreate | CFile::modeWrite))
 	{
 		file.Write(&bfh, sizeof(BITMAPFILEHEADER));
@@ -3085,9 +3510,16 @@ void CVC_DemoDlg::playerlogin()
 	}
 
 	Sleep(3000);
+	if (b_SiWangTa_Dnf == TRUE)
+	{
+		HANDLE hThread = CreateThread(NULL, 0, changeUser_And_Login_siwangTa_Thread, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
 
-
+	}
+	else
+	{
 	HANDLE hThread = CreateThread(NULL, 0, changeUser_And_Login_Thread, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
+
+	}
 
 }
 void CVC_DemoDlg::minized_all_the_other_windows()
@@ -3213,7 +3645,7 @@ void CVC_DemoDlg::OnEnChangeEdit5()
 	CString rr;
 	rr.Format("%0.2lf", rate);
 	CWinApp* pApp = AfxGetApp();
-	::WritePrivateProfileString(APP_NAME, "m_rate", rr, "d://keypressDemo.ini");
+	::WritePrivateProfileString(APP_NAME, "m_rate", rr, "keypressDemo.ini");
 }
 
 
@@ -3362,7 +3794,7 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress8()
 	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
 	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(true);
 	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS5)->EnableWindow(true);
-	ShellExecute(this->m_hWnd, "open", "立即下线.bat", NULL, "D:\\", SW_SHOWMAXIMIZED);
+	ShellExecute(this->m_hWnd, "open", "立即下线.bat", NULL, "", SW_SHOWMAXIMIZED);
 }
 
 
@@ -3372,7 +3804,7 @@ void CVC_DemoDlg::OnEnChangeEdit7()
 	CString rr;
 	rr.Format("%d", m_screenWidth);
 	CWinApp* pApp = AfxGetApp();
-	::WritePrivateProfileString(APP_NAME, "m_screenWidth", rr, "d://keypressDemo.ini");
+	::WritePrivateProfileString(APP_NAME, "m_screenWidth", rr, "keypressDemo.ini");
 }
 
 
@@ -3396,7 +3828,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 
 	return;
 	 
-	CPoint cp = findImage("d://ingamenew.png", 300, 40, 400, 80);
+	CPoint cp = findImage("ingamenew.png", 300, 40, 400, 80);
 	if (cp.x != 0 && cp.y != 0)
 	{
 
@@ -3413,7 +3845,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 		addLog(str);
 		 
 	}
-	 cp = findImage("d://ingame.png", 0, 0, 100, 100);
+	 cp = findImage("ingame.png", 0, 0, 100, 100);
 	if (cp.x != 0 && cp.y != 0)
 	{
 
@@ -3464,11 +3896,11 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 
 
 	//#测试是否在游戏中
-	//CPoint pt = findImage("d://yaluo.png", 150, 100, 650, 400);
+	//CPoint pt = findImage("yaluo.png", 150, 100, 650, 400);
 	//发现广告
-	// CPoint cp = findImage("d://close.png", 380, 440, 390, 460);
+	// CPoint cp = findImage("close.png", 380, 440, 390, 460);
 	 //是否在游戏中
-	//CPoint cp = findImage("d://ingamenew.png", 340, 40, 400, 60);
+	//CPoint cp = findImage("ingamenew.png", 340, 40, 400, 60);
 	//if (cp.x != 0 && cp.y != 0)
 	//{
 
@@ -3493,7 +3925,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 
  
 	//CStdioFile file;
-	//if (file.Open(_T("d:\\log.txt"), CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate, NULL))
+	//if (file.Open(_T("log.txt"), CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate, NULL))
 	//{
 	//	file.SeekToEnd();
 	//	file.WriteString(str);
@@ -3518,7 +3950,7 @@ void CVC_DemoDlg::OnBnClickedCheck1()
 	UpdateData();
 	CString rr;
 	rr.Format("%d", bHuangLong);
-	::WritePrivateProfileString(APP_NAME, "bHuangLong", rr, "d://keypressDemo.ini");
+	::WritePrivateProfileString(APP_NAME, "bHuangLong", rr, "keypressDemo.ini");
 	if (bHuangLong)
 	{
 		strInfor.Format("change to huanglong %d", bHuangLong);
@@ -3643,7 +4075,7 @@ void CVC_DemoDlg::OnEnChangeEdit8()
 	CString rr;
 	rr.Format("%s", m_matchinename);
 	CWinApp* pApp = AfxGetApp();
-	::WritePrivateProfileString(APP_NAME, "m_matchname", rr, "d://keypressDemo.ini");
+	::WritePrivateProfileString(APP_NAME, "m_matchname", rr, "keypressDemo.ini");
 }
 void CVC_DemoDlg::OnOK()
 {
@@ -3689,7 +4121,7 @@ void CVC_DemoDlg::OnBnClickedCheck4()
 	UpdateData();
 	CString rr;
 	rr.Format("%d", b_SiWangTa_Dnf);
-	::WritePrivateProfileString(APP_NAME, "b_SiWangTa_Dnf", rr, "d://keypressDemo.ini");
+	::WritePrivateProfileString(APP_NAME, "b_SiWangTa_Dnf", rr, "keypressDemo.ini");
 	// TODO: 在此添加控件通知处理程序代码
 }
 
@@ -3747,7 +4179,7 @@ void CVC_DemoDlg::OnBnClickedButtonMover3()
 		 str = str + strlog + "\r\n";
 	} 
 	CStdioFile file;
-	if (file.Open(_T("d:\\logView.txt"), CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate, NULL))
+	if (file.Open(_T("logView.txt"), CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate, NULL))
 	{
 		 
 		file.WriteString(str);

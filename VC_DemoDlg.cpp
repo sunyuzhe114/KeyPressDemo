@@ -43,9 +43,11 @@ Mat mask;
 Mat result;
 const char* image_window = "Source Image";
 const char* result_window = "Result window";
-bool MatchingMethod();
+ 
 int match_method = TM_SQDIFF_NORMED;
 int max_Trackbar = 5;
+CString strAppPath="D:";
+
 
 //! [declare]
 float dbZoomScale = 1.0;
@@ -252,9 +254,14 @@ CPoint findImage(string strPath_findImage, int left, int top, int right, int bot
 	CPoint pt(0, 0);
 	try {
 		pDlg->saveScreen();
+		 
+		 
 
-		img = cv::imread("s.bmp", IMREAD_COLOR);
-		templ = cv::imread(strPath_findImage, IMREAD_COLOR);
+		//img = cv::imread(  "s.bmp", IMREAD_COLOR);
+		img = cv::imread(strAppPath.GetBuffer(0) + (string)"s.bmp", IMREAD_COLOR);
+		string finalPath = strAppPath.GetBuffer(0) + strPath_findImage;
+		//templ = cv::imread( strPath_findImage, IMREAD_COLOR);
+		templ = cv::imread(finalPath, IMREAD_COLOR);
 		//! [copy_source]
 		/// Source image to display
 		Mat img_display;
@@ -365,10 +372,10 @@ CPoint findSureButton_state()
 	try {
 
 
+		 
 
-
-		img = cv::imread("s.bmp", IMREAD_COLOR);
-		templ = cv::imread("confirm.png", IMREAD_COLOR);
+		img = cv::imread(strAppPath.GetBuffer(0) + (string)"s.bmp", IMREAD_COLOR);
+		templ = cv::imread(strAppPath.GetBuffer(0) + (string)"confirm.png", IMREAD_COLOR);
 		//! [copy_source]
 		/// Source image to display
 		Mat img_display;
@@ -477,8 +484,8 @@ int checkGame_state()
 {
 	try
 	{
-		img = cv::imread("s.bmp", IMREAD_COLOR);
-		templ = cv::imread("fightagain.png", IMREAD_COLOR);
+		img = cv::imread(strAppPath.GetBuffer(0) + (string)"s.bmp", IMREAD_COLOR);
+		templ = cv::imread(strAppPath.GetBuffer(0) + (string)"fightagain.png", IMREAD_COLOR);
 		//! [copy_source]
 		/// Source image to display
 		Mat img_display;
@@ -633,98 +640,7 @@ int checkGame_state()
 		return -1;
 	}
 }
-/**
- * @function MatchingMethod
- * @brief Trackbar callbackGame_state =100;
- */
-bool MatchingMethod()
-{
-	try
-	{
-		img = cv::imread("s.bmp", IMREAD_COLOR);
-		templ = cv::imread("f.bmp", IMREAD_COLOR);
-		//! [copy_source]
-		/// Source image to display
-		Mat img_display;
-		img.copyTo(img_display);
-		//! [copy_source]
-
-		//! [create_result_matrix]
-		/// Create the result matrix
-		int result_cols = img.cols - templ.cols + 1;
-		int result_rows = img.rows - templ.rows + 1;
-
-		result.create(result_rows, result_cols, CV_32FC1);
-		//! [create_result_matrix]
-
-		//! [match_template]
-		/// Do the Matching and Normalize
-
-		matchTemplate(img, templ, result, match_method);
-
-		//! [match_template]
-
-		//! [normalize]
-		normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat());
-		//! [normalize]
-
-		//! [best_match]
-		/// Localizing the best match with minMaxLoc
-		double minVal; double maxVal; Point minLoc; Point maxLoc;
-		Point matchLoc;
-
-		minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
-		//! [best_match]
-
-		//! [match_loc]
-		/// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
-		if (match_method == TM_SQDIFF || match_method == TM_SQDIFF_NORMED)
-		{
-			matchLoc = minLoc;
-		}
-		else
-		{
-			matchLoc = maxLoc;
-		}
-
-		//! [match_loc]
-
-		//! [imshow]
-		/// Show me what you got
-
-		//rectangle(img_display, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
-		//rectangle(result, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
-
-		//imshow(image_window, img_display);
-		//imshow(result_window, result);
-		//! [imshow]
-		img.release();
-		templ.release();;
-		CString infor;
-		long changeX = dleft - 1120;
-		long changeY = dtop - 0;
-		infor.Format("x=%ld,y=%ld,maxVal=%0.2lf,changeX=%ld,changeY=%ld", matchLoc.x, matchLoc.y, maxVal, changeX, changeY);
-		addLog("MatchingMethod  " + infor);
-		if ((matchLoc.x - changeX) > 1650 && (matchLoc.x - changeX) < 1920 && (matchLoc.y - changeY) >= 0 && (matchLoc.y - changeY) <= 45 && maxVal > 0.5)
-			//if (matchLoc.y <= 45 && maxVal > 0.5 &&matchLoc.x > 1650 && matchLoc.x < 1920)
-		{
-			infor += "检测正确";
-			pDlg->m_editLogInfor.SetWindowTextA(infor);
-			return TRUE;
-		}
-		else
-		{
-			pDlg->m_editLogInfor.SetWindowTextA(infor);
-			return FALSE;
-		}
-
-	}
-	catch (Exception& e)
-	{
-		addLog("error MatchingMethod");
-		return FALSE;
-	}
-}
+ 
 
 DWORD WINAPI    duanzao_space(LPVOID pp)
 {
@@ -934,6 +850,10 @@ CVC_DemoDlg::CVC_DemoDlg(CWnd* pParent /*=NULL*/)
 {
 	m_rate = 2.5;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	CString strPath;
+	GetCurrentDirectory(256, strPath.GetBuffer(256));
+	strAppPath.Format("%s\\", strPath);
+	 
 }
 
 void CVC_DemoDlg::DoDataExchange(CDataExchange* pDX)
@@ -2858,7 +2778,7 @@ DWORD WINAPI    testThread_Game(LPVOID pp)
 
 		RetSw = M_KeyInputStringGBK(msdk_handle, inputText, strlen(inputText));
 	}
-	// RetSw = M_KeyInputString(msdk_handle, text.GetBuffer(0, strlen(inputText));
+	 
  
 	return 0;
 
@@ -3329,7 +3249,7 @@ void CVC_DemoDlg::saveScreen()
 	//CTime t = CTime::GetCurrentTime();
 	//CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
 	//strFileName += tt;
-	CString strFileName = _T("s.bmp");
+	CString strFileName = _T(strAppPath+"s.bmp");
 	if (file.Open((LPCTSTR)strFileName, CFile::modeCreate | CFile::modeWrite))
 	{
 		file.Write(&bfh, sizeof(BITMAPFILEHEADER));
@@ -3822,7 +3742,17 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 
 	Sleep(3000);
 
-	RetSw = M_KeyInputStringGBK(msdk_handle,"a你好" , strlen("a你好"));
+	 
+
+	//CString strPath;
+
+	//GetCurrentDirectory(MAX_PATH, strPath.GetBuffer(MAX_PATH));
+
+	//strPath.ReleaseBuffer();
+
+	//AfxMessageBox(strPath);
+	
+	//RetSw = M_KeyInputStringGBK(msdk_handle,"a你好" , strlen("a你好"));
 	//HANDLE hThread = CreateThread(NULL, 0, testThread_Game, (LPVOID)msdk_handle, 0, NULL);
 
 
@@ -3830,7 +3760,6 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 
 
 
-	return;
 	 
 	CPoint cp = findImage("ingamenew.png", 300, 40, 400, 80);
 	if (cp.x != 0 && cp.y != 0)

@@ -2855,6 +2855,7 @@ DWORD WINAPI    testThread_Game(LPVOID pp)
 	}
 	else
 	{
+
 		RetSw = M_KeyInputStringGBK(msdk_handle, inputText, strlen(inputText));
 	}
 	// RetSw = M_KeyInputString(msdk_handle, text.GetBuffer(0, strlen(inputText));
@@ -3819,10 +3820,13 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 		OnBnClickedButtonOpen();
 	}
 
- 
+	Sleep(3000);
+
+	RetSw = M_KeyInputStringGBK(msdk_handle,"a你好" , strlen("a你好"));
+	//HANDLE hThread = CreateThread(NULL, 0, testThread_Game, (LPVOID)msdk_handle, 0, NULL);
 
 
-	HANDLE hThread = CreateThread(NULL, 0, fighting_Thread, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
+	//HANDLE hThread = CreateThread(NULL, 0, fighting_Thread, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
 
 
 

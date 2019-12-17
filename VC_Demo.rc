@@ -54,8 +54,8 @@ BEGIN
     "\r\n"
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
     "LANGUAGE 4, 2\r\n"
-    "#include ""res\\VC_Demo.rc2""  // 闁? Microsoft Visual C++ 闂佸憡銇滈崐娑㈠礉?-濠?闂佺厧鐡ㄦ繛濠囧极?闂?\n"
-    "#include ""l.CHS\\afxres.rc""      // 闂佸憡銇滈崐婵嬪极鐎ｎ喗鍤?闂佸吋娼欓悿鍥┾偓?t\r\n"
+    "#include ""res\\VC_Demo.rc2""  // 闂? Microsoft Visual C++ 闂備礁鎲￠妵婊堝磹濞戙垹绀?-婵?闂備胶鍘ч悺銊︾箾婵犲洤鏋?闂?\n"
+    "#include ""l.CHS\\afxres.rc""      // 闂備礁鎲￠妵婊堝磹濠靛鏋侀悗锝庡枟閸?闂備礁鍚嬪娆撴偪閸モ斁鍋?t\r\n"
     "#endif\r\n"
     "\0"
 END
@@ -97,7 +97,7 @@ BEGIN
     PUSHBUTTON      "分解",IDC_BUTTON_OPEN2,110,7,73,47
     PUSHBUTTON      "查找",IDC_BUTTON_KEYPRESS4,57,156,46,59
     PUSHBUTTON      "切换角色",IDC_BUTTON_KEYPRESS5,0,158,46,59
-    LTEXT           "20191215",IDC_STATIC,0,288,43,8
+    LTEXT           "20191217",IDC_STATIC,0,288,43,8
     LISTBOX         IDC_LIST1,110,196,190,22,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_EDIT4,110,223,74,14,ES_AUTOHSCROLL
     PUSHBUTTON      "进入",IDC_BUTTON_KEYPRESS6,0,94,46,59
@@ -205,8 +205,8 @@ END
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE 4, 2
-#include "res\VC_Demo.rc2"  // 闁? Microsoft Visual C++ 闂佸憡銇滈崐娑㈠礉?-濠?闂佺厧鐡ㄦ繛濠囧极?闂?
-#include "l.CHS\afxres.rc"      // 闂佸憡銇滈崐婵嬪极鐎ｎ喗鍤?闂佸吋娼欓悿鍥┾偓?t
+#include "res\VC_Demo.rc2"  // 闂? Microsoft Visual C++ 闂備礁鎲￠妵婊堝磹濞戙垹绀?-婵?闂備胶鍘ч悺銊︾箾婵犲洤鏋?闂?
+#include "l.CHS\afxres.rc"      // 闂備礁鎲￠妵婊堝磹濠靛鏋侀悗锝庡枟閸?闂備礁鍚嬪娆撴偪閸モ斁鍋?t
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

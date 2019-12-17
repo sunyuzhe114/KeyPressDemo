@@ -3540,7 +3540,7 @@ void CVC_DemoDlg::minized_all_the_other_windows()
 
 void CVC_DemoDlg::OnBnClickedButtonKeypress6()
 {
-	if (GetSystemMetrics(SM_CXSCREEN) < 13600)
+	if (GetSystemMetrics(SM_CXSCREEN) < 1360)
 		ShowWindow(SW_MINIMIZE);
 	
 	minized_all_the_other_windows();

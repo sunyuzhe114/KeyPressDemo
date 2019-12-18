@@ -2116,28 +2116,28 @@ DWORD WINAPI    changeUser_And_Login_siwangTa_Thread(LPVOID pp)
 			if (bStop)break;
 			RetSw = M_DelayRandom(1000, 1100);
 			addLog("键盘向左移动一步");
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 2);
 			if (bStop)break;
 			RetSw = M_DelayRandom(1000, 1100);
 			addLog("向左移动一步");
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 2);
 			if (bStop)break;
 			RetSw = M_DelayRandom(1000, 1100);
 			addLog("向左移动一步");
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 2);
 			if (bStop)break;
 			RetSw = M_DelayRandom(1000, 1100);
 			RetSw = M_DelayRandom(1000, 1100);
 			addLog("键盘向左移动一步");
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 2);
 			if (bStop)break;
 			RetSw = M_DelayRandom(1000, 1100);
 			addLog("向左移动一步");
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 2);
 			if (bStop)break;
 			RetSw = M_DelayRandom(1000, 1100);
 			addLog("向左移动一步");
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 1);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 2);
 			if (bStop)break;
 			RetSw = M_DelayRandom(1000, 1100);
 			RetSw = M_DelayRandom(1000, 1100);
@@ -3744,7 +3744,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 	}
 
 	Sleep(3000);
-
+	addLog("Path=" + strAppPath);
 	 
 
 	//CString strPath;

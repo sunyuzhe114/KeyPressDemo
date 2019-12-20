@@ -54,8 +54,8 @@ BEGIN
     "\r\n"
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
     "LANGUAGE 4, 2\r\n"
-    "#include ""res\\VC_Demo.rc2""  // 闂? Microsoft Visual C++ 闂備礁鎲￠妵婊堝磹濞戙垹绀?-婵?闂備胶鍘ч悺銊︾箾婵犲洤鏋?闂?\n"
-    "#include ""l.CHS\\afxres.rc""      // 闂備礁鎲￠妵婊堝磹濠靛鏋侀悗锝庡枟閸?闂備礁鍚嬪娆撴偪閸モ斁鍋?t\r\n"
+    "#include ""res\\VC_Demo.rc2""  // 闂? Microsoft Visual C++ 闂傚倷绀侀幉锟犲Φ濠婂牆纾规繛鎴欏灩缁€?-濠?闂傚倷鑳堕崢褔鎮洪妸锔剧濠电姴娲ら弸?闂?\n"
+    "#include ""l.CHS\\afxres.rc""      // 闂傚倷绀侀幉锟犲Φ濠婂牆纾规繝闈涱儏閺嬩線鎮楅敐搴℃灍闁?闂傚倷绀侀崥瀣焽濞嗘挻鍋柛銉㈡杹閸?t\r\n"
     "#endif\r\n"
     "\0"
 END
@@ -101,7 +101,7 @@ BEGIN
     LISTBOX         IDC_LIST1,110,196,190,22,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_EDIT4,110,223,74,14,ES_AUTOHSCROLL
     PUSHBUTTON      "进入",IDC_BUTTON_KEYPRESS6,0,94,46,59
-    EDITTEXT        IDC_EDIT5,192,222,28,14,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_EDIT5,192,222,28,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT6,110,246,75,13,ES_AUTOHSCROLL
     PUSHBUTTON      "批修",IDC_BUTTON_MOVER2,266,244,27,27
     PUSHBUTTON      "移动",IDC_BUTTON_KEYPRESS7,57,92,46,59
@@ -205,8 +205,8 @@ END
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE 4, 2
-#include "res\VC_Demo.rc2"  // 闂? Microsoft Visual C++ 闂備礁鎲￠妵婊堝磹濞戙垹绀?-婵?闂備胶鍘ч悺銊︾箾婵犲洤鏋?闂?
-#include "l.CHS\afxres.rc"      // 闂備礁鎲￠妵婊堝磹濠靛鏋侀悗锝庡枟閸?闂備礁鍚嬪娆撴偪閸モ斁鍋?t
+#include "res\VC_Demo.rc2"  // 闂? Microsoft Visual C++ 闂傚倷绀侀幉锟犲Φ濠婂牆纾规繛鎴欏灩缁€?-濠?闂傚倷鑳堕崢褔鎮洪妸锔剧濠电姴娲ら弸?闂?
+#include "l.CHS\afxres.rc"      // 闂傚倷绀侀幉锟犲Φ濠婂牆纾规繝闈涱儏閺嬩線鎮楅敐搴℃灍闁?闂傚倷绀侀崥瀣焽濞嗘挻鍋柛銉㈡杹閸?t
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

@@ -23,7 +23,7 @@ int  Game_state = -1;//Game_state = 100;用户已经用完，200，还可以再�
 int not_in_game_time = 0;//检测到未在游戏中次数
 // CVC_DemoDlg 对话框
 int Global_checkTime = 0;
-double rate = 2.5;//* dbZoomScale
+double rate = 2.58;//* dbZoomScale
 CString str_matchineName;
 CVC_DemoDlg* pDlg;
 bool bStop = false;

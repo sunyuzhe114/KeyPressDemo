@@ -203,12 +203,18 @@ int my_hook_left_Click(HANDLE m_hdl, int times)
 	strinfor.Format("on %ld,%ld,lclick win(%ld,%ld,%ld,%ld)",x_pos,y_pos,dleft,dtop,dleft+800,dtop+600);
 	addLog(strinfor);
 	 
-	if (isDNFWindow())
+	if (isDNFWindow()&&times<10)
 	{
 		//M_LeftDown(m_hdl);
 		//M_DelayRandom(500, 600);
 		//M_LeftUp(m_hdl); 
 		return M_LeftClick(m_hdl, times);
+	}
+	if ( times == 10)
+	{
+		M_LeftDown(m_hdl);
+		M_DelayRandom(1500, 2100);
+		M_LeftUp(m_hdl); 
 	}
 	 
 	return 0;
@@ -1175,23 +1181,32 @@ DWORD WINAPI    changeUser(LPVOID pp)
 	addLog("changeUser exit");
 	return 0;
 }
-DWORD WINAPI    changeUser_fenjie(LPVOID pp)
+DWORD WINAPI    changeUser_nawawa(LPVOID pp)
 {
 	HANDLE msdk_handle = (HANDLE)pp;
 	unsigned int RetSw = 0; 
-	RetSw = M_DelayRandom(1800, 21000);
+	RetSw = M_DelayRandom(1800, 2100);
 	DWORD m_dTimeBeginPress_F10 = 0;
 	move_to_relativePos(msdk_handle, 50, 50);
 	RetSw = M_DelayRandom(800, 1000);
 	RetSw = M_LeftClick(msdk_handle, 1);
-	
-	change_to_first_player(pp);
+	 
 
-	for (int i = 0; i < 16; i++)
+	for (int i = 0; i < 100; i++)
 	{
-		fenjie_zhuangbei(pp);
+		move_to_relativePos(msdk_handle, 300, 460);
 		if (bStop)break;
-		changeUser(pp);
+		RetSw = M_DelayRandom(800, 1000);
+		if (bStop)break;
+		RetSw = my_hook_left_Click(msdk_handle, 10);
+		if (bStop)break;
+		RetSw = M_DelayRandom(800, 1000);
+		if (bStop)break;
+		move_to_relativePos(msdk_handle, 420, 380);
+		if (bStop)break;
+		RetSw = M_DelayRandom(800, 1000);
+		if (bStop)break;
+		RetSw = my_hook_left_Click(msdk_handle, 10);
 		if (bStop)break;
 	}
 	addLog("changeUser_fenjie exit");
@@ -2759,6 +2774,10 @@ DWORD WINAPI    testThread_Game(LPVOID pp)
 	{
 		strcpy(inputText, "瞬间移动");
 	}
+	else if (text == "4")
+	{
+		strcpy(inputText, "ゞ蔡丰龙ゞ");
+	}
 	else if (text == "0")
 	{
 		strcpy(inputText, "立即删除");
@@ -3301,10 +3320,10 @@ void CVC_DemoDlg::OnBnClickedButtonMover()
 		OnBnClickedButtonOpen();
 	}
 	minized_all_the_other_windows();
-	Sleep(3000);
+	 
 
 
-	HANDLE hThread = CreateThread(NULL, 0, changeUser_fenjie, (LPVOID)msdk_handle, 0, NULL);
+	HANDLE hThread = CreateThread(NULL, 0, changeUser_nawawa, (LPVOID)msdk_handle, 0, NULL);
 }
 
 void CVC_DemoDlg::OnBnClickedButtonMoveto()

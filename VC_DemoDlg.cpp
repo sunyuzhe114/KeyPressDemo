@@ -1190,8 +1190,14 @@ DWORD WINAPI    changeUser_nawawa(LPVOID pp)
 	move_to_relativePos(msdk_handle, 50, 50);
 	RetSw = M_DelayRandom(800, 1000);
 	RetSw = M_LeftClick(msdk_handle, 1);
-	 
-
+	RetSw = M_DelayRandom(800, 1000);
+	move_to_relativePos(msdk_handle, 350, 530); 
+	RetSw = M_DelayRandom(800, 1000);
+	RetSw = my_hook_left_Click(msdk_handle, 1);
+	RetSw = M_DelayRandom(800, 1000);
+	/*move_to_relativePos(msdk_handle, 340, 530);
+	RetSw = M_DelayRandom(800, 1000);
+	RetSw = my_hook_left_Click(msdk_handle, 2);*/
 	for (int i = 0; i < 20; i++)
 	{
 		move_to_relativePos(msdk_handle, 300, 460);
@@ -1220,7 +1226,7 @@ DWORD WINAPI    changeUser_nawawa(LPVOID pp)
 		if (bStop)break;
 		RetSw = M_DelayRandom(800, 1000);
 		if (bStop)break;
-		RetSw = my_hook_left_Click(msdk_handle, 10);
+		RetSw = my_hook_left_Click(msdk_handle, 2);
 		if (bStop)break;
 	}
 	addLog("changeUser_fenjie exit");

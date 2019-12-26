@@ -1192,7 +1192,7 @@ DWORD WINAPI    changeUser_nawawa(LPVOID pp)
 	RetSw = M_LeftClick(msdk_handle, 1);
 	 
 
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 20; i++)
 	{
 		move_to_relativePos(msdk_handle, 300, 460);
 		if (bStop)break;

@@ -1191,7 +1191,7 @@ DWORD WINAPI    changeUser_nawawa(LPVOID pp)
 	RetSw = M_DelayRandom(800, 1000);
 	RetSw = M_LeftClick(msdk_handle, 1);
 	RetSw = M_DelayRandom(800, 1000);
-	move_to_relativePos(msdk_handle, 350, 530); 
+	move_to_relativePos(msdk_handle, 350, 535); 
 	RetSw = M_DelayRandom(800, 1000);
 	RetSw = my_hook_left_Click(msdk_handle, 1);
 	RetSw = M_DelayRandom(800, 1000);

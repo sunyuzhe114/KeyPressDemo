@@ -2784,7 +2784,7 @@ DWORD WINAPI    testThread_Game(LPVOID pp)
 	bool bOutputChinese = true;
 	if (text == "1")
 	{
-		strcpy(inputText, "红色小晶体");
+		strcpy(inputText, "红色小晶块");
 	}
 	else if (text == "2")
 	{

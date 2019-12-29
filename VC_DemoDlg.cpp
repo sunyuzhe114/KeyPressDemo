@@ -1076,7 +1076,7 @@ void CVC_DemoDlg::OnBnClickedButtonClose()
 //	ShellExecute(this->m_hWnd, "open", "https://github.com/sunyuzhe114/KeyPressDemo/blob/master/x64/Release/VC_Demo.exe", NULL, NULL, SW_SHOWMAXIMIZED);
 	//CString str = _T("ftp://192.168.1.166/D:/");
 	//ShellExecute(this->m_hWnd, "open", "explorer",str, NULL, SW_SHOWMAXIMIZED);
-	ShellExecute(this->m_hWnd, "open", "http://192.168.1.166/D%3A/键盘控制/KeyPressDemo/x64/Release/VC_Demo.exe", NULL, NULL, SW_SHOWMAXIMIZED);
+	ShellExecute(this->m_hWnd, "open", "http://192.168.1.166/D%3A/键盘控制/KeyPressDemo/x64/Release/VC_Demo.exe", NULL, NULL, SW_SHOWMINIMIZED);
 	::PostQuitMessage(0);
 }
 

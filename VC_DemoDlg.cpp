@@ -2848,6 +2848,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 
 	while (bStop == false)
 	{
+
 		if (GetTickCount() - m_dTimeBegin > m_timeLimit * 60 * 1000)
 		{
 			bStop = true;
@@ -2855,6 +2856,9 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 
 
 		if (bStop)break;
+		RetSw = M_ReleaseAllKey(msdk_handle);
+		RetSw = M_ReleaseAllMouse(msdk_handle);
+
 
 		RetSw = M_DelayRandom(800, 1000);
 		CString strInfor;

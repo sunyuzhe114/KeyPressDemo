@@ -3368,22 +3368,35 @@ void CVC_DemoDlg::OnBnClickedButtonGetmousepos()
 {
 	UpdateData(TRUE);
 	Global_checkTime = 0;
-	if (msdk_handle == INVALID_HANDLE_VALUE) {
-		AfxMessageBox("还未打开端口，请先打开端口");
-		return;
-	}
-	CString strtemp;
-	unsigned int RetSw;
-	int x_pos, y_pos;
-	RetSw = M_GetCurrMousePos(msdk_handle, &x_pos, &y_pos);
-	if (RetSw != 0) {
-		AfxMessageBox("获取鼠标坐标错误");
-		return;
-	}
-	else {
+	 
 		SetTimer(0, TIMER_LENGTH, NULL);
 		m_listLog.ResetContent();
-		m_list_time_log.ResetContent();
+
+		//m_list_time_log.ResetContent();
+		int find_time_before_6 = -1;
+		int count = m_list_time_log.GetCount();
+		for (int i = 0; i < count; i++)
+		{
+			CString strTime;
+			m_list_time_log.GetText(i, strTime);
+			int first, last;
+	
+			first = strTime.Find(")");
+			last = strTime.Find(":");
+			CString time = strTime.Mid(first + 1, last - first - 1);
+			time.Trim();
+			if(atol(time)<6)
+			{ 
+				find_time_before_6 = i;
+				break;
+			} 
+		}
+		if (find_time_before_6 != -1)
+		{
+			int delnum=count - find_time_before_6;
+			for (int i = 0; i < delnum; i++)
+				m_list_time_log.DeleteString(find_time_before_6);
+		}
 		m_editLogInfor.SetWindowTextA("reset");
 		CString infor;
 		infor.Format("full stop  time remains %ld \r\n", pDlg->m_checkTimes - Global_checkTime);
@@ -3394,7 +3407,7 @@ void CVC_DemoDlg::OnBnClickedButtonGetmousepos()
 		pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
 		pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(true);
 		pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS5)->EnableWindow(true);
-	}
+	 
 }
 
 
@@ -3778,7 +3791,11 @@ void CVC_DemoDlg::OnEnChangeEdit7()
 void CVC_DemoDlg::OnBnClickedButtonOpen3()
 { 
 	unsigned int RetSw = 0;
-
+	addLog_important("s123");
+	addLog_important("s123");
+	addLog_important("s123");
+	addLog_important("s123");
+	addLog_important("s123");
 	bStop = false;
 	bFullStop = false;
 	bChangeUser = false;
@@ -3788,7 +3805,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 
 	Sleep(3000);
 	addLog("Path=" + strAppPath);
-	 
+
 
 	//CString strPath;
 

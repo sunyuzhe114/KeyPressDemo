@@ -4004,6 +4004,11 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 	}
 	else if(nIDEvent == 0 )
 	{
+		if (time.GetHour() == 5 && time.GetMinute() < 10)
+		{
+			OnBnClickedButtonKeypress8();
+			KillTimer(0);
+		}
 		/*	CWnd* pMainWnd = AfxGetMainWnd()->GetForegroundWindow();
 
 			CString strClassName;

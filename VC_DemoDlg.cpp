@@ -3371,7 +3371,8 @@ void CVC_DemoDlg::OnBnClickedButtonGetmousepos()
 	 
 		SetTimer(0, TIMER_LENGTH, NULL);
 		m_listLog.ResetContent();
-
+		CTime t = CTime::GetCurrentTime();
+		CString t_day = t.Format("%d");
 		//m_list_time_log.ResetContent();
 		int find_time_before_6 = -1;
 		int count = m_list_time_log.GetCount();
@@ -3380,16 +3381,29 @@ void CVC_DemoDlg::OnBnClickedButtonGetmousepos()
 			CString strTime;
 			m_list_time_log.GetText(i, strTime);
 			int first, last;
-	
-			first = strTime.Find(")");
-			last = strTime.Find(":");
-			CString time = strTime.Mid(first + 1, last - first - 1);
-			time.Trim();
-			if(atol(time)<6)
-			{ 
+
+			first = strTime.Find("2020");
+			last = strTime.Find("_");
+			CString str_day= strTime.Mid(first + 8,2);
+			if (str_day != t_day)
+			{
 				find_time_before_6 = i;
 				break;
-			} 
+			}
+			else
+			{
+				first = strTime.Find(")");
+				last = strTime.Find(":");
+				CString time = strTime.Mid(first + 1, last - first - 1);
+				time.Trim();
+				if(atol(time)<6)
+				{ 
+				find_time_before_6 = i;
+				break;
+				} 
+
+			}
+			
 		}
 		if (find_time_before_6 != -1)
 		{
@@ -3791,19 +3805,27 @@ void CVC_DemoDlg::OnEnChangeEdit7()
 void CVC_DemoDlg::OnBnClickedButtonOpen3()
 { 
 	unsigned int RetSw = 0;
-	addLog_important("s123");
-	addLog_important("s123");
-	addLog_important("s123");
-	addLog_important("s123");
-	addLog_important("s123");
+	CString str;
+	CTime t = CTime::GetCurrentTime();
+	CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+	tt.Replace("01-02", "01-01");
+	str.Format("%s==>%s\r\n", tt, "帐号已经使用完成 0"); 
+
+	addLog_important(str); 
+	
+	tt = t.Format("%Y-%m-%d_%H-%M-%S"); 
+	str.Format("%s==>%s\r\n", tt, "帐号已经使用完成 0");
+ 
+	addLog_important(str);
+	
+
 	bStop = false;
 	bFullStop = false;
 	bChangeUser = false;
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
 		OnBnClickedButtonOpen();
 	}
-
-	Sleep(3000);
+	 
 	addLog("Path=" + strAppPath);
 
 
@@ -4004,7 +4026,7 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 	}
 	else if(nIDEvent == 0 )
 	{
-		if (time.GetHour() == 5 && time.GetMinute() < 10)
+		if (time.GetHour() ==0 && time.GetMinute() > 10)
 		{
 			OnBnClickedButtonKeypress8();
 			KillTimer(0);

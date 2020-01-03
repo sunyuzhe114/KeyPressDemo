@@ -2856,8 +2856,8 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 
 
 		if (bStop)break;
-		RetSw = M_ReleaseAllKey(msdk_handle);
-		RetSw = M_ReleaseAllMouse(msdk_handle);
+		//RetSw = M_ReleaseAllKey(msdk_handle);
+		//RetSw = M_ReleaseAllMouse(msdk_handle);
 
 
 		RetSw = M_DelayRandom(800, 1000);

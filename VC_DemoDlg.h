@@ -97,4 +97,5 @@ public:
 	afx_msg void OnBnClickedButtonMover4();
 	 
 	afx_msg void OnBnClickedButtonKeyOnScreen2();
+	afx_msg void OnBnClickedButtonKeyOnScreen3();
 };

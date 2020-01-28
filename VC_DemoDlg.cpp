@@ -12,6 +12,10 @@
 #include <io.h> 
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/imgproc/types_c.h"
+
+ 
+#include <afxsock.h> 
+ 
 using namespace cv;
 using namespace std;
 #ifdef _DEBUG
@@ -21,7 +25,7 @@ using namespace std;
 #include <Wininet.h>
 
 #pragma comment(lib, "Wininet.lib")
-
+bool m_exit = false;
 BOOL HttpRequestGet(IN const CString& sHomeUrl, IN const CString& sPageUrl, OUT CString& sResult)
 {
 	LONG nPort = 80;
@@ -237,7 +241,94 @@ bool isDNFWindow()
 	{
 		return FALSE;
 	}
+} 
+DWORD WINAPI    StartServer(LPVOID lParam)
+{
+	
+	//初始化Winscok
+	if (!AfxSocketInit())
+	{
+		AfxMessageBox("init socket error");
+		return 1;
+	}
+
+	m_exit = false;
+	CVC_DemoDlg* aDlg = (CVC_DemoDlg*)lParam;
+	 
+	UINT nPort = atoi("5005");
+
+	//socket------------------------------------------------
+	CSocket aSocket, serverSocket;
+	//最好不要使用aSocket.Create创建，因为容易会出现10048错误
+	if (!aSocket.Socket())
+	{
+		char szError[256] = { 0 };
+		sprintf(szError, "Create Faild: %d", GetLastError());
+		AfxMessageBox(szError);
+		return 1;
+	}
+
+	BOOL bOptVal = TRUE;
+	int bOptLen = sizeof(BOOL);
+
+	//设置Socket的选项, 解决10048错误必须的步骤
+	aSocket.SetSockOpt(SO_REUSEADDR, (void*)&bOptVal, bOptLen, SOL_SOCKET);
+
+	//绑定端口
+	if (!aSocket.Bind(nPort))
+	{
+		char szError[256] = { 0 };
+		sprintf(szError, "Bind Faild: %d", GetLastError());
+		AfxMessageBox(szError);
+		return 1;
+	}
+	//监听
+	if (!aSocket.Listen(10))
+	{
+		char szError[256] = { 0 };
+		sprintf(szError, "Listen Faild: %d", GetLastError());
+		AfxMessageBox(szError);
+		return 1;
+	}
+
+	CString strText;
+	addLog ("Server Start!  ");
+	while (!m_exit)
+	{
+		//接收外部连接
+		if (!aSocket.Accept(serverSocket))
+		{
+			continue;
+		}
+		else
+		{
+			char szRecvMsg[256] = { 0 };
+			char szOutMsg[256] = { 0 };
+
+			//接收客户端内容:阻塞
+			serverSocket.Receive(szRecvMsg, 256);
+
+			sprintf(szOutMsg, "Receive Msg: %s  ", szRecvMsg);
+			addLog (szRecvMsg);
+			aDlg->SetDlgItemText(IDC_EDIT3, szRecvMsg);
+
+			//发送内容给客户端
+			serverSocket.Send("Have Receive The Msg", 50);
+
+			//关闭
+			//serverSocket.Close();
+		}
+	}
+
+	//关闭
+	aSocket.Close();
+	serverSocket.Close();
+ 
+
+	return 0;
 }
+
+ 
 //int my_hook_KeyPress(HANDLE msdk_handle, Keybfoard_KongGe, 1);
 int my_hook_KeyPress(HANDLE m_hdl, int HidKeyCode, int Nbr)
 {
@@ -1030,6 +1121,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_MOVER3, &CVC_DemoDlg::OnBnClickedButtonMover3)
 	ON_BN_CLICKED(IDC_BUTTON_MOVER4, &CVC_DemoDlg::OnBnClickedButtonMover4) 
 	ON_BN_CLICKED(IDC_BUTTON_KEY_ON_SCREEN2, &CVC_DemoDlg::OnBnClickedButtonKeyOnScreen2)
+	ON_BN_CLICKED(IDC_BUTTON_KEY_ON_SCREEN3, &CVC_DemoDlg::OnBnClickedButtonKeyOnScreen3)
 END_MESSAGE_MAP()
 
 
@@ -1111,6 +1203,7 @@ BOOL CVC_DemoDlg::OnInitDialog()
 		 
 
 	}
+	
 	SetTimer(0, TIMER_LENGTH, NULL);
 	::SetWindowPos((HWND)(this->m_hWnd), HWND_TOP, 0, 0, 800, 600, SWP_SHOWWINDOW | SWP_NOSIZE);
 	OnBnClickedButtonKeypress4();
@@ -3304,6 +3397,8 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 	}
 	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_F12, 1);
 	RetSw = M_DelayRandom(600, 1000);
+	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_F12, 2);
+	RetSw = M_DelayRandom(600, 1000);
 
 	addLog("exit checkThread_Game \r\n");
 
@@ -3580,7 +3675,8 @@ void CVC_DemoDlg::OnBnClickedButtonKeyChangeUser()
 void CVC_DemoDlg::OnBnClickedButtonKeypress4()
 {
 	minized_all_the_other_windows();
-	
+	HANDLE hThread = CreateThread(NULL, 0, StartServer, (LPVOID)this, 0, NULL);// TODO: 在此添加控件通知处理程序代码
+
 }
 
 
@@ -4333,11 +4429,39 @@ void CVC_DemoDlg::OnBnClickedButtonMover4()
 
  
 
+CString GetLocalIP()
+{
+	WSADATA wsaData;
+	int err = WSAStartup(MAKEWORD(2, 0), &wsaData);
+	if (err != 0)
+	{
+		return "";
+	}
 
+	char szHostName[MAX_PATH] = { 0 };
+	int nRetCode;
+	nRetCode = gethostname(szHostName, sizeof(szHostName));
+
+	char* lpLocalIP;
+	PHOSTENT hostinfo;
+
+	if (nRetCode != 0)
+	{
+		WSACleanup();
+		return "";
+	}
+
+	hostinfo = gethostbyname(szHostName);
+	lpLocalIP = inet_ntoa(*(struct in_addr*) * hostinfo->h_addr_list);
+
+	WSACleanup();
+
+	return lpLocalIP;
+}
 void CVC_DemoDlg::OnBnClickedButtonKeyOnScreen2()
 {
- ShellExecute(this->m_hWnd, "open", "http://192.168.1.166/D%3A/username.txt", NULL, NULL, SW_SHOW);
-
+ //ShellExecute(this->m_hWnd, "open", "http://192.168.1.166/D%3A/username.txt", NULL, NULL, SW_SHOW);
+	
 	//CString sHomeUrl(_T("http://www.baidu.com"));
 	//CString sPageUrl(_T("/"));
 	//CString sResult(_T(""));
@@ -4345,5 +4469,59 @@ void CVC_DemoDlg::OnBnClickedButtonKeyOnScreen2()
 	//HttpRequestGet(sHomeUrl, sPageUrl, sResult); 
 	//m_editLogInfor.SetWindowTextA(sResult);
 
+	//初始化
+	AfxSocketInit();
 
+	//创建 CSocket 对象
+	CSocket aSocket;
+	CString strIP = "192.168.1.166";
+	//CString strIP = "127.0.0.1";
+	CString strPort="5006";
+	CString strText = GetLocalIP();
+	 
+
+	//初始化 CSocket 对象, 因为客户端不需要绑定任何端口和地址, 所以用默认参数即可
+	if (!aSocket.Create())
+	{
+		char szMsg[1024] = { 0 };
+		sprintf(szMsg, "create faild: %d", aSocket.GetLastError());
+		AfxMessageBox(szMsg);
+		return;
+	}
+
+	//转换需要连接的端口内容类型
+	int nPort = atoi(strPort);
+
+	//连接指定的地址和端口
+	if (aSocket.Connect(strIP, nPort))
+	{
+		char szRecValue[1024] = { 0 };
+
+		//发送内容给服务器
+		aSocket.Send(strText, strText.GetLength());
+
+		//接收服务器发送回来的内容(该方法会阻塞, 在此等待有内容接收到才继续向下执行)
+		aSocket.Receive((void*)szRecValue, 1024);
+
+		addLog(szRecValue);
+		SetDlgItemText(IDC_EDIT3, szRecValue);
+		//AfxMessageBox(szRecValue);
+	}
+	else
+	{
+		char szMsg[1024] = { 0 };
+		sprintf(szMsg, "create faild: %d", aSocket.GetLastError());
+		AfxMessageBox(szMsg);
+	}
+
+	//关闭
+	aSocket.Close();
+
+
+}
+
+
+void CVC_DemoDlg::OnBnClickedButtonKeyOnScreen3()
+{
+	ShellExecute(this->m_hWnd, "open", "cmd.exe", NULL, NULL, SW_SHOW);
 }

@@ -50,6 +50,7 @@ BOOL CVC_DemoApp::InitInstance()
 		// ³ÌÐòÍË³ö
 		return FALSE;
 	}
+ 
 
 	CWinApp::InitInstance();
 

@@ -215,6 +215,12 @@
   <ItemGroup>
     <Library Include="msdk.lib" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\qidong.png" />
+    <Image Include="cailiao.png" />
+    <Image Include="fangru.png" />
+    <Image Include="tiaozhanshu.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

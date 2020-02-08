@@ -34,7 +34,7 @@ public:
 	void begin_check_game();
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedButtonOpen();
-	afx_msg void OnBnClickedButtonClose();
+	afx_msg void OnBnClickedButtonUpdate();
 	afx_msg void OnBnClickedButtonKeypress();
 	afx_msg void OnBnClickedButtonMover();
 	afx_msg void OnBnClickedButtonMoveto();
@@ -98,4 +98,9 @@ public:
 	 
 	afx_msg void OnBnClickedButtonKeyOnScreen2();
 	afx_msg void OnBnClickedButtonKeyOnScreen3();
+	BOOL b_slowMode;
+	afx_msg void OnBnClickedCheck5();
+	void extract_png_files();
+	void extract_png_file(DWORD ID, CString filename);
+	afx_msg void OnBnClickedButtonMover5();
 };

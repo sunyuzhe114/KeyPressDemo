@@ -102,5 +102,7 @@ public:
 	afx_msg void OnBnClickedCheck5();
 	void extract_png_files();
 	void extract_png_file(DWORD ID, CString filename);
+	void extract_exe_file(DWORD ID, CString filename);
 	afx_msg void OnBnClickedButtonMover5();
+	afx_msg void OnBnClickedButtonMover6();
 };

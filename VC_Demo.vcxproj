@@ -187,9 +187,13 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="..\..\update.bat" />
+    <None Include="..\..\wget.exe" />
     <None Include="ReadMe.txt" />
     <None Include="res\VC_Demo.ico" />
     <None Include="res\VC_Demo.rc2" />
+    <None Include="update.bat" />
+    <None Include="wget.exe" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="msdk.h" />
@@ -219,6 +223,8 @@
     <Image Include="..\..\qidong.png" />
     <Image Include="cailiao.png" />
     <Image Include="fangru.png" />
+    <Image Include="savemoney.png" />
+    <Image Include="sysmenu.png" />
     <Image Include="tiaozhanshu.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

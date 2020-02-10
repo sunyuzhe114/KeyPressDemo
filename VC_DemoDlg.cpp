@@ -28,6 +28,7 @@ using namespace std;
 bool m_exit = false;
 CPoint findImage(string strPath_findImage, int left, int top, int right, int bottom);
 CPoint findImage_in_subrect(string strPath_findImage, int left, int top, int right, int bottom);
+CString GetLocalIP();
 BOOL HttpRequestGet(IN const CString& sHomeUrl, IN const CString& sPageUrl, OUT CString& sResult)
 {
 	LONG nPort = 80;
@@ -356,10 +357,12 @@ DWORD WINAPI    StartServer(LPVOID lParam)
 			}
 			if (strMsg == "进入"|| strMsg == "enter")
 			{
-				aDlg->SetTimer(3, 2000, NULL);
-				 
-				
+				aDlg->SetTimer(3, 2000, NULL); 
 			} 
+			if (strMsg == "回家" || strMsg == "home")
+			{
+				aDlg->SetTimer(5, 2000, NULL);
+			}
 
 			//关闭
 			serverSocket.Close();
@@ -1038,7 +1041,7 @@ int checkGame_state()
 					CStdioFile file;
 					if (file.Open(_T("log.txt"), CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate, NULL))
 					{
-						file.SeekToEnd();
+						file.SeekToBegin();
 						file.WriteString(str);
 						file.Close();
 					}
@@ -1384,6 +1387,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_KEY_ON_SCREEN3, &CVC_DemoDlg::OnBnClickedButtonKeyOnScreen3)
 	ON_BN_CLICKED(IDC_CHECK5, &CVC_DemoDlg::OnBnClickedCheck5)
 	ON_BN_CLICKED(IDC_BUTTON_MOVER5, &CVC_DemoDlg::OnBnClickedButtonMover5)
+	ON_BN_CLICKED(IDC_BUTTON_MOVER6, &CVC_DemoDlg::OnBnClickedButtonMover6)
 END_MESSAGE_MAP()
 
 
@@ -1392,8 +1396,10 @@ END_MESSAGE_MAP()
 BOOL CVC_DemoDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+	CString strText = GetLocalIP();
 
-	this->SetWindowPos(&wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+	SetWindowText("notepad+++  " + strText);
+	//this->SetWindowPos(&wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 	// 设置此对话框的图标。当应用程序主窗口不是对话框时，框架将自动
 	//  执行此操作
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
@@ -1553,7 +1559,9 @@ void CVC_DemoDlg::OnBnClickedButtonUpdate()
 //	ShellExecute(this->m_hWnd, "open", "https://github.com/sunyuzhe114/KeyPressDemo/blob/master/x64/Release/VC_Demo.exe", NULL, NULL, SW_SHOWMAXIMIZED);
 	//CString str = _T("ftp://192.168.1.166/D:/");
 	//ShellExecute(this->m_hWnd, "open", "explorer",str, NULL, SW_SHOWMAXIMIZED);
-	ShellExecute(this->m_hWnd, "open", "http://192.168.1.166/D%3A/键盘控制/KeyPressDemo/x64/Release/VC_Demo.exe", NULL, NULL, SW_SHOWMINIMIZED);
+	//ShellExecute(this->m_hWnd, "open", "http://192.168.1.166/D%3A/键盘控制/KeyPressDemo/x64/Release/VC_Demo.exe", NULL, NULL, SW_SHOWMINIMIZED);
+	ShellExecute(this->m_hWnd, "open", "d://update.bat", NULL, NULL, SW_SHOWMINIMIZED);
+
 	::PostQuitMessage(0);
 }
 
@@ -2323,7 +2331,9 @@ DWORD WINAPI    changeUser_cunqian(LPVOID pp)
 		changeUser(pp);
 		if (bStop)break;
 	}
-	addLog("changeUser_fenjie exit");
+
+	pDlg->GetDlgItem(IDC_BUTTON_MOVETO)->EnableWindow(true);
+	addLog("changeUser_cunqian exit");
 	return 0;
 }
 DWORD WINAPI    changeUser_xiuli_fenjieji(LPVOID pp)
@@ -2484,7 +2494,7 @@ DWORD WINAPI    changeUser_And_Login_siwangTa_Thread(LPVOID pp)
 			if (bChangetofirstUser == true)
 			{
 				bChangetofirstUser = false;
-				for (int i = 0; i < 12; i++)
+				for (int i = 0; i < 16; i++)
 				{
 					addLog("按下方向left键");
 					RetSw = my_hook_KeyPress(msdk_handle, Keyboard_LeftArrow, 1);
@@ -2806,7 +2816,115 @@ DWORD WINAPI    changeUser_And_Login_siwangTa_Thread(LPVOID pp)
 
 	return 0;
 }
+DWORD WINAPI    changeUser_backtohome(LPVOID pp)
+{
+	HANDLE msdk_handle = (HANDLE)pp;
+	unsigned int RetSw = 0;
+	DWORD m_dTimeBeginPress_F10 = 0;
 
+	CString infor;
+	bool b_login_ok = false;
+	int CHECK_LOGIN_TIME = 1;
+	addLog("开始回家");
+		b_login_ok = false;
+		do {
+			RetSw = M_ReleaseAllKey(msdk_handle);
+			/*for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				RetSw = my_new_MoveTo(msdk_handle, 1200 / rate, 110 / rate);;
+				RetSw = M_DelayRandom(800, 1000);
+			}*/
+			move_to_relativePos(msdk_handle, 50, 50);
+			RetSw = M_DelayRandom(800, 1000);
+			RetSw = M_LeftClick(msdk_handle, 1);
+			RetSw = M_DelayRandom(800, 1000);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_F12, 2);
+			RetSw = M_DelayRandom(2800, 4000);
+			addLog("按下F12键");
+			
+			RetSw = M_DelayRandom(800, 1000);
+			//RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+			addLog("按下Keyboard_ESCAPE键");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
+			RetSw = M_DelayRandom(2800, 4000);
+			if (bStop)break;
+
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				//RetSw = move_to_relativePos(msdk_handle, 380, 460);
+				RetSw = move_to_relativePos(msdk_handle, 500, 460);
+				RetSw = M_DelayRandom(500, 600);
+			}
+			addLog("点击返回键");
+			RetSw = my_hook_left_Click(msdk_handle, 1);
+
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+
+			move_to_relativePos(msdk_handle, 50, 50);
+			RetSw = M_DelayRandom(800, 1000);
+			RetSw = M_LeftClick(msdk_handle, 1);
+			RetSw = M_DelayRandom(800, 1000);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_F12, 2);
+			RetSw = M_DelayRandom(2800, 4000);
+
+			if (bStop)break;
+			RetSw = M_DelayRandom(800, 1000);
+			//RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
+			addLog("按下Keyboard_ESCAPE键");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
+			RetSw = M_DelayRandom(2800, 4000);
+
+			CPoint cp = findImage("sysmenu.png", 320, 80, 480, 200);
+			if(cp.x==0)
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
+			for (int i = 0; i < 1; i++)
+			{
+				RetSw = M_ResetMousePos(msdk_handle);
+				RetSw = move_to_relativePos(msdk_handle, 380, 460);
+				//RetSw = move_to_relativePos(msdk_handle, 380, 500);
+				RetSw = M_DelayRandom(500, 600);
+			}
+			addLog("点击选择用户");
+
+			RetSw = my_hook_left_Click(msdk_handle, 1);  
+			RetSw = M_DelayRandom(2000, 2100);
+			for (int i = 0; i < 16; i++)
+			{
+				addLog("按下方向left键");
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_LeftArrow, 1);
+				if (bStop)break;
+				RetSw = M_DelayRandom(1000, 1100);
+
+			}
+			RetSw = M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
+			RetSw = M_DelayRandom(1000, 1100);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_KongGe, 1);
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+		} while (0);
+
+			 
+	return 0;
+}
 DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 {
 	HANDLE msdk_handle = (HANDLE)pp;
@@ -2885,7 +3003,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 		    if (bChangetofirstUser == true)
 			{
 				bChangetofirstUser = false;
-				for (int i = 0; i < 12; i++)
+				for (int i = 0; i < 16; i++)
 				{
 					addLog("按下方向left键");
 					RetSw = my_hook_KeyPress(msdk_handle, Keyboard_LeftArrow, 1);
@@ -3909,6 +4027,7 @@ void CVC_DemoDlg::OnBnClickedButtonMover()
 
 void CVC_DemoDlg::OnBnClickedButtonMoveto()
 {
+	bFullStop = false;
 	bStop = false;
 	bChangeUser = true;
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
@@ -3917,7 +4036,7 @@ void CVC_DemoDlg::OnBnClickedButtonMoveto()
 	minized_all_the_other_windows();
 	Sleep(3000);
 
-
+	GetDlgItem(IDC_BUTTON_MOVETO)->EnableWindow(false);
 	HANDLE hThread = CreateThread(NULL, 0, changeUser_cunqian, (LPVOID)msdk_handle, 0, NULL);
 }
 
@@ -4093,7 +4212,7 @@ void CVC_DemoDlg::minized_all_the_other_windows()
 		if (::IsWindowVisible(pMainWnd->m_hWnd))
 		{
 			//addLog("window  " + text + " class " + strClassName);
-			if (strClassName.Find(m_edit_keyword) != -1 ||strClassName.Find("TMob") != -1 || text.Find(m_edit_keyword) != -1 || text.Find("notpad++") != -1 
+			if (strClassName.Find(m_edit_keyword) != -1 ||strClassName.Find("TMob") != -1 || text.Find(m_edit_keyword) != -1 || text.Find("notepad++") != -1 
 				|| text.Find("CPU") != -1 || text.Find("WeGame") != -1 || text.Find("MobaRDP") != -1|| text.Find("Visual Studio") != -1 || text.Find("Moba") != -1 || text.Find("admin") != -1)
 			{
 				//if(text.Find("WeGame") != -1)
@@ -4380,7 +4499,9 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 	}
 	 
 	addLog("Path=" + strAppPath); 
-	CPoint cp = findImage("xuanzeditu.png", 320, 300, 430, 330);
+	CPoint cp = findImage ("sysmenu.png", 320, 80, 480, 200);
+	//if (cp.x == 0)
+	//CPoint cp = findImage("xuanzeditu.png", 320, 300, 430, 330);
 	if (cp.x != 0 && cp.y != 0)
 	{
 
@@ -4655,6 +4776,11 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 	{
 		KillTimer(nIDEvent);
 		OnBnClickedButtonMoveto();
+
+	}if (nIDEvent == 5)
+	{
+		KillTimer(nIDEvent);
+		OnBnClickedButtonMover6();
 
 	}
 	CDialogEx::OnTimer(nIDEvent);
@@ -4944,7 +5070,33 @@ void CVC_DemoDlg::OnBnClickedCheck5()
 		addLog(strInfor);
 	}
 }
+void CVC_DemoDlg::extract_exe_file(DWORD ID, CString filename)
+{
+	HRSRC hRsrc = FindResource(NULL, MAKEINTRESOURCE(ID), TEXT("BIN"));
+	if (NULL == hRsrc) {
+		return;
+	}
+	DWORD dwSize = SizeofResource(NULL, hRsrc);
+	if (0 == dwSize) {
+		return;
+	}
+	HGLOBAL gl = LoadResource(NULL, hRsrc);
+	if (NULL == gl) {
+		return;
+	}
+	LPVOID lp = LockResource(gl);
+	if (NULL == lp) {
+		return;
+	}
+	HANDLE fp = CreateFile(filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, 0, NULL);
+	DWORD a;
+	if (!WriteFile(fp, lp, dwSize, &a, NULL)) {
+		return;
+	}
+	CloseHandle(fp);
+	FreeResource(gl);
 
+}
 void CVC_DemoDlg::extract_png_file(DWORD ID ,CString filename)
 {
 	HRSRC hRsrc = FindResource(NULL, MAKEINTRESOURCE(ID), TEXT("PNG"));
@@ -4979,6 +5131,11 @@ void CVC_DemoDlg::extract_png_files()
 	extract_png_file(IDB_PNG2, "d://cailiao.png");
 	extract_png_file(IDB_PNG3, "d://tiaozhanshu.png");
 	extract_png_file(IDB_PNG4, "d://qidong.png");
+	extract_png_file(IDB_PNG5, "d://sysmenu.png");
+	extract_png_file(IDB_PNG6, "d://savemoney.png");
+
+	extract_exe_file(IDR_BIN1, "d://wget.exe");
+	extract_exe_file(IDR_BIN2, "d://update.bat");
 }
 
 
@@ -5029,4 +5186,16 @@ void CVC_DemoDlg::OnBnClickedButtonMover5()
 		addLog(str);
 
 	}
+}
+
+
+void CVC_DemoDlg::OnBnClickedButtonMover6()
+{
+	if (msdk_handle == INVALID_HANDLE_VALUE) {
+		OnBnClickedButtonOpen();
+	}
+	bFullStop = false;
+	bStop = false;
+	HANDLE hThread = CreateThread(NULL, 0, changeUser_backtohome, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
+
 }

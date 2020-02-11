@@ -189,6 +189,7 @@
   <ItemGroup>
     <None Include="..\..\update.bat" />
     <None Include="..\..\wget.exe" />
+    <None Include="key.reg" />
     <None Include="ReadMe.txt" />
     <None Include="res\VC_Demo.ico" />
     <None Include="res\VC_Demo.rc2" />

@@ -1041,7 +1041,7 @@ int checkGame_state()
 					CStdioFile file;
 					if (file.Open(_T("log.txt"), CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate, NULL))
 					{
-						file.SeekToBegin();
+						file.SeekToEnd();
 						file.WriteString(str);
 						file.Close();
 					}
@@ -3268,15 +3268,15 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			{
 
 				addLog("键盘向左移动一步");
-				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 4);
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 2);
 				if (bStop)break;
 				RetSw = M_DelayRandom(1000, 1100);
 				addLog("向左移动一步");
-				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 4);
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 2);
 				if (bStop)break;
 				RetSw = M_DelayRandom(1000, 1100);
 				addLog("向左移动一步");
-				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 4);
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_Douhao, 2);
 				if (bStop)break;
 				RetSw = M_DelayRandom(1000, 1100);
 				addLog("向右移动二步");
@@ -3300,7 +3300,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_JuHao,4);
 			if (bStop)break;
 			RetSw = M_DelayRandom(500, 1000);
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_JuHao, 1);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_JuHao, 4);
 			if (bStop)break;
 			RetSw = M_DelayRandom(500, 1000);
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 4);
@@ -4487,8 +4487,9 @@ void CVC_DemoDlg::OnEnChangeEdit7()
 void CVC_DemoDlg::OnBnClickedButtonOpen3()
 { 
 	unsigned int RetSw = 0;
-	CString str;
+	 
  
+	 
 	
 
 	bStop = false;
@@ -4692,6 +4693,14 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 	if (nIDEvent==0&&time.GetHour() == 6 && time.GetMinute() < 10)
 	//if (nIDEvent == 0 && time.GetHour() == 21 && time.GetMinute() < 60)
 	{
+		if (msdk_handle == INVALID_HANDLE_VALUE) {
+			OnBnClickedButtonOpen();
+		}
+		//这里先点击一下dnf窗口 
+		move_to_relativePos(msdk_handle, 50, 50);
+		M_DelayRandom(800, 1000);
+		M_LeftClick(msdk_handle, 1);
+		M_DelayRandom(1800, 2000);
 		GetDlgItem(IDC_BUTTON_MOVER4)->EnableWindow(true);
 		CWnd* pMainWnd = AfxGetMainWnd()->GetForegroundWindow();
 		Global_checkTime = 0;
@@ -5133,9 +5142,9 @@ void CVC_DemoDlg::extract_png_files()
 	extract_png_file(IDB_PNG4, "d://qidong.png");
 	extract_png_file(IDB_PNG5, "d://sysmenu.png");
 	extract_png_file(IDB_PNG6, "d://savemoney.png");
-
-	extract_exe_file(IDR_BIN1, "d://wget.exe");
-	extract_exe_file(IDR_BIN2, "d://update.bat");
+	extract_exe_file(IDR_BIN1, "d://key.reg");
+	//extract_exe_file(IDR_BIN1, "d://wget.exe");
+	//extract_exe_file(IDR_BIN2, "d://update.bat");
 }
 
 

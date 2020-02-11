@@ -87,3 +87,5 @@ x64/Release/VC_Demo.Build.CppClean.log
 x64/Release/VC_Demo.tlog/link.delete.1.tlog
 x64/Release/VC_Demo.vcxproj.FileListAbsolute.txt
 s.bmp
+.vs/VC_Demo/v16/ipch/AutoPCH/1680bf2d595fb7af/VC_DEMODLG.ipch
+*.ipch

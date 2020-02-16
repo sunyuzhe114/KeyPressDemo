@@ -29,6 +29,7 @@ bool m_exit = false;
 CPoint findImage(string strPath_findImage, int left, int top, int right, int bottom);
 CPoint findImage_in_subrect(string strPath_findImage, int left, int top, int right, int bottom);
 CString GetLocalIP();
+bool m_bMaxmizieWegame_window = false;
 BOOL HttpRequestGet(IN const CString& sHomeUrl, IN const CString& sPageUrl, OUT CString& sResult)
 {
 	LONG nPort = 80;
@@ -328,7 +329,8 @@ DWORD WINAPI    StartServer(LPVOID lParam)
 			}
 			if (strMsg == "start" || strMsg == "启动")
 			{
-				aDlg->OnBnClickedButtonMover5();
+				aDlg->SetTimer(6, 2000, NULL);
+				
 			}
 			if (strMsg == "update")
 			{
@@ -475,6 +477,13 @@ int my_hook_left_Click(HANDLE m_hdl, int times)
 			return M_LeftClick(m_hdl, 1);
 		}
 		
+	}
+	if (times == 1001)
+	{
+		M_LeftDown(m_hdl);
+		M_DelayRandom(450, 500);
+		M_LeftUp(m_hdl);
+		return 0;
 	}
 	if (times == 4)
 	{
@@ -1399,7 +1408,7 @@ BOOL CVC_DemoDlg::OnInitDialog()
 	CString strText = GetLocalIP();
 
 	SetWindowText("notepad+++  " + strText);
-	//this->SetWindowPos(&wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+	this->SetWindowPos(&wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 	// 设置此对话框的图标。当应用程序主窗口不是对话框时，框架将自动
 	//  执行此操作
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
@@ -1600,6 +1609,10 @@ DWORD WINAPI    changeUser(LPVOID pp)
 			RetSw = move_to_relativePos(msdk_handle, 380, 460);
 			RetSw = M_DelayRandom(500, 600);
 		}
+		CPoint cp = findImage("sysmenu.png", 320, 80, 480, 200);
+		if (cp.x == 0)
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
+
 		RetSw = my_hook_left_Click(msdk_handle, 1);
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
@@ -2258,6 +2271,11 @@ DWORD WINAPI    change_to_first_player(LPVOID pp)
 		addLog("按下Keyboard_ESCAPE键");
 		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
 		RetSw = M_DelayRandom(2800, 4000);
+
+		CPoint cp = findImage("sysmenu.png", 320, 80, 480, 200);
+		if (cp.x == 0)
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
+
 		for (int i = 0; i < 1; i++)
 		{
 			RetSw = M_ResetMousePos(msdk_handle);
@@ -2956,6 +2974,10 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_F12, 2);
 			RetSw = M_DelayRandom(2800, 4000);
 
+			RetSw = M_DelayRandom(800, 1000);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_KongGe, 2);
+			RetSw = M_DelayRandom(2800, 4000);
+
 			if (bStop)break;
 			RetSw = M_DelayRandom(800, 1000);
 			//RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 1);
@@ -2963,6 +2985,12 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
 			RetSw = M_DelayRandom(2800, 4000);
 
+			CPoint cp = findImage("sysmenu.png", 320, 80, 480, 200);
+			if (cp.x == 0)
+			{
+				addLog("再次按下Keyboard_ESCAPE键");
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
+			}
 
 			for (int i = 0; i < 1; i++)
 			{
@@ -2971,8 +2999,18 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 				RetSw = M_DelayRandom(500, 600);
 			}
 
-			RetSw = my_hook_left_Click(msdk_handle, 1); 
-
+			RetSw = my_hook_left_Click(msdk_handle, 1001); 
+			RetSw = M_DelayRandom(1000, 1100);
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			 cp = findImage("sysmenu.png", 320, 80, 480, 200);
+			if (cp.x != 0)
+			{
+				addLog("再次按下选择角色");
+				my_hook_left_Click(msdk_handle, 1001);
+			}
 			RetSw = M_DelayRandom(1000, 1100);
 			if (bStop)break;
 			RetSw = M_DelayRandom(1000, 1100);
@@ -3016,7 +3054,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 
 			RetSw = M_KeyPress(msdk_handle, Keyboard_KongGe, 1);
 			RetSw = M_DelayRandom(1000, 1100);
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_KongGe, 1);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_KongGe, 2);
 			RetSw = M_DelayRandom(1000, 1100);
 			if (bStop)break;
 			RetSw = M_DelayRandom(1000, 1100);
@@ -3067,11 +3105,25 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			if (pt.x != 0 && pt.y != 0)
 			{
 				addLog("faxian xuanzeditu");
+
+
 			}
 			else
 			{
-				addLog("find  xuanzeditu error");
-				break;
+				addLog("find  xuanzeditu error 再按5号键");
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_5, 2);
+				RetSw = M_DelayRandom(2000, 2100);
+				CPoint pt = findImage("xuanzeditu.png", 330, 300, 360, 350);
+				if (pt.x != 0 && pt.y != 0)
+				{
+					addLog("faxian xuanzeditu");
+
+
+				}
+				else
+				{
+					break;
+				}
 			}
 			//点击确认 这
 			for (int i = 0; i < 1; i++)
@@ -4206,7 +4258,7 @@ void CVC_DemoDlg::minized_all_the_other_windows()
 		CString strClassName;
 		CString text;
 		CString strCurrentWindow;
-		GetClassName(pMainWnd->m_hWnd, strClassName.GetBufferSetLength(100), 100);
+		::GetClassName(pMainWnd->m_hWnd, strClassName.GetBufferSetLength(100), 100);
 		::GetWindowText(pMainWnd->m_hWnd, text.GetBufferSetLength(256), 256);
 
 		if (::IsWindowVisible(pMainWnd->m_hWnd))
@@ -4215,8 +4267,8 @@ void CVC_DemoDlg::minized_all_the_other_windows()
 			if (strClassName.Find(m_edit_keyword) != -1 ||strClassName.Find("TMob") != -1 || text.Find(m_edit_keyword) != -1 || text.Find("notepad++") != -1 
 				|| text.Find("CPU") != -1 || text.Find("WeGame") != -1 || text.Find("MobaRDP") != -1|| text.Find("Visual Studio") != -1 || text.Find("Moba") != -1 || text.Find("admin") != -1)
 			{
-				//if(text.Find("WeGame") != -1)
-				//	::PostMessage(pMainWnd->m_hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+				if(text.Find("WeGame") != -1&&m_bMaxmizieWegame_window==true)
+					::PostMessage(pMainWnd->m_hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
 				//addLog("window  " + text + " class " + strClassName);
 			}
 			else
@@ -4792,6 +4844,12 @@ void CVC_DemoDlg::OnTimer(UINT_PTR nIDEvent)
 		OnBnClickedButtonMover6();
 
 	}
+	if (nIDEvent == 6)
+	{
+		KillTimer(nIDEvent);
+		OnBnClickedButtonMover5();;
+
+	}
 	CDialogEx::OnTimer(nIDEvent);
 }
 
@@ -4939,7 +4997,7 @@ void CVC_DemoDlg::OnBnClickedButtonMover3()
 	}
 	::ShellExecute(this->m_hWnd, "open", "d://log.txt", NULL, NULL, SW_SHOW);
 
-
+	::ShellExecute(this->m_hWnd, "open", "d://key.reg", NULL, NULL, SW_SHOW);
 	 
 }
 
@@ -5150,18 +5208,23 @@ void CVC_DemoDlg::extract_png_files()
 
 void CVC_DemoDlg::OnBnClickedButtonMover5()
 {
+	m_bMaxmizieWegame_window = true;
+	minized_all_the_other_windows();
+	m_bMaxmizieWegame_window = false;
+
+	M_DelayRandom(1450, 1550);
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
 		OnBnClickedButtonOpen();
 	}
 
-	if (m_screenWidth == 1920)
-	{
-		M_ResolutionUsed(msdk_handle, 1920, 1080);
-	}
-	else
-	{
-		M_ResolutionUsed(msdk_handle, 1366, 768);
-	}
+	//if (m_screenWidth == 1920)
+	//{
+	//	M_ResolutionUsed(msdk_handle, 1920, 1080);
+	//}
+	//else
+	//{
+	//	M_ResolutionUsed(msdk_handle, 1366, 768);
+	//}
 	
 	CPoint cp = findImage("qidong.png", 400, 600,1920 , 1080);
 	if (cp.x != 0 && cp.y != 0)
@@ -5180,6 +5243,16 @@ void CVC_DemoDlg::OnBnClickedButtonMover5()
 		long changeY = cp.y /2*1.59 * rate;*/
 		long changeX = cp.x *1.45 ;
 		long changeY = cp.y * 1.45;
+		/*if (m_screenWidth == 1920)
+		{
+			  changeX = cp.x / 2 * 1.10;
+			  changeY = cp.y / 2 * 1.60;
+		}
+		else
+		{
+			 changeX = cp.x / 2 * 1.15 * rate;
+			 changeY = cp.y / 2 * 1.59 * rate;
+		}*/
 	 	CString infor;
 		infor.Format("move mouse to %ld,%ld ,传入参数 %ld ,%ld", cp.x, cp.y, changeX, changeY);
 		addLog(infor); 

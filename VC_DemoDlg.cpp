@@ -391,7 +391,7 @@ int my_hook_KeyPress(HANDLE m_hdl, int HidKeyCode, int Nbr)
 		else if(Nbr == 2)
 		{
 			M_KeyDown(m_hdl, HidKeyCode);
-			M_DelayRandom(400, 410);
+			M_DelayRandom(400, 510);
 			return M_KeyUp(m_hdl, HidKeyCode);
 		}
 		else if (Nbr == 3)
@@ -399,7 +399,7 @@ int my_hook_KeyPress(HANDLE m_hdl, int HidKeyCode, int Nbr)
 			//M_KeyPress(m_hdl, HidKeyCode, Nbr);
 
 			M_KeyDown(m_hdl, HidKeyCode);
-			M_DelayRandom(400, 500);
+			M_DelayRandom(520, 600);
 			return M_KeyUp(m_hdl, HidKeyCode);
 		}
 		else if (Nbr == 4)
@@ -675,8 +675,8 @@ CPoint findImage_in_subrect(string strPath_findImage, int left, int top, int rig
 		/* long changeX = dleft - 1120;
 		long changeY = dtop - 0; */
 		//390,54 1030 54
-		//infor.Format("X=%ld,Y=%ld,x=%ld,y=%ld,maxVal=%0.2lf,", changeX, changeY, matchLoc.x, matchLoc.y, maxVal);
-		//addLog("game " + infor);
+		infor.Format("X=%ld,Y=%ld,x=%ld,y=%ld,maxVal=%0.2lf,", changeX, changeY, matchLoc.x, matchLoc.y, maxVal);
+		addLog("game " + infor);
 		//if ((matchLoc.x - changeX) > 1255 && (matchLoc.x - changeX) < 1615 && (matchLoc.y - changeY) >= 275 && (matchLoc.y - changeY) <=430 && maxVal > 0.5 )
 		if ( maxVal > 0.5)
 		{
@@ -722,7 +722,7 @@ CPoint findImage(string strPath_findImage, int left, int top, int right, int bot
 		
 		if (pDlg->bOnlyForTest)
 		{//这里可以取left,top,right,bottom中的子图
-		Rect rect(dleft + left, dtop + top, right - left, bottom - top);
+		    Rect rect(dleft + left, dtop + top, right - left, bottom - top);
 		
 			Mat image_ori = img(rect);
 			imshow("ori", image_ori);
@@ -1637,7 +1637,7 @@ DWORD WINAPI    changeUser(LPVOID pp)
 		if (bChangeUser == true)
 		{
 			addLog("按下方向右键");
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_RightArrow, 2);
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_RightArrow, 3);
 			RetSw = M_DelayRandom(2100, 2300);
 
 		}
@@ -2505,7 +2505,7 @@ DWORD WINAPI    changeUser_And_Login_siwangTa_Thread(LPVOID pp)
 			if (bChangeUser == true)
 			{
 				addLog("按下方向右键");
-				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_RightArrow, 2);
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_RightArrow, 3);
 				RetSw = M_DelayRandom(2100, 2300);
 				//bChangeUser =false;//下次不切了?
 			}
@@ -2990,6 +2990,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			{
 				addLog("再次按下Keyboard_ESCAPE键");
 				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
+				RetSw = M_DelayRandom(2800, 4000);
 			}
 
 			for (int i = 0; i < 1; i++)
@@ -3001,6 +3002,13 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 
 			RetSw = my_hook_left_Click(msdk_handle, 1001); 
 			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
 			RetSw = M_DelayRandom(1000, 1100);
 			if (bStop)break;
 			RetSw = M_DelayRandom(1000, 1100);
@@ -3034,7 +3042,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			if (bChangeUser == true)
 			{
 				addLog("按下方向右键");
-				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_RightArrow,2);
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_RightArrow,3);
 				RetSw = M_DelayRandom(2100, 2300);
 				//bChangeUser =false;//下次不切了?
 			}
@@ -3147,7 +3155,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			RetSw = M_DelayRandom(1000, 1100);
 			if (bStop)break;
 
-			pt = findImage("阿德大陆.png", 200, 20, 225, 40);
+			pt = findImage("阿德大陆.png", 200, 20, 280, 50);
 			if (pt.x != 0 && pt.y != 0)
 			{
 				addLog("阿德大陆");
@@ -3168,10 +3176,11 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 				RetSw = M_DelayRandom(1200, 1500);
 				if (bStop)break;
 				RetSw = M_DelayRandom(1200, 1500);
+				addLog("滚轮1次");
 			}
 			if (bStop)break;
 
-			addLog("滚轮3次");
+			
 
 			pt = findImage("素喃.png", 285, 20, 305, 40);
 			if (pt.x != 0 && pt.y != 0)
@@ -3875,7 +3884,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 				continue;
 			}
 		}
-		CPoint cp = findImage("ingamenew.png", 340, 40, 400, 80);
+		CPoint cp = findImage("ingamenew.png", 340, 40, 480, 80);
 		if (cp.x != 0 && cp.y != 0)
 		{ 
 
@@ -4141,7 +4150,7 @@ void CVC_DemoDlg::OnBnClickedButtonGetmousepos()
 		}
 		m_editLogInfor.SetWindowTextA("reset");
 		CString infor;
-		infor.Format("full stop  time remains %ld \r\n", pDlg->m_checkTimes - Global_checkTime);
+		infor.Format("full stop  time remains %ld today %ld\r\n", pDlg->m_checkTimes - Global_checkTime, m_list_time_log.GetCount());
 
 		pDlg->m_editLogInfor.SetWindowTextA(infor);
 		bStop = true;
@@ -4267,9 +4276,33 @@ void CVC_DemoDlg::minized_all_the_other_windows()
 			if (strClassName.Find(m_edit_keyword) != -1 ||strClassName.Find("TMob") != -1 || text.Find(m_edit_keyword) != -1 || text.Find("notepad++") != -1 
 				|| text.Find("CPU") != -1 || text.Find("WeGame") != -1 || text.Find("MobaRDP") != -1|| text.Find("Visual Studio") != -1 || text.Find("Moba") != -1 || text.Find("admin") != -1)
 			{
-				if(text.Find("WeGame") != -1&&m_bMaxmizieWegame_window==true)
-					::PostMessage(pMainWnd->m_hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-				//addLog("window  " + text + " class " + strClassName);
+				 
+				if (text.Find("WeGame") != -1 && m_bMaxmizieWegame_window == true)
+				{
+					
+					// ::PostMessage(pMainWnd->m_hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+					
+				}
+				if (text.Find("WeGame") != -1)
+				{
+					CRect rect;
+					::GetWindowRect(pMainWnd->m_hWnd, &rect);
+					CString strWindow;
+					strWindow.Format("%lx,%s,%s,(%ld)",pMainWnd->m_hWnd,strClassName, text,rect.Width());
+
+					if (rect.Width() ==1920 || rect.Width() == 1366 )
+					{ 
+						strWindow.Format(_T("xxxx%lx,(%ld,%ld,%ld,%ld)"), pMainWnd->m_hWnd, rect.left, rect.top, rect.Width(), rect.Height());
+						 
+					}
+					else
+					{
+						addLog("window  " + text + " infor " + strWindow);
+						::PostMessage(pMainWnd->m_hWnd, WM_CLOSE, NULL, 0);
+					}
+					
+					//
+				}
 			}
 			else
 			{
@@ -4522,6 +4555,7 @@ void CVC_DemoDlg::OnBnClickedButtonKeypress8()
 	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS)->EnableWindow(true);
 	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(true);
 	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS5)->EnableWindow(true);
+	minized_all_the_other_windows();
 	ShellExecute(this->m_hWnd, "open", "d://立即下线.bat", NULL, "", SW_SHOWMAXIMIZED);
 }
 
@@ -4541,8 +4575,9 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 	unsigned int RetSw = 0;
 	 
  
-	 
+	minized_all_the_other_windows();
 	
+	return;
 
 	bStop = false;
 	bFullStop = false;
@@ -4552,14 +4587,15 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 	}
 	 
 	addLog("Path=" + strAppPath); 
-	CPoint cp = findImage ("sysmenu.png", 320, 80, 480, 200);
+	//CPoint cp = findImage ("sysmenu.png", 320, 80, 480, 200);
+	CPoint cp = findImage("ingamenew.png", 340, 40, 480, 80);
 	//if (cp.x == 0)
 	//CPoint cp = findImage("xuanzeditu.png", 320, 300, 430, 330);
 	if (cp.x != 0 && cp.y != 0)
 	{
 
 		CString str;
-		str.Format("%s (%ld,%ld)\n", "发现在游戏中 0", cp.x, cp.y);
+		str.Format("%s (%ld,%ld)\n", "发现sysmenu 0", cp.x, cp.y);
 		addLog(str);
 
 	}
@@ -4567,7 +4603,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 	{
 
 		CString str;
-		str.Format(" %s (%ld,%ld)\n", "未在游戏中 0", cp.x, cp.y);
+		str.Format(" %s (%ld,%ld)\n", "未在sysmenu 0", cp.x, cp.y);
 		addLog(str);
 
 	}
@@ -4997,7 +5033,7 @@ void CVC_DemoDlg::OnBnClickedButtonMover3()
 	}
 	::ShellExecute(this->m_hWnd, "open", "d://log.txt", NULL, NULL, SW_SHOW);
 
-	::ShellExecute(this->m_hWnd, "open", "d://key.reg", NULL, NULL, SW_SHOW);
+	//::ShellExecute(this->m_hWnd, "open", "d://key.reg", NULL, NULL, SW_SHOW);
 	 
 }
 

@@ -224,9 +224,14 @@
     <Image Include="..\..\qidong.png" />
     <Image Include="cailiao.png" />
     <Image Include="fangru.png" />
+    <Image Include="quchu.png" />
     <Image Include="savemoney.png" />
+    <Image Include="shangdian_xiuli.png" />
     <Image Include="sysmenu.png" />
     <Image Include="tiaozhanshu.png" />
+    <Image Include="tiezhu.png" />
+    <Image Include="wait_set.png" />
+    <Image Include="wujin.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

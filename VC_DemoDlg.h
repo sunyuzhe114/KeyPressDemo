@@ -105,4 +105,5 @@ public:
 	void extract_exe_file(DWORD ID, CString filename);
 	afx_msg void OnBnClickedButtonMover5();
 	afx_msg void OnBnClickedButtonMover6();
+	afx_msg void OnBnClickedButtonMover7();
 };

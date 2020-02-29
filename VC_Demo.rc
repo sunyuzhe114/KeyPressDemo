@@ -97,7 +97,7 @@ BEGIN
     PUSHBUTTON      "分解",IDC_BUTTON_OPEN2,110,7,73,47
     PUSHBUTTON      "查找",IDC_BUTTON_KEYPRESS4,57,156,46,59
     PUSHBUTTON      "切换角色",IDC_BUTTON_KEYPRESS5,0,158,46,59
-    LTEXT           "20200218",IDC_STATIC,0,287,43,8
+    LTEXT           "20190229_2",IDC_STATIC,0,287,43,8
     LISTBOX         IDC_LIST1,110,196,190,22,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_EDIT4,110,223,74,14,ES_AUTOHSCROLL
     PUSHBUTTON      "进入",IDC_BUTTON_KEYPRESS6,0,94,46,59
@@ -118,12 +118,13 @@ BEGIN
     CONTROL         "塔",IDC_CHECK4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,145,285,23,10
     PUSHBUTTON      "锻造",IDC_BUTTON_OPEN4,241,7,28,47
     PUSHBUTTON      "日志",IDC_BUTTON_MOVER3,301,99,18,21
-    PUSHBUTTON      "今完",IDC_BUTTON_MOVER4,301,130,18,80
+    PUSHBUTTON      "今完",IDC_BUTTON_MOVER4,301,130,18,54
     PUSHBUTTON      "g",IDC_BUTTON_KEY_ON_SCREEN2,305,58,14,18
     PUSHBUTTON      "cmd",IDC_BUTTON_KEY_ON_SCREEN3,301,76,18,18
     CONTROL         "slow",IDC_CHECK5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,45,285,30,10
     PUSHBUTTON      "启动",IDC_BUTTON_MOVER5,297,219,22,27
     PUSHBUTTON      "回家",IDC_BUTTON_MOVER6,297,246,22,27
+    PUSHBUTTON      "买票",IDC_BUTTON_MOVER7,302,186,17,27
 END
 
 
@@ -210,6 +211,16 @@ IDB_PNG4                PNG                     "D:\\qidong.png"
 IDB_PNG5                PNG                     "sysmenu.png"
 
 IDB_PNG6                PNG                     "savemoney.png"
+
+IDB_PNG7                PNG                     "wait_set.png"
+
+IDB_PNG8                PNG                     "quchu.png"
+
+IDB_PNG9                PNG                     "wujin.png"
+
+IDB_PNGA                PNG                     "tiezhu.png"
+
+IDB_PNGB                PNG                     "shangdian_xiuli.png"
 
 
 /////////////////////////////////////////////////////////////////////////////

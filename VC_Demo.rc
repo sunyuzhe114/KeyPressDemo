@@ -54,8 +54,8 @@ BEGIN
     "\r\n"
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
     "LANGUAGE 4, 2\r\n"
-    "#include ""res\\VC_Demo.rc2""  // 闂? Microsoft Visual C++ 闂傚倷绀侀幉锟犲Φ濠婂牆纾规繛鎴欏灩缁€?-濠?闂傚倷鑳堕崢褔鎮洪妸锔剧濠电姴娲ら弸?闂?\n"
-    "#include ""l.CHS\\afxres.rc""      // 闂傚倷绀侀幉锟犲Φ濠婂牆纾规繝闈涱儏閺嬩線鎮楅敐搴℃灍闁?闂傚倷绀侀崥瀣焽濞嗘挻鍋柛銉㈡杹閸?t\r\n"
+    "#include ""res\\VC_Demo.rc2""  // 闂? Microsoft Visual C++ 闂傚倸鍊风粈渚€骞夐敓鐘参︽繝濠傜墕绾捐绻涢幋娆忕仼缂佲偓?-婵?闂傚倸鍊烽懗鍫曞储瑜旈幃娲Ω閿斿墽顔曟繝鐢靛Т濞层倝寮?闂?\n"
+    "#include ""l.CHS\\afxres.rc""      // 闂傚倸鍊风粈渚€骞夐敓鐘参︽繝濠傜墕绾捐绻濋棃娑卞剰闁哄绶氶幃妤呮晲鎼粹剝鐏嶉梺?闂傚倸鍊风粈渚€宕ョ€ｎ亶鐒芥繛鍡樻尰閸嬵亪鏌涢妷銏℃澒闁?t\r\n"
     "#endif\r\n"
     "\0"
 END
@@ -97,7 +97,7 @@ BEGIN
     PUSHBUTTON      "分解",IDC_BUTTON_OPEN2,110,7,73,47
     PUSHBUTTON      "查找",IDC_BUTTON_KEYPRESS4,57,156,46,59
     PUSHBUTTON      "切换角色",IDC_BUTTON_KEYPRESS5,0,158,46,59
-    LTEXT           "20190229_2",IDC_STATIC,0,287,43,8
+    LTEXT           "20190301",IDC_STATIC,0,287,43,8
     LISTBOX         IDC_LIST1,110,196,190,22,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_EDIT4,110,223,74,14,ES_AUTOHSCROLL
     PUSHBUTTON      "进入",IDC_BUTTON_KEYPRESS6,0,94,46,59

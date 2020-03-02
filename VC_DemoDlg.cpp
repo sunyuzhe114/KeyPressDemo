@@ -1715,7 +1715,11 @@ DWORD WINAPI    changeUser(LPVOID pp)
 		/*RetSw = M_LeftDown(msdk_handle );
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_LeftUp(msdk_handle );*/
+		if (bStop)break;
+		findImage_and_click("wait_set.png", 420, 340, 520, 380, msdk_handle, 1, 1);
+		if (bStop)break;
 
+		RetSw = M_DelayRandom(800, 1000);
 		if (bStop)break;
 		RetSw = M_DelayRandom(800, 1000);
 		addLog("按下Keyboard_ESCAPE键");
@@ -1877,6 +1881,8 @@ DWORD WINAPI    maipiao(LPVOID pp)
 	unsigned int RetSw = 0;
 	DWORD m_dTimeBeginPress_F10 = 0;
 	char* inputText = "1000";
+	char* buyNum_huanglong = "200";
+	char* buyNum_qinglong = "140";
 	CString infor;
 
 	do {
@@ -1939,7 +1945,7 @@ DWORD WINAPI    maipiao(LPVOID pp)
 		if (bStop)break;
 		//这里要把无尽的永恒放在箱子里
 
-
+		addLog("点击取出按钮");
 		bool click_result= findImage_and_click("quchu.png", 240, 150, 450, 600, msdk_handle, 1, 1, 140, 0);
 		if (click_result == true)
 		{
@@ -1948,8 +1954,8 @@ DWORD WINAPI    maipiao(LPVOID pp)
 			if (bStop)break;
 			RetSw = M_DelayRandom(1000, 1100);
 			if (bStop)break;
-
-			if (pDlg->m_screenWidth > 1366)
+//只有小屏幕才输入文字 
+			if (pDlg->m_screenWidth <= 1366)
 			{
 				
 				RetSw = M_KeyInputString(msdk_handle, inputText, strlen(inputText));
@@ -2168,10 +2174,25 @@ DWORD WINAPI    maipiao(LPVOID pp)
 
 			
 			M_KeyUp(msdk_handle, Keyboard_RightShift);
-			
-			RetSw = M_KeyInputString(msdk_handle, inputText, strlen(inputText));
-
-
+			if (pDlg->m_screenWidth <= 1366)
+			{
+				if (pDlg->bHuangLong == true)
+				{
+					RetSw = M_KeyInputString(msdk_handle, buyNum_huanglong, strlen(buyNum_huanglong));
+				}
+				else
+				{
+					RetSw = M_KeyInputString(msdk_handle, buyNum_qinglong, strlen(buyNum_qinglong));
+				}
+			}
+			RetSw = M_DelayRandom(1000, 1100);
+			my_hook_left_Click(msdk_handle, 1);
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			RetSw = M_DelayRandom(1000, 1100);
+			if (bStop)break;
+			addLog("按下Keyboard_ESCAPE键");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
 
 
 		}
@@ -2706,6 +2727,10 @@ DWORD WINAPI    change_to_first_player(LPVOID pp)
 		move_to_relativePos(msdk_handle, 50, 50);
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = M_LeftClick(msdk_handle, 1);
+		RetSw = M_DelayRandom(800, 1000);
+		if (bStop)break;
+		findImage_and_click("wait_set.png", 420, 340, 520, 380, msdk_handle, 1, 1);
+		if (bStop)break;
 		RetSw = M_DelayRandom(800, 1000);
 		addLog("按下Keyboard_ESCAPE键");
 		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);

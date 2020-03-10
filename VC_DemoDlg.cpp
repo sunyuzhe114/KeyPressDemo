@@ -967,91 +967,101 @@ int checkGame_state()
 	bool bResult = -1;
 	try
 	{
-		CPoint cp=findImage("fightagain.png", 600, 50,650, 90);
-
+		CPoint cp = findImage("fightagain.png", 600, 50, 650, 90);
 		if (cp.x != 0 && cp.y != 0)
 		{
-			img = cv::imread(strAppPath.GetBuffer(0) + (string)"s.bmp", IMREAD_COLOR);
+			addLog("游戏完成一次检测");
+			
+			M_DelayRandom(4300, 4400);
+			CPoint cp = findImage("fightagain.png", 600, 50, 650, 90);
 
-			try
+			if (cp.x != 0 && cp.y != 0)
 			{
-
-				Mat NewImg = img(Rect(cp.x, cp.y, 80, 30));
-				Mat means, stddev, covar;
-			cv:Scalar tempVal = cv::mean(NewImg);
-				float matMean = tempVal.val[0];
-				CString strResult;
-				//42 34 56//not change to grey
-				// 43 29 45 //grey
-				// 43 31 49
-				//21:40 : 04   means : 43 31 50
+				addLog("游戏完成二次检测");
 
 
+				img = cv::imread(strAppPath.GetBuffer(0) + (string)"s.bmp", IMREAD_COLOR);
 
-				strResult.Format("means  : %0.0f %0.0f %0.0f\n", tempVal.val[0], tempVal.val[1], tempVal.val[2]);//RGB三通道，所以均值结果是3行一列
-				addLog(strResult);
-				//imshow("test", NewImg);
-				if (tempVal.val[1] <= 32 && tempVal.val[2] <= 51 || pDlg->bOnlyForTest)
-					//if(TRUE)
+				try
 				{
 
-					CString str;
-					CTime t = CTime::GetCurrentTime();
-					CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+					Mat NewImg = img(Rect(cp.x, cp.y, 80, 30));
+					Mat means, stddev, covar;
+				cv:Scalar tempVal = cv::mean(NewImg);
+					float matMean = tempVal.val[0];
+					CString strResult;
+					//42 34 56//not change to grey
+					// 43 29 45 //grey
+					// 43 31 49
+					//21:40 : 04   means : 43 31 50
 
-					str.Format("%s==>%s\r\n", tt, "帐号已经使用完成 0");
-					CStdioFile file;
-					if (file.Open(_T("log.txt"), CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate, NULL))
-					{
-						file.SeekToEnd();
-						file.WriteString(str);
-						file.Close();
-					}
-					addLog_important(str);
-					addLog("帐号已经使用完成 0");
-					Game_state = 100;
-					bResult = 100;// 
-				}
-				else
-				{//正常=1726,y=70,,
-					 //正常=1726,y=70,,(42,34,56)
-					//异常=1733,y=75    (37,49,55)
-					//这里还是要取色一下
-					CString strVal;
-					strVal.Format("(%0.0lf,%0.0lf,%0.0lf)", tempVal.val[0], tempVal.val[1], tempVal.val[2]);
 
-					if (tempVal.val[0] > 40)
+
+					strResult.Format("means  : %0.0f %0.0f %0.0f\n", tempVal.val[0], tempVal.val[1], tempVal.val[2]);//RGB三通道，所以均值结果是3行一列
+					addLog(strResult);
+					//imshow("test", NewImg);
+					if (tempVal.val[1] <= 32 && tempVal.val[2] <= 51 || pDlg->bOnlyForTest)
+						//if(TRUE)
 					{
-						infor = "检测到游戏还可以再玩 1" + infor + strVal;
-						addLog(infor);
-						bResult = 200;//检测到游戏还可以再玩
-						Game_state = 200;
+
+						CString str;
+						CTime t = CTime::GetCurrentTime();
+						CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+
+						str.Format("%s==>%s\r\n", tt, "帐号已经使用完成 0");
+						CStdioFile file;
+						if (file.Open(_T("log.txt"), CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate, NULL))
+						{
+							file.SeekToEnd();
+							file.WriteString(str);
+							file.Close();
+						}
+						addLog_important(str);
+						addLog("帐号已经使用完成 0");
+						Game_state = 100;
+						bResult = 100;// 
 					}
 					else
-					{
-						infor += "未检测到窗口 -1 ";
-						addLog(infor);
-						//pDlg->MessageBoxA("未检测到窗口,", "error", MB_OK);
-						bResult = -1; Game_state = -1;
+					{//正常=1726,y=70,,
+						 //正常=1726,y=70,,(42,34,56)
+						//异常=1733,y=75    (37,49,55)
+						//这里还是要取色一下
+						CString strVal;
+						strVal.Format("(%0.0lf,%0.0lf,%0.0lf)", tempVal.val[0], tempVal.val[1], tempVal.val[2]);
+
+						if (tempVal.val[0] > 40)
+						{
+							infor = "检测到游戏还可以再玩 1" + infor + strVal;
+							addLog(infor);
+							bResult = 200;//检测到游戏还可以再玩
+							Game_state = 200;
+						}
+						else
+						{
+							infor += "未检测到窗口 -1 ";
+							addLog(infor);
+							//pDlg->MessageBoxA("未检测到窗口,", "error", MB_OK);
+							bResult = -1; Game_state = -1;
+						}
+
+						//	pDlg->MessageBoxA("检测到游戏还可以再玩,", "error", MB_OK);
 					}
-
-					//	pDlg->MessageBoxA("检测到游戏还可以再玩,", "error", MB_OK);
 				}
-			}
-			catch (exception & e)
-			{
-				img.release();
-				templ.release();
-				infor += "error execptio -1 ";
-				addLog(infor);
-				return -1;
-			}
+				catch (exception & e)
+				{
+					img.release();
+					templ.release();
+					infor += "error execptio -1 ";
+					addLog(infor);
+					return -1;
+				}
 
-			img.release();
-			return bResult;
-		}
-		else{
-		//	addLog("未检测到游戏结束标志");
+				img.release();
+				return bResult;
+			}
+			else {
+				//	addLog("未检测到游戏结束标志");
+			}
 		}
 	}
 	catch (Exception& e)
@@ -1733,7 +1743,10 @@ DWORD WINAPI    changeUser(LPVOID pp)
 		}
 		CPoint cp = findImage("sysmenu.png", 320, 80, 480, 200);
 		if (cp.x == 0)
+		{
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
+			RetSw = M_DelayRandom(1000, 1100);
+		}
 
 		RetSw = my_hook_left_Click(msdk_handle, 1);
 		RetSw = M_DelayRandom(1000, 1100);
@@ -1770,6 +1783,7 @@ DWORD WINAPI    changeUser(LPVOID pp)
 		if (bStop)break;
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
+		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_KongGe, 2);
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
 		RetSw = M_DelayRandom(1000, 1100);
@@ -2055,7 +2069,7 @@ DWORD WINAPI    maipiao(LPVOID pp)
 		}
 		if (bStop)break;
 		//滚动3次到了 
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 4; i++)
 		{
 			RetSw = M_MouseWheel(msdk_handle, -1);
 			if (bStop)break;
@@ -2376,9 +2390,10 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 
 		 
 		//按5号键，
+		 //按5号键，
 		addLog("按5号键");
 		if (bStop)break;
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_5, 1);
+		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_5, 2);
 		if (bStop)break;
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
@@ -2390,16 +2405,44 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 		if (bStop)break;
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
+		//这里检查一下,是否有5号键已经按下
+		CPoint pt = findImage("xuanzeditu.png", 330, 300, 360, 350);
+		if (pt.x != 0 && pt.y != 0)
+		{
+			addLog("faxian xuanzeditu");
 
+
+		}
+		else
+		{
+			addLog("find  xuanzeditu error 再按5号键");
+			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_5, 2);
+			RetSw = M_DelayRandom(2000, 2100);
+			CPoint pt = findImage("xuanzeditu.png", 330, 300, 360, 350);
+			if (pt.x != 0 && pt.y != 0)
+			{
+				addLog("faxian xuanzeditu");
+
+
+			}
+			else
+			{
+				break;
+			}
+		}
 		//点击确认 这
 		for (int i = 0; i < 1; i++)
 		{
-			RetSw = M_ResetMousePos(msdk_handle); 
-			RetSw = move_to_relativePos(msdk_handle, 370, 325);
+			RetSw = M_ResetMousePos(msdk_handle);
+			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+			if (pDlg->m_screenWidth <= 1366)
+				RetSw = move_to_relativePos(msdk_handle, 405, 325);
+			else
+				RetSw = move_to_relativePos(msdk_handle, 395, 325);
 			RetSw = M_DelayRandom(500, 600);
 		}
 		addLog("按确定");
-		RetSw = my_hook_left_Click(msdk_handle, 1);
+		RetSw = my_hook_left_Click(msdk_handle, 2);
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
 		RetSw = M_DelayRandom(1000, 1100);
@@ -2409,6 +2452,17 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
 
+		pt = findImage("阿德大陆.png", 200, 20, 280, 50);
+		if (pt.x != 0 && pt.y != 0)
+		{
+			addLog("阿德大陆");
+		}
+		else
+		{
+			addLog("find  阿德大陆 error");
+			break;
+		}
+		 
 
 		if (bStop)break;
 		//滚动1次到了 
@@ -2443,6 +2497,8 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 		RetSw = M_DelayRandom(800, 1000);
 		RetSw = my_hook_left_Click(msdk_handle, 1);
 
+		RetSw = my_hook_left_Click(msdk_handle, 4);
+
 
 		if (bStop)break;
 		RetSw = M_DelayRandom(1000, 1100);
@@ -2457,28 +2513,49 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 		if (bStop)break;
 		addLog("选定坐标");
 		if (bStop)break;
+
+		pt = findImage("传送.png", 340, 310, 365, 330);
+		if (pt.x != 0 && pt.y != 0)
+		{
+			addLog("传送");
+		}
+		else
+		{
+			addLog("find  传送 error");
+			break;
+		}
 		//点击确认
 		for (int i = 0; i < 1; i++)
 		{
-			RetSw = M_ResetMousePos(msdk_handle); 
-			RetSw = move_to_relativePos(msdk_handle, 370, 323);
-
-			RetSw = M_DelayRandom(500, 600);
+			RetSw = M_ResetMousePos(msdk_handle);
+			//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
+			/*RetSw = move_to_relativePos(msdk_handle, 370, 323);
+			RetSw = M_DelayRandom(500, 600);*/
+			if (pDlg->m_screenWidth <= 1366)
+				RetSw = move_to_relativePos(msdk_handle, 405, 325);
+			else
+				RetSw = move_to_relativePos(msdk_handle, 395, 325);
 		}
-		RetSw = my_hook_left_Click(msdk_handle, 1);
+		RetSw = my_hook_left_Click(msdk_handle, 4);
 		RetSw = M_DelayRandom(500, 1100);
-		////点击确认二次,保证点上
-		//for (int i = 0; i < 1; i++)
-		//{
-		//	RetSw = M_ResetMousePos(msdk_handle);
-		//	//RetSw = my_new_MoveTo(msdk_handle, (int)((1496) / rate), (int)((325) / rate));
-		//	RetSw = move_to_relativePos(msdk_handle, 370, 326);
-		//	RetSw = M_DelayRandom(500, 600);
-		//}
-		//RetSw = my_hook_left_Click(msdk_handle, 1);
+	 
 
 		addLog("点击确认");
 		if (bStop)break;
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		RetSw = M_DelayRandom(1000, 1100);
+		if (bStop)break;
+		addLog("选定坐标");
+		if (bStop)break;
+		  
 		 
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
@@ -2495,7 +2572,7 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 		RetSw = M_DelayRandom(1000, 1100);
 
 		 
-		CPoint pt = findImage("yaluo.png", 150, 0, 750, 400);
+		pt = findImage("yaluo.png", 150, 0, 750, 400);
 		if (pt.x != 0 && pt.y != 0)
 		{
 
@@ -2516,7 +2593,7 @@ DWORD WINAPI    xiuli_fenjieji(LPVOID pp)
 		}
 
 		CString infor;
-		infor.Format("查找确定按钮%d,%d", pt.x, pt.y);
+		infor.Format("查找 yaluo %d,%d", pt.x, pt.y);
 		addLog(infor);
 		if (pt.x == 0)
 		{
@@ -3660,7 +3737,7 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 			}
 			if (bStop)break;
 			//滚动3次到了 
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < 4; i++)
 			{
 				RetSw = M_MouseWheel(msdk_handle, -1);
 				if (bStop)break;
@@ -4086,7 +4163,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		//RetSw = M_ReleaseAllMouse(msdk_handle);
 		RetSw = M_DelayRandom(1000, 1100);
 		if (bStop)break;
-		findImage_and_click("wait_set.png", 420, 340, 520, 380, msdk_handle, 1, 1);
+		
 		if (bStop)break;
 		RetSw = M_DelayRandom(1000, 1100);
 
@@ -4269,6 +4346,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 
 		if (GetTickCount() - m_dTimeBeginPress_BIGSKILL > 120000)
 		{
+			findImage_and_click("wait_set.png", 420, 340, 520, 380, msdk_handle, 1, 1);
 			CString infor;
 			infor.Format("m_dTimeBeginPress_BIGSKILL continue remains %ld \r\n", pDlg->m_checkTimes - Global_checkTime);
 			pDlg->m_editLogInfor.SetWindowTextA(infor);

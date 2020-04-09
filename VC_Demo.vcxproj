@@ -223,6 +223,7 @@
   <ItemGroup>
     <Image Include="..\..\qidong.png" />
     <Image Include="cailiao.png" />
+    <Image Include="close.png" />
     <Image Include="confirm.png" />
     <Image Include="fangru.png" />
     <Image Include="quchu.png" />

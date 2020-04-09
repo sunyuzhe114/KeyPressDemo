@@ -1277,7 +1277,7 @@ DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 	 
 
 	int RetSw = M_DelayRandom(2800, 3000);
-	CPoint pt = findImage("close.png", 380, 440, 390, 460);
+	CPoint pt = findImage("close.png", 370, 440, 390, 560);
 	if (pt.x != 0 && pt.y != 0)
 	{
 
@@ -1301,9 +1301,7 @@ DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 	}
 	RetSw = M_DelayRandom(1000, 1100);
 	 
-	findImage_and_click("wait_set.png", 420, 340, 520, 380, msdk_handle, 1, 1);
-	 
-	RetSw = M_DelayRandom(1000, 1100);
+
 
 	CString infor;
 	infor.Format("查找确定按钮%d,%d", pt.x, pt.y);
@@ -1341,6 +1339,11 @@ DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 		RetSw = M_DelayRandom(2800, 3000);
 
 	}
+
+
+	RetSw = M_DelayRandom(1000, 1100);
+	findImage_and_click("wait_set.png", 420, 340, 520, 380, msdk_handle, 1, 1);
+	 
 
 	RetSw = M_DelayRandom(2800, 3000);
 
@@ -5991,6 +5994,7 @@ void CVC_DemoDlg::extract_png_files()
 	extract_png_file(IDB_PNGB,"d://shangdian.png");
 	extract_png_file(IDB_PNGC, "d://选择地下城.png");
 	extract_png_file(IDB_PNGD, "d://confirm.png");
+	extract_png_file(IDB_PNGH, "d://close.png");
 
 
 

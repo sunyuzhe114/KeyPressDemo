@@ -30,6 +30,8 @@ CPoint findImage(string strPath_findImage, int left, int top, int right, int bot
 CPoint findImage_in_subrect(string strPath_findImage, int left, int top, int right, int bottom);
 CString GetLocalIP();
 bool m_bMaxmizieWegame_window = false;
+int one_charactor_fighttime = 0;
+int MAX_ONE_CHARACTOR_PLAYTIME = 17;
 BOOL HttpRequestGet(IN const CString& sHomeUrl, IN const CString& sPageUrl, OUT CString& sResult)
 {
 	LONG nPort = 80;
@@ -559,7 +561,7 @@ bool findImage_and_click(string strPath_findImage, int left, int top, int right,
 
 
 	CString infor;
-	infor.Format("查找 %s 按钮%d,%d", strPath_findImage, pt.x, pt.y);
+	infor.Format("查找 %s 按钮%d,%d", strPath_findImage.c_str(), pt.x, pt.y);
 	addLog(infor);
 	if (pt.x == 0)
 	{
@@ -1001,7 +1003,7 @@ int checkGame_state()
 					strResult.Format("means  : %0.1f %0.1f %0.1f\n", tempVal.val[0], tempVal.val[1], tempVal.val[2]);//RGB三通道，所以均值结果是3行一列
 					addLog(strResult);
 					//imshow("test", NewImg);
-					if (tempVal.val[1] <= 32.9 && tempVal.val[2] <= 51 || pDlg->bOnlyForTest)
+					if (tempVal.val[1] <= 32.9 && tempVal.val[2] <= 51 || pDlg->bOnlyForTest|| one_charactor_fighttime>= MAX_ONE_CHARACTOR_PLAYTIME)
 						//if(TRUE)
 					{
 
@@ -1021,6 +1023,7 @@ int checkGame_state()
 						addLog("帐号已经使用完成 0");
 						Game_state = 100;
 						bResult = 100;// 
+						one_charactor_fighttime = 0;
 					}
 					else
 					{//正常=1726,y=70,,
@@ -1036,6 +1039,8 @@ int checkGame_state()
 							addLog(infor);
 							bResult = 200;//检测到游戏还可以再玩
 							Game_state = 200;
+
+							one_charactor_fighttime++;
 						}
 						else
 						{
@@ -1384,52 +1389,35 @@ DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 	
 
 	//全部分解装备
-	for (int i = 0; i < 1; i++)
-	{
-		RetSw = M_ResetMousePos(msdk_handle);
-		RetSw = M_DelayRandom(500, 600);
-		//RetSw = my_new_MoveTo(msdk_handle, (int)((1371) / rate), (int)((351) / rate));
-		RetSw = move_to_relativePos(msdk_handle, 240, 350);
-		RetSw = M_DelayRandom(1500, 2600);
-	}
-	RetSw = my_hook_left_Click(msdk_handle, 1001);
-	RetSw = M_DelayRandom(800, 1000);
-	RetSw = M_DelayRandom(800, 1000);
-	pDlg->saveScreen();
-	pt = findSureButton_state();
-
-	infor.Format("查找确定按钮%d,%d", pt.x, pt.y);
-	addLog(infor);
-	if (pt.x == 0)
-	{
-		addLog("查找确定按钮fail");
-	}
-	else
-	{
-		pt.x += 18; 
-		pt.y += 12;
-		//确认分析装备
-		for (int i = 0; i < 1; i++)
-		{
-			RetSw = M_ResetMousePos(msdk_handle);
-			RetSw = M_DelayRandom(500, 600);
-			//这里使用的是绝对坐标
-			//RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
-			RetSw = move_to_relativePos(msdk_handle, pt.x - dleft, pt.y - dtop);;
-			RetSw = M_DelayRandom(500, 600);
-			RetSw = M_DelayRandom(500, 600);
-		}
-		RetSw = my_hook_left_Click(msdk_handle, 1001);
-
-		infor.Format("绝对坐标 MoveTo %d,%d", (int)(pt.x / rate), (int)(pt.y / rate));
-		addLog(infor);
+		findImage_and_click("wait_set.png", 420, 340, 520, 380, msdk_handle, 1, 1);
 
 		RetSw = M_DelayRandom(800, 1000);
-		RetSw = M_DelayRandom(6200, 9000);
+		RetSw = M_DelayRandom(800, 1000);
 
+		findImage_and_click("select_all.png", 200, 260, 280, 360, msdk_handle, 1, 1);
 
-		RetSw = M_DelayRandom(6200, 9000);
-	}
+		 
+	//for (int i = 0; i < 1; i++)
+	//{
+	//	RetSw = M_ResetMousePos(msdk_handle);
+	//	RetSw = M_DelayRandom(500, 600);
+	//	//RetSw = my_new_MoveTo(msdk_handle, (int)((1371) / rate), (int)((351) / rate));
+	//	RetSw = move_to_relativePos(msdk_handle, 240, 350);
+	//	RetSw = M_DelayRandom(1500, 2600);
+	//}
+	//RetSw = my_hook_left_Click(msdk_handle, 1001);
+	RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_DelayRandom(800, 1000);
+	 
+	findImage_and_click("fenjie_button.png", 285, 400, 380, 440, msdk_handle, 1, 1);
+	RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_DelayRandom(800, 1000);
+	RetSw = M_DelayRandom(1800, 2000); 
+	RetSw = M_DelayRandom(1800, 2000);
+
+	RetSw = M_DelayRandom(1800, 2000);
+	RetSw = M_DelayRandom(1800, 2000);
+
 	addLog("按下Keyboard_ESCAPE键");
 	RetSw = my_hook_KeyPress(msdk_handle, Keyboard_ESCAPE, 2);
 	RetSw = M_DelayRandom(2200, 3000);
@@ -1852,19 +1840,30 @@ DWORD WINAPI    changeUser_nawawa(LPVOID pp)
 	RetSw = M_DelayRandom(800, 1000);
 	RetSw = M_LeftClick(msdk_handle, 1);
 	RetSw = M_DelayRandom(800, 1000);
-	//move_to_relativePos(msdk_handle, 350, 535); 
-	//RetSw = M_DelayRandom(800, 1000);
-	//RetSw = my_hook_left_Click(msdk_handle, 1);
-	//RetSw = M_DelayRandom(800, 1000);
-	/*move_to_relativePos(msdk_handle, 340, 530);
-	RetSw = M_DelayRandom(800, 1000);
-	RetSw = my_hook_left_Click(msdk_handle, 2);*/
+	 
 	for (int i = 0; i < 11120; i++)
-	{
-		move_to_relativePos(msdk_handle, 400, 576);
+	{ 
 		if (bStop)break;
 
-		M_LeftDown(msdk_handle);
+		findImage_and_click("12_close.png", 400, 80, 620, 180, msdk_handle, 1, 0);
+		RetSw = M_DelayRandom(5500, 10000);
+		findImage_and_click("12_money.png", 20, 150, 620, 250, msdk_handle, 1, 0);
+		RetSw = M_DelayRandom(5500, 10000);
+		findImage_and_click("12_tip.png", 20, 150, 620, 250, msdk_handle, 1, 0);
+		RetSw = M_DelayRandom(5500, 10000);
+		findImage_and_click("12_close.png", 400, 80, 620, 180, msdk_handle, 1, 0);
+		RetSw = M_DelayRandom(5500, 10000);
+		findImage_and_click("12_money.png", 20, 150, 620, 250, msdk_handle, 1, 0);
+		RetSw = M_DelayRandom(5500, 10000);
+		findImage_and_click("12_tip.png", 20, 150, 620, 250, msdk_handle, 1, 0);
+		RetSw = M_DelayRandom(5500, 10000);
+		findImage_and_click("12_money.png", 20, 150, 620, 250, msdk_handle, 1, 0);
+		RetSw = M_DelayRandom(15500, 20000);
+		RetSw = M_DelayRandom(15500, 20000);
+
+		RetSw = M_DelayRandom(15500, 20000);
+		RetSw = M_DelayRandom(15500, 20000);
+		/*M_LeftDown(msdk_handle);
 		M_DelayRandom(550, 600);
 		M_LeftUp(msdk_handle);
 
@@ -1909,7 +1908,7 @@ DWORD WINAPI    changeUser_nawawa(LPVOID pp)
 		RetSw = M_DelayRandom(500, 600);
 		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_g, 2);
 		if (bStop)break;
-		RetSw = M_DelayRandom(500, 600);
+		RetSw = M_DelayRandom(500, 600);*/
 		
 	}
 	addLog("changeUser_fenjie exit");
@@ -3987,25 +3986,43 @@ DWORD WINAPI    changeUser_And_Login_Thread(LPVOID pp)
 
 			if (b_login_ok == false)
 			{
-			if (bStop)break;
-			RetSw = M_DelayRandom(500, 1000);
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 4);
-			if (bStop)break;
-			RetSw = M_DelayRandom(1000, 1100);
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_JuHao,4);
-			if (bStop)break;
-			RetSw = M_DelayRandom(500, 1000);
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_JuHao, 4);
-			if (bStop)break;
-			RetSw = M_DelayRandom(500, 1000);
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 4);
-			if (bStop)break;
-			RetSw = M_DelayRandom(500, 1000);
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 4);
-			if (bStop)break;
-			RetSw = M_DelayRandom(500, 1000);
-			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 4);
-			if (bStop)break;
+				if (bStop)break;
+				RetSw = M_DelayRandom(500, 1000);
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 4);
+				if (bStop)break;
+				RetSw = M_DelayRandom(1000, 1100);
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_JuHao, 4);
+				if (bStop)break;
+				RetSw = M_DelayRandom(500, 1000);
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_JuHao, 4);
+				if (bStop)break;
+			}
+			pt = findImage("选择地下城.png", 200, 560, 450, 600);
+			if (pt.x != 0 && pt.y != 0)
+			{
+				b_login_ok = true;
+				addLog("选择地下城");
+			}
+			if (b_login_ok == false)
+			{
+				RetSw = M_DelayRandom(500, 1000);
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 4);
+				if (bStop)break;
+				RetSw = M_DelayRandom(500, 1000);
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 4);
+				if (bStop)break;
+				RetSw = M_DelayRandom(500, 1000);
+				RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 4);
+				if (bStop)break;
+			}
+			pt = findImage("选择地下城.png", 200, 560, 450, 600);
+			if (pt.x != 0 && pt.y != 0)
+			{
+				b_login_ok = true;
+				addLog("选择地下城");
+			}
+			if (b_login_ok == false)
+			{
 			RetSw = M_DelayRandom(500, 1000);
 			RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 4);
 			if (bStop)break;
@@ -4624,6 +4641,9 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS5)->EnableWindow(true);
 
 	RetSw = M_DelayRandom(10000, 15000);
+
+	RetSw = M_DelayRandom(100000, 150000);
+	
 	if (Game_state == 300)
 	{ 
 		pDlg->playerlogin();
@@ -5265,7 +5285,7 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 	}
 	 
 	addLog("Path=" + strAppPath); 
-	findImage_and_click("wait_set.png", 420, 340, 520, 380, msdk_handle, 1, 0);
+	findImage_and_click("12_close.png", 400, 80, 620, 180, msdk_handle, 1, 0);
 	return;
 	//checkGame_state();
 	  //findImage_and_click("wujin.png", 180, 135, 440, 435, msdk_handle, 1);
@@ -5995,9 +6015,9 @@ void CVC_DemoDlg::extract_png_files()
 	extract_png_file(IDB_PNGC, "d://选择地下城.png");
 	extract_png_file(IDB_PNGD, "d://confirm.png");
 	extract_png_file(IDB_PNGH, "d://close.png");
-
-
-
+	extract_png_file(IDB_PNGI, "d://select_all.png");
+	extract_png_file(IDB_PNGJ, "d://fenjie_button.png");
+	extract_png_file(IDB_PNGK, "d://12_close.png");
 	extract_exe_file(IDR_BIN1, "d://key.reg");
 	//extract_exe_file(IDR_BIN1, "d://wget.exe");
 	//extract_exe_file(IDR_BIN2, "d://update.bat");

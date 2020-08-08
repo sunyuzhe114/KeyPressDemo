@@ -222,12 +222,18 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\qidong.png" />
+    <Image Include="12_close.png" />
+    <Image Include="12_money.png" />
+    <Image Include="12_tip.png" />
     <Image Include="cailiao.png" />
     <Image Include="close.png" />
     <Image Include="confirm.png" />
     <Image Include="fangru.png" />
+    <Image Include="fenjie_button.png" />
+    <Image Include="qidong.png" />
     <Image Include="quchu.png" />
     <Image Include="savemoney.png" />
+    <Image Include="select_all.png" />
     <Image Include="shangdian.png" />
     <Image Include="shangdian_xiuli.png" />
     <Image Include="sysmenu.png" />

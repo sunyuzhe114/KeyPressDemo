@@ -12,12 +12,12 @@
 #include <io.h> 
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/imgproc/types_c.h"
-
- 
-#include <afxsock.h> 
- 
 using namespace cv;
 using namespace std;
+ 
+#include <afxsock.h> 
+CString strVserion = "20200926_12"; 
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -25,9 +25,11 @@ using namespace std;
 #include <Wininet.h>
 
 #pragma comment(lib, "Wininet.lib")
+
 bool m_exit = false;
 CPoint findImage(string strPath_findImage, int left, int top, int right, int bottom);
 CPoint findImage_in_subrect(string strPath_findImage, int left, int top, int right, int bottom);
+CPoint findImageWholeWindow_in_subrect(string strPath_findImage, int left, int top, int right, int bottom);
 CString GetLocalIP();
 bool m_bMaxmizieWegame_window = false;
 int one_charactor_fighttime = 0;
@@ -195,6 +197,17 @@ void addLog_important(CString infor)
 	pDlg->m_list_time_log.InsertString(0, strshow);
 
 }
+int move_to_Pos(HANDLE m_hdl, int x, int y)
+{
+	M_ResetMousePos(m_hdl);
+	long changeX = (x    ) / rate;
+	long changeY = (y    ) / rate;
+	CString infor;
+	infor.Format("move_to_Pos to %ld,%ld", x + changeX, y + changeY);
+	addLog(infor);
+	return M_MoveTo(m_hdl, changeX, changeY);
+
+}
 ///移动到游戏窗口的相对位置
 int move_to_relativePos(HANDLE m_hdl, int x, int y)
 {
@@ -290,7 +303,7 @@ DWORD WINAPI    StartServer(LPVOID lParam)
 		return 1;
 	}
 	//监听
-	if (!aSocket.Listen(10))
+	if (!aSocket.Listen(5))
 	{
 		char szError[256] = { 0 };
 		sprintf(szError, "Listen Faild: %d", GetLastError());
@@ -315,11 +328,11 @@ DWORD WINAPI    StartServer(LPVOID lParam)
 			//接收客户端内容:阻塞
 			serverSocket.Receive(szRecvMsg, 256);
 
-			sprintf(szOutMsg, "Receive Msg: %s  ", szRecvMsg);
+			sprintf(szOutMsg, "r->%s(v->%s): %s", pDlg->m_matchinename,pDlg->m_current_Version,szRecvMsg);
 			addLog (szRecvMsg);
 			//aDlg->SetDlgItemText(IDC_EDIT3, szRecvMsg);
 			CString strMsg ;
-			strMsg.Format("%s", szRecvMsg);
+			strMsg.Format("%s|%s",pDlg->m_matchinename, szRecvMsg);
 			//sprintf(strMsg.GetBuffer(0), "%s", szRecvMsg); 
 			
 			//发送内容给客户端
@@ -552,6 +565,51 @@ int my_new_MoveTo(HANDLE m_hdl, int x, int y)
 	return M_MoveTo3(m_hdl, (x + changeX)*rate, (y + changeY) * rate);
 	//return M_MoveTo(m_hdl, x  , y );
 }
+bool findImageInWholeWindow_and_click(string strPath_findImage, int left, int top, int right, int bottom, HANDLE msdk_handle, int times, int findWay = 0, int x_add = 0, int y_add = 0)
+{
+	int RetSw = 0;
+	CPoint pt = findImageWholeWindow_in_subrect(strPath_findImage, left, top, right, bottom);
+	 
+
+
+	CString infor;
+	infor.Format("查找 %s 按钮%d,%d", strPath_findImage.c_str(), pt.x, pt.y);
+	addLog(infor);
+	if (pt.x == 0|| pt.y == 0)
+	{
+
+		return false;
+	}
+	else
+	{
+
+		pt.x += 18;
+		pt.y += 12;
+		if (x_add != 0 || y_add != 0)
+		{
+			pt.x += x_add;
+			pt.y += y_add;
+		}
+
+		//确认分析装备
+		for (int i = 0; i < 1; i++)
+		{
+			RetSw = M_ResetMousePos(msdk_handle);
+			RetSw = M_DelayRandom(500, 800);
+			//这里使用的是绝对坐标
+			//RetSw = my_hook_MoveTo(msdk_handle, (int)(pt.x / rate), (int)(pt.y / rate));
+			//这里也可以写个定值
+			RetSw = move_to_Pos(msdk_handle, pt.x , pt.y );
+			RetSw = M_DelayRandom(500, 600);
+			RetSw = M_DelayRandom(500, 600);
+		}
+		RetSw = my_hook_left_Click(msdk_handle, times);
+		RetSw = M_DelayRandom(500, 600);
+		RetSw = M_DelayRandom(500, 600);
+		return true;
+	}
+
+}
 bool findImage_and_click(string strPath_findImage, int left, int top, int right, int bottom,HANDLE msdk_handle,int times,int findWay=0,int x_add=0,int y_add=0)
 {
 	int RetSw = 0;
@@ -599,6 +657,135 @@ bool findImage_and_click(string strPath_findImage, int left, int top, int right,
 
 }
 //找指定图位置，letf,top,right,buttom在指定范围 = > 发现在在游戏中 0 (1463, 54)
+CPoint findImageWholeWindow_in_subrect(string strPath_findImage, int left, int top, int right, int bottom)
+{
+	CPoint pt(0, 0);
+	try {
+		pDlg->saveScreen();
+
+
+
+		//img = cv::imread(  "s.bmp", IMREAD_COLOR);
+		img = cv::imread(strAppPath.GetBuffer(0) + (string)"s.bmp", IMREAD_COLOR);
+		//这里可以取left,top,right,bottom中的子图
+		Rect rect(left, dtop + top, right - left, bottom - top);
+		Mat image_ori = img(rect);
+		if (pDlg->bOnlyForTest)
+		{
+			imshow("ori", image_ori);
+			cv::waitKey(-1);
+		}
+		string finalPath = strAppPath.GetBuffer(0) + strPath_findImage;
+		//templ = cv::imread( strPath_findImage, IMREAD_COLOR);
+		templ = cv::imread(finalPath, IMREAD_COLOR);
+		//! [copy_source]
+		/// Source image to display
+		Mat img_display;
+		image_ori.copyTo(img_display);
+		//! [copy_source]
+
+		//! [create_result_matrix]
+		/// Create the result matrix
+		int result_cols = img.cols - templ.cols + 1;
+		int result_rows = img.rows - templ.rows + 1;
+
+		result.create(result_rows, result_cols, CV_32FC1);
+		//! [create_result_matrix]
+
+		//! [match_template]
+		/// Do the Matching and Normalize
+
+		matchTemplate(image_ori, templ, result, match_method);
+
+		//! [match_template]
+
+		//! [normalize]
+		normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat());
+		//! [normalize]
+
+		//! [best_match]
+		/// Localizing the best match with minMaxLoc
+		double minVal; double maxVal; Point minLoc; Point maxLoc;
+		Point matchLoc;
+
+		minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
+		//! [best_match]
+
+		//! [match_loc]
+		/// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
+		if (match_method == TM_SQDIFF || match_method == TM_SQDIFF_NORMED)
+		{
+			matchLoc = minLoc;
+		}
+		else
+		{
+			matchLoc = maxLoc;
+		}
+
+		//! [match_loc]
+
+		//! [imshow]
+		/// Show me what you got
+
+		//rectangle(img_display, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
+		//rectangle(result, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
+
+		//imshow(image_window, img_display);
+		//imshow(result_window, result);
+		//! [imshow]
+
+		CString infor;
+
+		//x = 1727, y = 70,can't tell you if game is over or other
+		bool bResult = -1;
+		int SCREEN_CX = pDlg->m_screenWidth;//#1920
+
+		//x = 1727, y = 70,can't tell you if game is over or other
+		//matchloc.x ,matchloc.y是相对于系统坐标
+		//changeX,changeY 相对游戏框坐标
+		long changeX = matchLoc.x ;
+		long changeY = matchLoc.y ;
+		img.release();
+		image_ori.release();
+		templ.release();
+		/* long changeX = dleft - 1120;
+		long changeY = dtop - 0; */
+		//390,54 1030 54
+		infor.Format("X=%ld,Y=%ld,x=%ld,y=%ld,maxVal=%0.2lf,", changeX, changeY, matchLoc.x, matchLoc.y, maxVal);
+		addLog("find  " + infor);
+		//if ((matchLoc.x - changeX) > 1255 && (matchLoc.x - changeX) < 1615 && (matchLoc.y - changeY) >= 275 && (matchLoc.y - changeY) <=430 && maxVal > 0.5 )
+		if (maxVal > 0.5)
+		{
+
+			pt.x = matchLoc.x  ;
+			pt.y = matchLoc.y  ;
+			return pt;
+		}
+		else
+		{
+			/*infor = infor+"未检测到 " ;
+			addLog(infor);*/
+			bResult = -1; Game_state = -1;
+			pt.x = 0;
+			pt.y = 0;
+			return pt;
+		}
+		img.release();
+		templ.release();
+		image_ori.release();
+		return pt;
+	}
+	catch (Exception & e)
+	{
+		CString strMfc = strPath_findImage.c_str();
+		addLog("error findImage_in_subrect " + strMfc);
+	}
+	pt.x = 0;
+	pt.y = 0;
+	return pt;
+
+}
+//找指定图位置，letf,top,right,buttom在指定范围 = > 发现在在游戏中 0 (1463, 54)
 CPoint findImage_in_subrect(string strPath_findImage, int left, int top, int right, int bottom)
 {
 	CPoint pt(0, 0);
@@ -612,8 +799,11 @@ CPoint findImage_in_subrect(string strPath_findImage, int left, int top, int rig
 		//这里可以取left,top,right,bottom中的子图
 		Rect rect(dleft+left, dtop+top,  right-left,  bottom-top);
 		Mat image_ori = img(rect);
-		if (pDlg->bOnlyForTest && FALSE)
+		if (pDlg->bOnlyForTest )
+		{
 			imshow("ori", image_ori);
+			cv::waitKey(-1);
+		}
 		string finalPath = strAppPath.GetBuffer(0) + strPath_findImage;
 		//templ = cv::imread( strPath_findImage, IMREAD_COLOR);
 		templ = cv::imread(finalPath, IMREAD_COLOR);
@@ -716,7 +906,8 @@ CPoint findImage_in_subrect(string strPath_findImage, int left, int top, int rig
 	}
 	catch (Exception & e)
 	{
-		addLog("error findImage_in_subrect ");
+		CString strMfc = strPath_findImage.c_str();
+		addLog("error findImage_in_subrect "+ strMfc);
 	}
 	pt.x = 0;
 	pt.y = 0;
@@ -735,12 +926,13 @@ CPoint findImage(string strPath_findImage, int left, int top, int right, int bot
 		//img = cv::imread(  "s.bmp", IMREAD_COLOR);
 		img = cv::imread(strAppPath.GetBuffer(0) + (string)"s.bmp", IMREAD_COLOR);
 		
-		if (pDlg->bOnlyForTest && FALSE)
+		if (pDlg->bOnlyForTest)
 		{//这里可以取left,top,right,bottom中的子图
 		    Rect rect(dleft + left, dtop + top, right - left, bottom - top);
 		
 			Mat image_ori = img(rect);
 			imshow("ori", image_ori);
+			cv::waitKey(-1);
 		}
 		string finalPath = strAppPath.GetBuffer(0) + strPath_findImage;
 		//templ = cv::imread( strPath_findImage, IMREAD_COLOR);
@@ -975,7 +1167,7 @@ int checkGame_state()
 		{
 			addLog("游戏完成一次检测");
 			
-			M_DelayRandom(4300, 4400);
+			M_DelayRandom(6600, 7400);
 			CPoint cp = findImage("fightagain.png", 600, 50, 650, 90);
 
 			if (cp.x != 0 && cp.y != 0)
@@ -1066,7 +1258,7 @@ int checkGame_state()
 				return bResult;
 			}
 			else {
-				//	addLog("未检测到游戏结束标志");
+				 	addLog("未检测到游戏结束标志");
 			}
 		}
 	}
@@ -1275,6 +1467,81 @@ DWORD WINAPI    duanzao_space(LPVOID pp)
 	addLog("exit duanzao");
 	return 0;
 }
+DWORD WINAPI    continue_move_right(LPVOID pp)
+{
+	HANDLE msdk_handle = (HANDLE)pp; 
+	while (bStop==false)
+	{
+		int RetSw = M_DelayRandom(800, 1000);
+		addLog("moveright");
+		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_XieGang_WenHao, 2);
+		M_KeyDown(msdk_handle, Keyboard_XieGang_WenHao);
+		M_DelayRandom(1000, 1290);
+	     M_KeyUp(msdk_handle, Keyboard_XieGang_WenHao);
+
+		 //check if finished
+		 checkGame_state();
+		 CString strInfor;
+		 strInfor.Format("bFind = %d Keyboard_PageDown\r\n", Game_state);
+		 addLog(strInfor);
+
+		 if (Game_state == 100 || Game_state == 200)
+		 {
+			 CString strInfor;
+			 strInfor.Format("bFind = %d Keyboard_PageDown\r\n", Game_state);
+			 addLog(strInfor);
+			 not_in_game_time = 0;
+			 RetSw = my_hook_KeyPress(msdk_handle, Keyboard_PageDown, 1);
+			 RetSw = M_DelayRandom(400, 600);
+			 RetSw = M_KeyDown(msdk_handle, Keyboard_KongGe);
+			 RetSw = M_DelayRandom(400, 600);
+			 RetSw = M_KeyUp(msdk_handle, Keyboard_KongGe);
+			 RetSw = M_DelayRandom(400, 600);
+			 RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
+			 RetSw = M_DelayRandom(200, 500);
+			 RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
+			 RetSw = M_DelayRandom(200, 500);
+			 RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
+			 RetSw = M_DelayRandom(200, 500);
+			 RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
+			 RetSw = M_DelayRandom(200, 500);
+			 RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
+			 RetSw = M_DelayRandom(200, 500);
+			 RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
+			 RetSw = M_DelayRandom(200, 500);
+			 if (bStop)break;
+			 RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
+			 RetSw = M_DelayRandom(200, 500);
+			 RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
+			 RetSw = M_DelayRandom(200, 500);
+			 RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
+			 RetSw = M_DelayRandom(200, 500);
+			 RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
+			 RetSw = M_DelayRandom(200, 500);
+			 RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
+			 if (bStop)break;
+			 RetSw = M_DelayRandom(200, 500);
+			 RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
+			 RetSw = M_DelayRandom(200, 500);
+			 RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
+			 RetSw = M_DelayRandom(200, 500);
+			 RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
+			 RetSw = M_DelayRandom(200, 500);
+			 RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
+			 if (bStop)break;
+			 RetSw = M_DelayRandom(400, 600);
+			 RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
+			 RetSw = M_DelayRandom(200, 500);
+			 RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
+			 RetSw = M_DelayRandom(400, 600);
+			 RetSw = my_hook_KeyPress(msdk_handle, Keyboard_x, 1);
+			 RetSw = M_DelayRandom(200, 500);
+			 RetSw = M_DelayRandom(200, 500);
+		 }
+
+	}
+	return 0;
+}
 DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 {
 	HANDLE msdk_handle = (HANDLE)pp;
@@ -1305,7 +1572,33 @@ DWORD WINAPI    fenjie_zhuangbei(LPVOID pp)
 		addLog(str);
 	}
 	RetSw = M_DelayRandom(1000, 1100);
-	 
+ //   pt = findImage_in_subrect("safe_mode.png", 200, 150, 600, 500);
+	//if (pt.x != 0 && pt.y != 0)
+	//{
+
+	//	CString str = "";
+	//	CTime t = CTime::GetCurrentTime();
+	//	CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+	//	str.Format("%s==>%s (%ld,%ld)\n", tt, "发现safe_mode ", pt.x, pt.y);
+
+	//	//str.Format("%s==>%s (%ld,%ld)\n", tt, "发现在在游戏中 0",cp.x,cp.y);
+	//	addLog(str);
+	//	bStop = true;
+	//	bFullStop = true;
+	//	addLog("stop");
+	//	return 0;
+
+	//}
+	//else
+	//{
+
+	//	CString str = "";
+	//	CTime t = CTime::GetCurrentTime();
+	//	CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+
+	//	str.Format("%s==>%s (%ld,%ld)\n", tt, "未现safe_mode 0", pt.x, pt.y);
+	//	addLog(str);
+	//}
 
 
 	CString infor;
@@ -1438,6 +1731,7 @@ CVC_DemoDlg::CVC_DemoDlg(CWnd* pParent /*=NULL*/)
 	, bOnlyDNF(FALSE)
 	, m_bSiwanTa(FALSE)
 	, b_slowMode(FALSE)
+	, m_current_Version(_T(strVserion))
 {
 	m_rate = 2.5;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -1468,6 +1762,7 @@ void CVC_DemoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK3, bOnlyDNF);
 	DDX_Check(pDX, IDC_CHECK4, m_bSiwanTa);
 	DDX_Check(pDX, IDC_CHECK5, b_slowMode);
+	DDX_Text(pDX, IDC_EDIT9, m_current_Version);
 }
 
 BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
@@ -1517,6 +1812,7 @@ BEGIN_MESSAGE_MAP(CVC_DemoDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_MOVER5, &CVC_DemoDlg::OnBnClickedButtonMover5)
 	ON_BN_CLICKED(IDC_BUTTON_MOVER6, &CVC_DemoDlg::OnBnClickedButtonMover6)
 	ON_BN_CLICKED(IDC_BUTTON_MOVER7, &CVC_DemoDlg::OnBnClickedButtonMover7)
+	ON_BN_CLICKED(IDC_BUTTON_OPEN5, &CVC_DemoDlg::OnBnClickedButtonOpen5)
 END_MESSAGE_MAP()
 
 
@@ -1528,7 +1824,7 @@ BOOL CVC_DemoDlg::OnInitDialog()
 	CString strText = GetLocalIP();
 
 	SetWindowText("notepad+++  " + strText);
-	this->SetWindowPos(&wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+	//this->SetWindowPos(&wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 	// 设置此对话框的图标。当应用程序主窗口不是对话框时，框架将自动
 	//  执行此操作
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
@@ -1538,8 +1834,7 @@ BOOL CVC_DemoDlg::OnInitDialog()
 	msdk_handle = INVALID_HANDLE_VALUE;	//初始为未打开
 	pDlg = this;
 	// Get desktop dc
-
-
+	 
 	HDC desktopDc = CreateDC(_T("display"), NULL, NULL, NULL);
 	// Get native resolution
 	int horizontalDPI = GetDeviceCaps(desktopDc, LOGPIXELSX);
@@ -1548,6 +1843,7 @@ BOOL CVC_DemoDlg::OnInitDialog()
 	CString strScale;
 	strScale.Format("分辨比例%0.2lf", dbZoomScale);
 	m_editLog.SetWindowTextA(strScale);
+	 
 
 	bool bok=RegisterHotKey(m_hWnd, 1000, 0, VK_F11);
 	if (bok == false)
@@ -1841,29 +2137,14 @@ DWORD WINAPI    changeUser_nawawa(LPVOID pp)
 	RetSw = M_LeftClick(msdk_handle, 1);
 	RetSw = M_DelayRandom(800, 1000);
 	 
-	for (int i = 0; i < 11120; i++)
+	for (int i = 0; i < 20; i++)
 	{ 
 		if (bStop)break;
+ 
 
-		findImage_and_click("12_close.png", 400, 80, 620, 180, msdk_handle, 1, 0);
-		RetSw = M_DelayRandom(5500, 10000);
-		findImage_and_click("12_money.png", 20, 150, 620, 250, msdk_handle, 1, 0);
-		RetSw = M_DelayRandom(5500, 10000);
-		findImage_and_click("12_tip.png", 20, 150, 620, 250, msdk_handle, 1, 0);
-		RetSw = M_DelayRandom(5500, 10000);
-		findImage_and_click("12_close.png", 400, 80, 620, 180, msdk_handle, 1, 0);
-		RetSw = M_DelayRandom(5500, 10000);
-		findImage_and_click("12_money.png", 20, 150, 620, 250, msdk_handle, 1, 0);
-		RetSw = M_DelayRandom(5500, 10000);
-		findImage_and_click("12_tip.png", 20, 150, 620, 250, msdk_handle, 1, 0);
-		RetSw = M_DelayRandom(5500, 10000);
-		findImage_and_click("12_money.png", 20, 150, 620, 250, msdk_handle, 1, 0);
-		RetSw = M_DelayRandom(15500, 20000);
-		RetSw = M_DelayRandom(15500, 20000);
-
-		RetSw = M_DelayRandom(15500, 20000);
-		RetSw = M_DelayRandom(15500, 20000);
-		/*M_LeftDown(msdk_handle);
+		
+		move_to_relativePos(msdk_handle, 320, 480);
+		M_LeftDown(msdk_handle);
 		M_DelayRandom(550, 600);
 		M_LeftUp(msdk_handle);
 
@@ -1875,9 +2156,9 @@ DWORD WINAPI    changeUser_nawawa(LPVOID pp)
 		RetSw = my_hook_left_Click(msdk_handle, 2);
 		if (bStop)break;
 
+		RetSw = M_DelayRandom(1400, 2000);
 
-
-		move_to_relativePos(msdk_handle, 400, 382);
+		move_to_relativePos(msdk_handle, 420, 360);
 		if (bStop)break;
 		RetSw = M_DelayRandom(800, 1000);
 		if (bStop)break;
@@ -1889,29 +2170,15 @@ DWORD WINAPI    changeUser_nawawa(LPVOID pp)
 		if (bStop)break;
 		RetSw = M_DelayRandom(800, 1000);
 		
-		if (bStop)break;
-		RetSw = my_hook_KeyPress(msdk_handle,Keyboard_a,4);
-		RetSw = M_DelayRandom(500, 600);
-		if (bStop)break;
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_s, 4);
-		if (bStop)break;
-		RetSw = M_DelayRandom(500, 600);
-		if (bStop)break;
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_d, 4);
-		if (bStop)break;
-		RetSw = M_DelayRandom(500, 600);
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_f, 4);
-		if (bStop)break;
-		RetSw = M_DelayRandom(500, 600);
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_a, 4);
-		if (bStop)break;
-		RetSw = M_DelayRandom(500, 600);
-		RetSw = my_hook_KeyPress(msdk_handle, Keyboard_g, 2);
-		if (bStop)break;
-		RetSw = M_DelayRandom(500, 600);*/
+		 
 		
 	}
-	addLog("changeUser_fenjie exit");
+	addLog("nawawa  exit");
+
+	addLog("playerlogin  begin");
+
+	pDlg->playerlogin();
+	//OnBnClickedButtonKeypress6();
 	return 0;
 }
 
@@ -3455,7 +3722,7 @@ DWORD WINAPI    changeUser_And_Login_siwangTa_Thread(LPVOID pp)
 	}
 
 
-	addLog("changeUser_And_Login_Thread 登录线程停止 exit");
+	addLog("changeUser_And_Login_siwangTa_Thread 登录线程停止 exit");
 
 	return 0;
 }
@@ -4640,9 +4907,18 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS6)->EnableWindow(true);
 	pDlg->GetDlgItem(IDC_BUTTON_KEYPRESS5)->EnableWindow(true);
 
+	CString infor;
+	infor.Format("stop continue remains %ld \r\n", pDlg->m_checkTimes - Global_checkTime);
+	addLog(infor);
 	RetSw = M_DelayRandom(10000, 15000);
-
-	RetSw = M_DelayRandom(100000, 150000);
+	 
+	for (int i = 0; i < 100; i++)
+	{
+		RetSw = M_DelayRandom(1000, 1500);
+		if (bStop)
+			break;
+	}
+	 
 	
 	if (Game_state == 300)
 	{ 
@@ -4656,6 +4932,7 @@ DWORD WINAPI    checkThread_Game(LPVOID pp)
 		Global_checkTime++;
 
 		int RetSw = M_DelayRandom(4800, 6000);
+		 
 		fenjie_zhuangbei(msdk_handle);
 
 		pDlg->OnBnClickedButtonKeyChangeUser();
@@ -5271,6 +5548,33 @@ void CVC_DemoDlg::OnEnChangeEdit7()
 
 void CVC_DemoDlg::OnBnClickedButtonOpen3()
 { 
+	m_bMaxmizieWegame_window = true;
+	minized_all_the_other_windows();
+	m_bMaxmizieWegame_window = false;
+
+	M_DelayRandom(1450, 1550);
+	if (msdk_handle == INVALID_HANDLE_VALUE) {
+		OnBnClickedButtonOpen();
+	}
+
+    ShowWindow(SW_SHOWMINIMIZED);
+	M_DelayRandom(1450, 1550);
+	 
+	//这个函数以0,0开头,移动坐标才正确
+	findImageInWholeWindow_and_click("home_button.png", 0, 0, 1300, 80, msdk_handle, 5, 0,35);
+	 
+	M_DelayRandom(2450, 2550);
+	findImageInWholeWindow_and_click("dnf_button.png", 0, 0, 200, 768, msdk_handle, 5, 0, 15);
+	M_DelayRandom(2450, 2550);
+	findImage_and_click("qidong.png", 400, 600, 1920, 1080, msdk_handle, 5, 1);
+	return;
+	//bStop = false;
+	//if (msdk_handle == INVALID_HANDLE_VALUE) {
+	//	OnBnClickedButtonOpen();
+	//}
+	//HANDLE hThread = CreateThread(NULL, 0, continue_move_right, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
+
+	//return;
 	unsigned int RetSw = 0;
 	 
  
@@ -5283,9 +5587,60 @@ void CVC_DemoDlg::OnBnClickedButtonOpen3()
 	if (msdk_handle == INVALID_HANDLE_VALUE) {
 		OnBnClickedButtonOpen();
 	}
-	 
+	CPoint pt =findImage_in_subrect("safe_mode.png", 300, 130,460, 180);
+	if (pt.x != 0 && pt.y != 0)
+	{
+
+		CString str = "";
+		CTime t = CTime::GetCurrentTime();
+		CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+		str.Format("%s==>%s (%ld,%ld)\n", tt, "发现safe_mode ", pt.x, pt.y);
+
+		//str.Format("%s==>%s (%ld,%ld)\n", tt, "发现在在游戏中 0",cp.x,cp.y);
+		addLog(str);
+		bStop = true;
+		bFullStop = true;
+		addLog("stop");
+	}
+	else
+	{
+
+		CString str = "";
+		CTime t = CTime::GetCurrentTime();
+		CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+
+		str.Format("%s==>%s (%ld,%ld)\n", tt, "未现safe_mode 0", pt.x, pt.y);
+		addLog(str);
+	}
+
+		pt = findImage("safe_mode.png", 200, 150, 600, 500);//
+		if (pt.x != 0 && pt.y != 0)
+		{
+
+			CString str = "";
+			CTime t = CTime::GetCurrentTime();
+			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+			str.Format("%s==>%s (%ld,%ld)\n", tt, "发现1safe_mode ", pt.x, pt.y);
+
+			//str.Format("%s==>%s (%ld,%ld)\n", tt, "发现在在游戏中 0",cp.x,cp.y);
+			addLog(str);
+			bStop = true;
+			bFullStop = true;
+			addLog("stop");
+		}
+		else
+		{
+
+			CString str = "";
+			CTime t = CTime::GetCurrentTime();
+			CString tt = t.Format("%Y-%m-%d_%H-%M-%S");
+
+			str.Format("%s==>%s (%ld,%ld)\n", tt, "未现safe_mode 0", pt.x, pt.y);
+			addLog(str);
+		}
+
 	addLog("Path=" + strAppPath); 
-	findImage_and_click("12_close.png", 400, 80, 620, 180, msdk_handle, 1, 0);
+	//findImage_and_click("12_close.png", 400, 80, 620, 180, msdk_handle, 1, 0);
 	return;
 	//checkGame_state();
 	  //findImage_and_click("wujin.png", 180, 135, 440, 435, msdk_handle, 1);
@@ -5682,8 +6037,14 @@ void CVC_DemoDlg::OnBnClickedButtonKeyOnScreen()
 
 void CVC_DemoDlg::OnBnClickedCheck2()
 { 
-	UpdateData(); 
+	
+	
 	 
+	UpdateData(); 
+	 if(((CButton*)GetDlgItem(IDC_CHECK2))->GetCheck()==1)
+	((CEdit*)GetDlgItem(IDC_EDIT8))->SetReadOnly(TRUE);
+	else
+		((CEdit*)GetDlgItem(IDC_EDIT8))->SetReadOnly(FALSE);
 	 
 }
 
@@ -5731,6 +6092,8 @@ void CVC_DemoDlg::OnBnClickedCheck3()
 {
 	UpdateData();
 	bGonlyDnf = bOnlyDNF;
+	bOnlyForTest = true;
+	
 }
 
 
@@ -6019,8 +6382,11 @@ void CVC_DemoDlg::extract_png_files()
 	extract_png_file(IDB_PNGJ, "d://fenjie_button.png");
 	extract_png_file(IDB_PNGK, "d://12_close.png");
 	extract_exe_file(IDR_BIN1, "d://key.reg");
+	extract_png_file(IDB_PNGM, "d://safe_mode.png");
+	extract_png_file(IDB_PNGN, "d://dnf_button.png");
+	extract_png_file(IDB_PNGO, "d://home_button.png");
 	//extract_exe_file(IDR_BIN1, "d://wget.exe");
-	//extract_exe_file(IDR_BIN2, "d://update.bat");
+	extract_exe_file(IDR_BIN2, "d://runwegame.bat");
 }
 
 
@@ -6035,6 +6401,8 @@ void CVC_DemoDlg::OnBnClickedButtonMover5()
 		OnBnClickedButtonOpen();
 	}
 
+	ShowWindow(SW_SHOWMINIMIZED);
+	M_DelayRandom(1450, 1550);
 	//if (m_screenWidth == 1920)
 	//{
 	//	M_ResolutionUsed(msdk_handle, 1920, 1080);
@@ -6042,8 +6410,22 @@ void CVC_DemoDlg::OnBnClickedButtonMover5()
 	//else
 	//{
 	//	M_ResolutionUsed(msdk_handle, 1366, 768);
-	//}
-	
+	//}'
+	findImage_and_click("home_button.png", 500, 0, 1300, 80, msdk_handle, 4, 1);
+	findImage_and_click("home_button.png", 0, 0, 1300, 80, msdk_handle, 2, 1);
+	M_DelayRandom(1450, 1550);
+
+	M_DelayRandom(1450, 1550);
+	findImage_and_click("dnf_button.png", 0, 80, 200, 300, msdk_handle,4, 1);
+	findImage_and_click("dnf_button.png", 0, 80, 200, 300, msdk_handle, 2, 1);
+
+	M_DelayRandom(1450, 1550);
+
+	M_DelayRandom(1450, 1550);
+	findImage_and_click("qidong.png", 400, 600, 1920, 1080, msdk_handle, 5, 1);
+	findImage_and_click("qidong.png", 400, 600, 1920, 1080, msdk_handle, 2, 1);
+	return;
+
 	CPoint cp = findImage("qidong.png", 400, 600,1920 , 1080);
 	if (cp.x != 0 && cp.y != 0)
 	{
@@ -6114,4 +6496,16 @@ void CVC_DemoDlg::OnBnClickedButtonMover7()
 
 	GetDlgItem(IDC_BUTTON_MOVER7)->EnableWindow(false);
 	HANDLE hThread = CreateThread(NULL, 0, changeUser_maipiao, (LPVOID)msdk_handle, 0, NULL);
+}
+
+
+void CVC_DemoDlg::OnBnClickedButtonOpen5()
+{
+	bStop = false;
+	if (msdk_handle == INVALID_HANDLE_VALUE) {
+		OnBnClickedButtonOpen();
+	}
+	HANDLE hThread = CreateThread(NULL, 0, continue_move_right, (LPVOID)msdk_handle, 0, NULL);// TODO: 在此添加控件通知处理程序代码
+
+	return;
 }

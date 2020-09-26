@@ -68,6 +68,7 @@ public:
 	CListBox m_listLog;
 	afx_msg void OnEnChangeEdit7();
 	int m_screenWidth;
+	int m_screenHeight;
 	afx_msg void OnBnClickedButtonOpen3();
 	afx_msg void OnLbnSelchangeList2();
 	afx_msg void OnBnClickedCheck1();
@@ -80,6 +81,7 @@ public:
 	BOOL bOnlyForTest;
 	afx_msg void OnEnChangeEdit8();
 	CString m_matchinename;
+	CString m_version;
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	 
 public:
@@ -106,4 +108,6 @@ public:
 	afx_msg void OnBnClickedButtonMover5();
 	afx_msg void OnBnClickedButtonMover6();
 	afx_msg void OnBnClickedButtonMover7();
+	CString m_current_Version;
+	afx_msg void OnBnClickedButtonOpen5();
 };
